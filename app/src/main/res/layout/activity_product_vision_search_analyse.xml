@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".page.ProductVisionSearchAnalyseActivity">
+
+    <TextView
+        android:id="@+id/text_recommendation"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:background="@color/white"
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:text="@string/product_search_result"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_search_result"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/no_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/hiad_20_dp"
+        android:gravity="center"
+        android:text="@string/product_no_result"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

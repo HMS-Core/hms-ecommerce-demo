@@ -1,0 +1,126 @@
+<resources>
+    <string name="app_name">Shopping Demo</string>
+    <string name="title_home">首页</string>
+    <string name="title_catalogue">目录</string>
+    <string name="title_shop">&#160;&#160;购物车</string>
+    <string name="title_my">我的</string>
+
+    <string name="no_kits">未使用Kit</string>
+    <string name="used_kits">本页面使用了以下Kits:</string>
+    <string name="no_login">请登录/注册</string>
+    <string name="is_shop_tip">是否展示Kit实现信息</string>
+    <string name="market_recommendation">商城推荐</string>
+
+
+    <!-- slpash ad -->
+    <string name="status_load_ad_success">Ad loading state: loaded successfully.</string>
+    <string name="status_load_ad_fail">Ad loading state: failed to be loaded. Error code: </string>
+    <string name="ad_id_splash">testq6zq98hecj</string>
+    <string name="owner">HUAWEI Developer</string>
+    <string name="media_name">HUAWEI Ads</string>
+    <string name="copyright_info">Copyright 2020. Huawei Technologies Co., Ltd</string>
+    <string name="status_ad_dismissed">Splash Ad is dismissed.</string>
+
+    <string name="customer_service">客服</string>
+    <string name="add_shop_car">加入购物车</string>
+    <string name="buy_now">立即购买</string>
+    <string name="product_price">¥ %d</string>
+    <string name="product_3d">3D</string>
+    <string name="product_ar">AR</string>
+    <string name="product_color">颜色</string>
+    <string name="product_version">版本</string>
+    <string name="product_capacity">容量</string>
+    <string name="product_address">定位中</string>
+    <string name="product_count">数量</string>
+    <string name="product_send">送至</string>
+    <string name="check_order">确认订单</string>
+    <string name="submit_order">提交订单</string>
+    <string name="order_center">订单中心</string>
+    <string name="my_order">我的订单</string>
+    <string name="add_address_tip">请添加地址</string>
+    <string name="product_detail">%s %s %s</string>
+    <string name="product_count_type_1">x%d</string>
+    <string name="product_stand_send">标准配送</string>
+    <string name="product_ticket">发票</string>
+    <string name="product_ticket_type">电子普通发票-个人</string>
+    <string name="product_sum_price">商品总价</string>
+    <string name="product_send_method">配送方式</string>
+    <string name="add_to_car_success">添加成功</string>
+    <string name="please_wait">敬请期待</string>
+
+    <string name="product_search_result">识别到的商品</string>
+    <string name="product_no_result">未识别到商品</string>
+    <string name="product_category">分类：</string>
+
+    <string name="shopping_cart_title">购物车</string>
+    <string name="shopping_cart_edit">编辑</string>
+    <string name="shopping_cart_finish">完成</string>
+    <string name="shopping_cart_price">￥%d</string>
+    <string name="shopping_cart_reduce_notice">最少够买一件哦！</string>
+    <string name="shopping_cart_select_all">全选</string>
+    <string name="shopping_cart_pay">结算(%d)</string>
+    <string name="shopping_cart_total">总计：￥%d</string>
+    <string name="shopping_cart_delete">删除</string>
+    <string name="shopping_cart_confirm_delete">确认删除商品吗？</string>
+
+    <!-- Order Center -->
+    <string name="order_center_all_order">&#8194;全部&#8194;</string>
+    <string name="order_center_pending_payment">待付款</string>
+    <string name="order_center_pending_receive">待收货</string>
+    <string name="order_center_finish">已完成</string>
+    <string name="order_center_pending_payment_time">待支付</string>
+    <string name="order_center_canceled">已取消</string>
+    <string name="order_center_load_finish">已加载全部</string>
+    <string name="order_center_order_number">订单编号：%d</string>
+    <string name="order_center_total">共%d件商品，待付：￥ %d</string>
+    <string name="order_center_total_paid">共%d件商品，实付：￥ %d</string>
+    <string name="order_center_total_canceled">共%d件商品，未支付：￥ %d</string>
+    <string name="order_center_go_to_pay">去支付</string>
+    <string name="order_center_modify_order">修改订单</string>
+    <string name="order_center_cancel_order">取消订单</string>
+    <string name="order_center_confirm_cancel_order">确认取消订单吗？</string>
+
+    <!-- Order Submit -->
+    <string name="country_not_supported_identity">country not supported identity</string>
+    <string name="child_account_not_supported_identity">child account not supported identity</string>
+
+    <!--  todo (for example, delete when release)  -->
+    <string name="shopping_cart_item_example_product_name">HUAWEI</string>
+    <string name="shopping_cart_item_example_quantity">1</string>
+    <string name="shopping_cart_item_example_config">8GB+256GB,5G全网通 8GB+256GB,白色</string>
+    <string name="shopping_cart_item_example_price">￥ 390</string>
+    <string name="ed_search_tip">请输入要搜索的内容</string>
+    <string name="search_no_tip">请输入搜索内容</string>
+    <string name="search_history">搜索历史</string>
+    <string name="search_hot">热门搜索</string>
+    <string name="delete_history">清除搜索记录</string>
+    <string name="check_delete_history">确定要清除历史记录吗?</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="logo_out">退出登录</string>
+    <string name="confirm_log_out">您确定要退出当前账号吗?</string>
+    <string name="please_sign_first">请先登录</string>
+
+    <string name="payment_succeed">支付成功!</string>
+    <string name="payment_total">实付%d元</string>
+    <string name="back_to_home">返回首页</string>
+    <string name="view_order">查看订单</string>
+    <string name="no_product">暂无商品</string>
+    <string name="tip_sign_in_first">请先登录</string>
+
+    <!-- Login Page-->
+    <string name="welcome_to_shopping_demo">欢迎来到Shopping Demo</string>
+    <string name="current_position">%d/%d</string>
+    <string name="log_in_success">登录成功</string>
+    <string name="no_product_tip">暂无此商品</string>
+    <string name="empty_address">空</string>
+    
+    <!-- Privacy Page-->
+    <string name="privacyReject">拒绝</string>
+    <string name="privacyaccept">同意</string>
+    <string name="privacyAnnounce">隐私声明</string>
+    <string name="textview_Privacy">TextView</string>
+    <string name="privacyread">隐私</string>
+    <string name="exitMessage">即将退出Shopping Demo</string>
+
+</resources>

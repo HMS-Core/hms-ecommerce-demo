@@ -1,0 +1,48 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Main_AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- 避免控件会顶到状态栏上 -->
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <!-- 开屏图片-->
+    <style name="Main_AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Main_AppTheme.Splash" parent="Main_AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <!--<item name="android:layout">@layout/activity_splash</item>-->
+        <item name="android:windowBackground">@drawable/x_splash</item>
+    </style>
+
+    <!-- 自定义控件风格-->
+    <style name="Custom" />
+    <!-- 主页导航栏 -->
+    <style name="Custom.TabRadioButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@drawable/tab_text_color_selector</item>
+    </style>
+    <!-- switch开关 -->
+    <style name="Custom.MySwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/green</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+    </style>
+
+    <!--  checkbox勾选  -->
+    <style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_style_selector</item>
+    </style>
+
+</resources>

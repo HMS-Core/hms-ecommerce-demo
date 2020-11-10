@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="tab_text_color_selected">#d81e06</color>
+    <color name="tab_text_color_no_selected">#000000</color>
+    <color name="color_bdg_gray">#F2F2F2</color>
+    <color name="color_light_gray">#d6d6d6</color>
+    <color name="color_search_bgd_gray">#C4C8D0</color>
+    <color name="text_color_type_1">#666666</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#008B00</color>
+    <color name="red">#ab1515</color>
+    <color name="tip_view_bdg">#8f000000</color>
+    <color name="catalogue_type_color_1">#ffbb33</color>
+    <color name="catalogue_type_color_2">#99cc00</color>
+    <color name="catalogue_type_color_3">#7D7DFF</color>
+    <color name="catalogue_type_color_4">#FE8649</color>
+    <color name="catalogue_type_color_5">#FAFFBD</color>
+    <color name="catalogue_type_color_6">#37a0d2</color>
+    <color name="orange_type_1">#ff5227</color>
+    <color name="orange_type_2">#f8866a</color>
+    <color name="red_type_1">#db4f3a</color>
+    <color name="red_type_2">#d24d39</color>
+</resources>

@@ -1,0 +1,20 @@
+{
+  "number": 4,
+  "basicInfo": {
+    "shortName": "Handbag Sample",
+    "name": "Handbag Sample",
+    "thumbnail": "thumbnail_handbag",
+    "configuration": {
+      "capacity": "NA",
+      "version": "NA",
+      "color": "Orange"
+    },
+    "price": 88,
+    "link": "value"
+  },
+  "category": "ShoesBags",
+  "threeDimensional": "SceneView/handbag/bag.gltf",
+  "images": ["side_handbag","fronts_handbag","lookup_handbg"],
+  "videoUrl": "",
+  "ar": ""
+}

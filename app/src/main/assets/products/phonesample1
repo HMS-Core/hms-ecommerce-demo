@@ -1,0 +1,20 @@
+{
+  "number": 1,
+  "basicInfo": {
+    "shortName": "HUAWEI Mobile Sample 1",
+    "name": "HUAWEI Mobile Sample 1 5G All 8GB+256GB(White)",
+    "thumbnail": "thumbnail_phonesample1",
+    "configuration": {
+      "capacity": "8GB+256GB",
+      "version": "5G All",
+      "color": "White"
+    },
+    "price": 7988,
+    "link": "value"
+  },
+  "category": "Mobile Phone",
+  "threeDimensional": "SceneView/p40/phone1.gltf",
+  "images": ["fronts_phonesample1","back_phonesample1"],
+  "videoUrl": "https://1251250874.vod2.myqcloud.com/439f276avodtransgzp1251250874/d6b452205285890800654415131/v.f20.mp4",
+  "ar": ""
+}
