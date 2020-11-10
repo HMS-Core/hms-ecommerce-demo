@@ -1,0 +1,20 @@
+{
+  "number": 3,
+  "basicInfo": {
+    "shortName": "HUAWEI 手表样品1",
+    "name": "HUAWEI 手表样品1 运动款 黑色（46mm）麒麟A1芯片 强劲续航 专业运动 心脏健康 蓝牙通话 音乐播放 户外运动手表",
+    "thumbnail": "thumbnail_watchsample1",
+    "configuration": {
+      "capacity": "RAM:32MB  ROM:4GB",
+      "version": "运动版",
+      "color": "黑色"
+    },
+    "price": 1488,
+    "link": "value"
+  },
+  "category": "电子产品",
+  "threeDimensional": "",
+  "images": ["fronts_watchsample1","back_watchsample1"],
+  "videoUrl": "https://1251250874.vod2.myqcloud.com/439f276avodtransgzp1251250874/fd4f348b5285890794096723002/v.f20.mp4",
+  "ar": ""
+}

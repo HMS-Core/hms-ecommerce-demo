@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2020. All rights reserved.
+  -->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iv_product"
+        android:layout_alignTop="@id/tv_title"
+        android:layout_alignBottom="@+id/tv_price"
+        android:adjustViewBounds="true"
+        android:maxHeight="120dp"
+        android:maxWidth="120dp"
+        android:minHeight="100dp"
+        android:minWidth="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ImageView>
+    <TextView
+        android:id="@+id/tv_title"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:lines="2"
+        android:ellipsize="end"
+        android:layout_toEndOf="@+id/iv_product"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_below="@+id/tv_title"
+        android:textSize="16sp"
+        android:textColor="@color/red"
+        android:layout_toEndOf="@+id/iv_product"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+</RelativeLayout>

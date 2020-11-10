@@ -1,0 +1,98 @@
+Statement About Shopping Demo and Privacy
+
+Last updated: October 2020
+
+Shopping Demo provides a demo to show how to use the HMS Core capability in Shopping demo, such as HUAWEI ID, location, Ads, payment services and others. Shopping demo Such services are governed by their own privacy statement made available to you when you first use the services.
+
+Shopping demo is provided as an example to related app developers to develop Shopping Apps with HMS Core services. The Shopping demo is provided by Huawei Limited. Please read and understand the following information about how we process your data in order to provide you with these services.
+
+
+1 Product Visual Search
+
+Product visual search service is used to searches for the same or similar products in the pre-established product image library based on a product photo. In shopping demo, it provides an example how to use this service. The users can take a photo on a product, system can find the related product options to them.
+
+To provide the product visual search service, the following data is needed to be collected:
+
+• The product photo. it needs to be uploaded to server to analyze to find the similar or same product. 
+
+Your photo information will not be stored in the system.
+
+
+2 Analytics
+
+Analytics service is used to collect the App usage information. It can help you to operate your App. To give an analytics usage example, the shopping demo integrates analytics service in it.
+
+We will collect and process the following data in order to provide you with the Analytics service:
+
+• Interface usage information, including device identifier, app package name, app identifier, error logs, interface calling time, operator network type and ID, device type and country, operating system version, and interface information.
+
+This information is used for analytics and development for up to twelve (12) months from the date of collection, unless you have objected to such processing.
+
+
+3 Location
+
+Location service is used to show the virtual delivering address in the purchase order in shopping demo. It gives an example how to get the user position information and use it in shopping App. The location service is integrated in the shopping demo. 
+
+The following data will be collected:
+
+• Location information, including anonymized IP address, approximate location information, and SIM card country code which will be collected for position shown.
+
+This information will be used to get your position information but will not be kept in system.
+
+
+3 Push Service
+
+HUAWEI Push Service is used to send push messages to your device and enables you to receive relevant notifications from demo app. To simulate the order payment notification message, shopping demo integrates Push service. We need to establish a messaging channel between our push servers and your device.
+
+To provide you with the services and fulfil the above purposes, we will process the following categories of data:
+
+•Device information, such as device identifier, device model, ROM/EMUI/Push version, and Android user ID
+
+•Network information, such as Internet connection type, mobile country code (MCC) and mobile network code (MNC) and IP address
+
+Basic information that is necessary for establishing and maintaining the connection, such as the device identifier, will be stored until your device has been inactive for one year. 
+
+
+5 How do We Share Your Data?
+
+The data will be used for the functions in the demo which is described above. We will process your data with your consent, and will anonymise the location information
+
+Your data will be stored in Chinese mainland.
+
+You can withdraw your consent at any time in the following ways on your device, depending on the version of your operating system:
+
+(a) Go to Settings > Privacy > Share analytics.
+
+(b) Go to Settings > Apps > Apps > Shopping Demo, touch the Settings icon (Gear icon), and then touch Share analytics.
+
+(c) Go to Settings > Apps & notifications > Apps > Shopping Demo, touch the Settings icon (Gear icon), and then touch Share analytics.
+
+(d) Go to Settings > Apps > Shopping Demo, touch the Settings icon (Gear icon), and then touch Share analytics.
+
+
+6 What are Your Rights and Options?
+
+You can contact us to exercise any of the following rights and options regarding your personal data:
+
+•Request a copy of personal data that we have collected and stored about you in relation to HMS Core
+
+•Rectify your data if you think your data is not accurate or up-to-date
+
+•Erase your data
+
+•Object to the processing of your data
+
+•Restrict the processing of your personal data
+
+
+7 How to Contact Us?
+
+If you have any questions, comments, or suggestions on your rights as a data subject or the processing of your personal data by us, or if you want to contact our Data Protection Officer, please contact us.
+
+Our headquarters' address: Huawei Nanjing R&D Center, 101 Ruanjian avenue, Yuhuatai district, Nanjing, Jiangsu Provice, P.R.C.
+
+If you believe that we do not process your personal data in accordance with this Statement or the applicable data protection laws, you can lodge a complaint with the data protection authority in your country/region, or the Data Protection Commissioner in China.
+
+8 How do We Update this Statement?
+
+We encourage you to regularly check for the latest version of this Statement as we may change it from time to time.

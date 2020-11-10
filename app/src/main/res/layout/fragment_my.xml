@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bdg_gray"
+    android:orientation="vertical"
+    tools:context=".fragment.MyFragment">
+
+    <LinearLayout
+        android:id="@+id/lv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/image_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/head_my">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="4dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/corner_bdg_my_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"
+                android:text="@string/is_shop_tip"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+            <Switch
+                android:id="@+id/switch_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"
+                android:theme="@style/Custom.MySwitch">
+            </Switch>
+        </LinearLayout>
+        <View
+            android:background="@color/color_bdg_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp">
+        </View>
+        <TextView
+            android:id="@+id/button_order_center"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="0dp"
+            android:text="@string/my_order"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_bdg_gray"></View>
+
+        <TextView
+            android:id="@+id/button_privacyread"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="0dp"
+            android:text="@string/privacyread"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <View
+            android:background="@color/color_bdg_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp">
+        </View>
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="0dp"
+            android:text="@string/logo_out"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>
