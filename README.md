@@ -15,10 +15,22 @@ Demo website: https://developer.huawei.com/consumer/en/solution/hms/ecommerce
 Firstly choose the area you are in, then you can download the Demo App from scanning the corresponding QR code.
 
 <table><tr>
-<td>![China](images/barcode/China.png)<p>China</p></td>
-<td>![Asia-Africa-and-Latin-America](images/barcode/Asia-Africa-and-Latin-America.png)<p>Asia, Africa, and Latin America</p></td>
-<td>![Europe](images/barcode/Europe.png)<p>Europe</p></td>
-<td>![Russia](images/barcode/Russia.png)<p>Russia</p></td>
+<td>
+![China](images/barcode/China.png)
+<p>China</p>
+</td>
+<td>
+![Asia-Africa-and-Latin-America](images/barcode/Asia-Africa-and-Latin-America.png)
+<p>Asia, Africa, and Latin America</p>
+</td>
+<td>
+![Europe](images/barcode/Europe.png)
+<p>Europe</p>
+</td>
+<td>
+![Russia](images/barcode/Russia.png)
+<p>Russia</p>
+</td>
 </tr></table>
 
 ## Features
