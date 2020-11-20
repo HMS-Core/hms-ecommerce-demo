@@ -33,29 +33,30 @@ import com.huawei.industrydemo.shopping.view.MySceneView;
 
 public class SceneViewActivity extends AppCompatActivity {
     public static final int SCENE_VIEW_REQUEST_CODE = 1;
-    private static View view;
-    private static boolean allowRturn = false;
+    private View view;
+    private boolean allowReturn = false;
 
-    public static Handler mHandler = new Handler(){
+    public Handler mHandler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(@NonNull Message msg) {
-            switch (msg.what){
-                case SCENE_VIEW_REQUEST_CODE :
+        public boolean handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case SCENE_VIEW_REQUEST_CODE:
                     view.setVisibility(View.GONE);
-                    allowRturn = true;
+                    allowReturn = true;
                     break;
                 default:
                     break;
             }
+            return false;
         }
-    };
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MySceneView(this));
+        setContentView(new MySceneView(this, mHandler));
         FrameLayout frameLayout = this.findViewById(android.R.id.content);
-        allowRturn = false;
+        allowReturn = false;
         view = LayoutInflater.from(this).inflate(R.layout.view_pb, null);
         view.setOnClickListener(view -> {
             // 禁止点击SCENEVIEW
@@ -73,7 +74,7 @@ public class SceneViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (allowRturn){
+        if (allowReturn) {
             super.onBackPressed();
         }
     }

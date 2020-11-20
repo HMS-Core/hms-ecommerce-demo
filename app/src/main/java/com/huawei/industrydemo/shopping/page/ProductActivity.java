@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.Gson;
@@ -74,6 +75,8 @@ import java.util.Locale;
 public class ProductActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int CACHE_PAGE_COUNT = 3;
+    private static final int FACE_VIEW_REQUEST_CODE = 2;
+
 
     private Product product;
 
@@ -126,7 +129,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.layout_shopping_cart).setOnClickListener(this);
         findViewById(R.id.add_shop_car).setOnClickListener(this);
         findViewById(R.id.buy_now).setOnClickListener(this);
-        findViewById(R.id.layout_service).setOnClickListener(this);
+        findViewById(R.id.layout_evaluate).setOnClickListener(this);
         textViewCount = findViewById(R.id.text_count);
         if (product.getAr() == null || "".equals(product.getAr())) {
             findViewById(R.id.iv_ar).setVisibility(View.GONE);
@@ -156,7 +159,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         tvTip.setText(getString(R.string.current_position, 1, total));
 
         viewPager.setOffscreenPageLimit(CACHE_PAGE_COUNT);
-        if (isHasVideo) { // has video
+        if (isHasVideo && wisePlayer != null) { // has video
             adapter.setInitVideoInterface((videoUrl, surfaceView) -> {
                 wisePlayer.setVideoType(0);
                 wisePlayer.setBookmark(10000);
@@ -176,7 +179,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onPageSelected(int position) {
-                if (isHasVideo) {
+                if (isHasVideo && wisePlayer != null) {
                     if (videoPagePosition == position) {// on video page
                         wisePlayer.start();
                         adapter.updatePlayView(wisePlayer);
@@ -207,15 +210,25 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_3d:
-                long curClickTime = System.currentTimeMillis();
-                if ((curClickTime - lastClickTime) >= Constants.MIN_CLICK_DELAY_TIME) {
+                long curClickTime1 = System.currentTimeMillis();
+                if ((curClickTime1 - lastClickTime) >= Constants.MIN_CLICK_DELAY_TIME) {
                     Intent intent3d = new Intent(ProductActivity.this, SceneViewActivity.class);
                     intent3d.putExtra(Constants.THREEDIMENSIONAL_DATA, product.getThreeDimensional());
                     startActivity(intent3d);
                 }
-                lastClickTime = curClickTime;
+                lastClickTime = curClickTime1;
                 break;
             case R.id.iv_ar:
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            this, new String[]{ Manifest.permission.CAMERA }, FACE_VIEW_REQUEST_CODE);
+                } else {
+                    Intent intentAr = new Intent(ProductActivity.this, FaceViewActivity.class);
+                    intentAr.putExtra(Constants.THREEDIMENSIONAL_DATA, product.getAr());
+                    startActivity(intentAr);
+                }
                 break;
             case R.id.btn_add:
                 ++productCount;
@@ -247,8 +260,10 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 intent.putExtra(KeyConstants.ORDER_KEY, new Gson().toJson(order));
                 startActivity(intent);
                 break;
-            case R.id.layout_service://custom service
-                Toast.makeText(ProductActivity.this, R.string.please_wait, Toast.LENGTH_SHORT).show();
+            case R.id.layout_evaluate:
+                Intent intent2 = new Intent(this,EvaluationListActivity.class);
+                intent2.putExtra(Constants.PRODUCT_ID,product.getNumber());
+                startActivity(intent2);
                 break;
             default:
                 break;
@@ -288,6 +303,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         list.add(orderItem);
         order.setOrderItemList(list);
         order.setTotalPrice(productCount * product.getBasicInfo().getPrice());
+        order.setActualPrice(productCount * product.getBasicInfo().getPrice());
         order.setStatus(Constants.NOT_PAID);
         return order;
     }
@@ -374,29 +390,21 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
         try {
             Task<Location> lastLocation = mFusedLocationProviderClient.getLastLocation();
 
-            lastLocation.addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if (location == null) {
-                        Log.i(TAG, "getLastLocation onSuccess location is null");
-                        requestLocationUpdatesWithCallback();
-                        return;
-                    }
-                    Log.i(TAG, "getLastLocation onSuccess location[Longitude,Latitude]:" + location.getLongitude() + ","
-                            + location.getLatitude());
-
-                    String addressText = transLocationToGeoCoder(location);
-                    if (!TextUtils.isEmpty(addressText)) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                textSend.setText(addressText);
-                            }
-                        });
-                    }
-
+            lastLocation.addOnSuccessListener(location -> {
+                if (location == null) {
+                    Log.i(TAG, "getLastLocation onSuccess location is null");
+                    requestLocationUpdatesWithCallback();
                     return;
                 }
+                Log.i(TAG, "getLastLocation onSuccess location[Longitude,Latitude]:" + location.getLongitude() + ","
+                        + location.getLatitude());
+
+                String addressText = transLocationToGeoCoder(location);
+                if (!TextUtils.isEmpty(addressText)) {
+                    runOnUiThread(() -> textSend.setText(addressText));
+                }
+
+                return;
             }).addOnFailureListener(exception -> Log.e(TAG, "getLastLocation onFailure:" + exception.getMessage()));
         } catch (Exception e) {
             Log.e(TAG, "getLastLocation exception:" + e.getMessage());
@@ -484,6 +492,12 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 initLocation();
             } else {
                 Log.i(TAG, "onRequestPermissionsResult: apply LOCATION PERMISSSION  failed");
+            }
+        }else if (requestCode == FACE_VIEW_REQUEST_CODE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent3d = new Intent(ProductActivity.this, FaceViewActivity.class);
+                intent3d.putExtra(Constants.THREEDIMENSIONAL_DATA, product.getAr());
+                startActivity(intent3d);
             }
         }
     }

@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * User Entity
- * 
+ *
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/21]
  * @see [Related Classes/Methods]
  * @since [Ecommerce-Demo 1.0.0.300]
@@ -32,6 +32,12 @@ public class User {
     private AuthHuaweiId huaweiAccount;
 
     private List<String> recentSearchList;
+
+    private boolean isMember;
+
+    private boolean isAutoRenewing;
+
+    private long expirationDate;
 
     private List<Order> orderList = new ArrayList<>();
 
@@ -77,5 +83,29 @@ public class User {
 
     public void setPrivacyFlag(boolean privacyFlag) {
         this.privacyFlag = privacyFlag;
+    }
+
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
+    }
+
+    public boolean isAutoRenewing() {
+        return isAutoRenewing;
+    }
+
+    public void setAutoRenewing(boolean autoRenewing) {
+        isAutoRenewing = autoRenewing;
+    }
+
+    public long getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(long expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

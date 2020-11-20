@@ -19,13 +19,14 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/view_pager_product"
                     android:layout_width="match_parent"
+                    android:layout_height="360dp"
                     android:minHeight="110dp"
-                    android:overScrollMode="never"
-                    android:layout_height="360dp">
-                </androidx.viewpager.widget.ViewPager>
+                    android:overScrollMode="never"></androidx.viewpager.widget.ViewPager>
+
                 <TextView
                     android:id="@+id/tv_tip"
                     android:background="@drawable/select_position_bgd"
@@ -288,7 +289,14 @@
         </LinearLayout>
 
     </ScrollView>
+    <FrameLayout
+        android:id="@+id/fl_img_super"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
     <include layout="@layout/tab_product_home_guide">
-
     </include>
 </LinearLayout>

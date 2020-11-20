@@ -44,4 +44,10 @@ public interface SharedPreferencesParams {
 
     // key of getting push token
     String openIdPrefix = "m_openid_";
+
+    // key of evaluate
+    String evaluateList = "m_evaluate_list_";
+
+    // key of evaluate
+    String evaluateData = "m_evaluate_data_";
 }

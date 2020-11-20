@@ -22,6 +22,7 @@ package com.huawei.industrydemo.shopping.constants;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public interface Constants {
+    String apiKey = "CgB6e3x9vaA2Pb6Wq5UJpp2xTYZ+JqpGYTsdvvYgy5o2pk5Ot6crEp5u9QGMiAteECHZ989QDOXCT6snTffudDr9";
     int HAVE_PAID = 0;
     int NOT_PAID = 1;
     int CANCELED = 2;
@@ -36,6 +37,16 @@ public interface Constants {
     int MIN_CLICK_DELAY_TIME = 3500;
     int PLAYING = 1;
     int DELAY_MILLIS_500 = 500;
+    float DISCOUNTED = 0.9f;
     String THREEDIMENSIONAL_DATA = "threeDimensional_data";
+    String PRODUCT_DATA = "product_data";
+    String PRODUCT_ID = "product_id";
+    int ML_ASR_CAPTURE_CODE = 3;
+    int AUDIO_PERMISSION_CODE = 4;
     String PRIVACY_FILE = "Privacy.txt";
+    int DETECTING = 0;
+    int IS_INTEGRITY = 1;
+    int IS_NOT_INTEGRITY = 2;
+    String AD_ID_SPLASH = "testq6zq98hecj";
+    String AD_ID_BANNER = "testw6vs28auh3";
 }

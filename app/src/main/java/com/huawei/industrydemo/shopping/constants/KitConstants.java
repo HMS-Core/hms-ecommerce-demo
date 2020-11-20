@@ -34,4 +34,6 @@ public interface KitConstants {
     String SCAN = "Scan";
     String VIDEO = "Video";
     String SCENE = "Scene";
+    String IAP = "Iap";
+    String SAFETY_DETECT = "Safety Detect";
 }

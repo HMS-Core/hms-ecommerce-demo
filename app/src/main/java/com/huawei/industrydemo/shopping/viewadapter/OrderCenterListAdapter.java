@@ -30,19 +30,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.constants.Constants;
+import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.User;
+import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
+import com.huawei.industrydemo.shopping.page.PaymentSelectActivity;
 import com.huawei.industrydemo.shopping.page.PaymentSucceededActivity;
+import com.huawei.industrydemo.shopping.utils.MemberUtil;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 
 import java.util.List;
 
 /**
  * OrderCenterList Adapter
- * 
+ *
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/25]
  * @see com.huawei.industrydemo.shopping.fragment.ordercenter.AllOrderFragment
  * @see com.huawei.industrydemo.shopping.fragment.ordercenter.PendingPaymentFragment
@@ -73,11 +78,11 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         Log.d(TAG, "onCreateViewHolder: " + viewType);
         if (viewType == TYPE_FOOTER) {
             return new OrderCenterListAdapter.ViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_bottom_list, parent, false),
-                true);
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_bottom_list, parent, false),
+                    true);
         } else {
             return new OrderCenterListAdapter.ViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_list, parent, false));
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_list, parent, false));
         }
     }
 
@@ -106,19 +111,24 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         for (OrderItem orderItem : order.getOrderItemList()) {
             totalCount += orderItem.getCount();
         }
-        
+
         holder.orderOperation.setVisibility(View.GONE);
         if (Constants.HAVE_PAID == order.getStatus()) {
             pendingPaymentTime = mActivity.getString(R.string.order_center_finish);
-            productTotalInfo = mActivity.getString(R.string.order_center_total_paid, totalCount, order.getTotalPrice());
+            productTotalInfo = mActivity.getString(R.string.order_center_total_paid, totalCount, order.getActualPrice());
         } else if (Constants.NOT_PAID == order.getStatus()) {
             holder.orderOperation.setVisibility(View.VISIBLE);
             pendingPaymentTime = mActivity.getString(R.string.order_center_pending_payment_time);
-            productTotalInfo = mActivity.getString(R.string.order_center_total, totalCount, order.getTotalPrice());
+            if (MemberUtil.getInstance().isMember(SharedPreferencesUtil.getInstance().getUser())) {
+                order.setActualPrice((int) (order.getTotalPrice() * Constants.DISCOUNTED));
+            } else {
+                order.setActualPrice(order.getTotalPrice());
+            }
+            productTotalInfo = mActivity.getString(R.string.order_center_total, totalCount, order.getActualPrice());
         } else if (Constants.CANCELED == order.getStatus()) {
             pendingPaymentTime = mActivity.getString(R.string.order_center_canceled);
             productTotalInfo =
-                mActivity.getString(R.string.order_center_total_canceled, totalCount, order.getTotalPrice());
+                    mActivity.getString(R.string.order_center_total_canceled, totalCount, order.getActualPrice());
         } else {
             Log.e(TAG, "Status Invalid!");
         }
@@ -126,7 +136,7 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         holder.pendingPaymentTime.setText(pendingPaymentTime);
         holder.productTotalInfo.setText(productTotalInfo);
 
-        OrderSubmitAdapter orderCheckAdapter = new OrderSubmitAdapter(order.getOrderItemList(), mActivity);
+        OrderSubmitAdapter orderCheckAdapter = new OrderSubmitAdapter(order.getOrderItemList(), mActivity, order.getStatus(), order.getNumber());
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity) {
             @Override
             public boolean canScrollVertically() {
@@ -137,6 +147,7 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         holder.orderItemList.setAdapter(orderCheckAdapter);
         holder.cancelOrder.setOnClickListener(view -> cancelOrder(order));
         holder.payOrder.setOnClickListener(view -> payOrder(order));
+        holder.modifyOrder.setOnClickListener(view -> modifyOrder(order));
     }
 
     private void cancelOrder(Order order) {
@@ -178,8 +189,15 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
             this.setOrderList(orderList);
             notifyDataSetChanged();
         }
-        Intent intent = new Intent(mActivity, PaymentSucceededActivity.class);
-        intent.putExtra("total_price", order.getTotalPrice());
+        Intent intent = new Intent(mActivity, PaymentSelectActivity.class);
+        intent.putExtra("total_price", order.getActualPrice());
+        mActivity.startActivity(intent);
+    }
+
+    private void modifyOrder(Order order) {
+        Intent intent = new Intent(mActivity, OrderSubmitActivity.class);
+
+        intent.putExtra(KeyConstants.ORDER_KEY, new Gson().toJson(order));
         mActivity.startActivity(intent);
     }
 

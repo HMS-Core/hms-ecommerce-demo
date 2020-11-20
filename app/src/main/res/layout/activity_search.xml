@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,6 +18,7 @@
       android:textColor="@color/black"
       android:text="@string/search_history"
       android:padding="4dp"
+      android:layout_below="@+id/view_search"
       android:background="@color/white"
       android:layout_marginTop="2dp"
       android:layout_width="match_parent"
@@ -24,6 +26,7 @@
   <com.huawei.industrydemo.shopping.view.SearchContentLayout
       android:id="@+id/view_history"
       android:background="@color/white"
+      android:layout_below="@+id/tv_history"
       android:padding="8dp"
       android:layout_width="match_parent"
       android:layout_marginBottom="8dp"
@@ -32,6 +35,7 @@
   <TextView
       android:id="@+id/tv_hot"
       android:textColor="@color/black"
+      android:layout_below="@+id/view_history"
       android:text="@string/search_hot"
       android:padding="4dp"
       android:background="@color/white"
@@ -40,6 +44,7 @@
       android:layout_height="wrap_content" />
   <com.huawei.industrydemo.shopping.view.SearchContentLayout
       android:id="@+id/view_hot"
+      android:layout_below="@+id/tv_hot"
       android:background="@color/white"
       android:padding="8dp"
       android:layout_width="match_parent"
@@ -48,10 +53,18 @@
   <TextView
       android:id="@+id/tv_delete"
       android:text="@string/delete_history"
+      android:layout_below="@+id/view_hot"
       android:gravity="center"
       android:padding="8dp"
       android:textColor="@color/black"
       android:background="@color/white"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
-</LinearLayout>
+
+  <ImageView
+      android:id="@+id/iv_voice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@mipmap/icon_voice"
+      />
+</RelativeLayout>

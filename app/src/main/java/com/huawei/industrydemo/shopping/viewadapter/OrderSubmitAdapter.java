@@ -17,6 +17,7 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.Product;
+import com.huawei.industrydemo.shopping.page.EvaluateActivity;
 import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
 
 import java.util.List;
@@ -42,10 +45,14 @@ import java.util.List;
 public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.ViewHolder> {
     private List<OrderItem> list;
     private Context context;
+    private int orderStatus;
+    private int orderNumber;
 
-    public OrderSubmitAdapter(List<OrderItem> list, Context context) {
+    public OrderSubmitAdapter(List<OrderItem> list, Context context, int status, int number) {
         this.list = list;
         this.context = context;
+        this.orderStatus = status;
+        this.orderNumber = number;
     }
 
     @NonNull
@@ -58,14 +65,21 @@ public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.
     public void onBindViewHolder(@NonNull OrderSubmitAdapter.ViewHolder holder, int position) {
         OrderItem orderItem = list.get(position);
         Product product = orderItem.getProduct();
-        holder.ivProduct.setImageResource(context.getResources().getIdentifier(product.getBasicInfo().getThumbnail(), "mipmap", context.getPackageName()));
-        holder.tvName.setText(product.getBasicInfo().getShortName());
-        holder.tvDetail.setText(context.getString(R.string.product_detail,
+        int imageResource = context.getResources().getIdentifier(product.getBasicInfo().getThumbnail(), "mipmap", context.getPackageName());
+        String shortName = product.getBasicInfo().getShortName();
+        String detail = context.getString(R.string.product_detail,
                 product.getBasicInfo().getConfiguration().getColor(),
                 product.getBasicInfo().getConfiguration().getVersion(),
-                product.getBasicInfo().getConfiguration().getCapacity()));
-        holder.tvPrice.setText(context.getString(R.string.product_price, product.getBasicInfo().getPrice()));
+                product.getBasicInfo().getConfiguration().getCapacity());
+        String price = context.getString(R.string.product_price, product.getBasicInfo().getPrice());
+        String[] productData = new String[]{String.valueOf(imageResource), shortName, detail, price, String.valueOf(orderNumber), String.valueOf(product.getNumber())};
+
+        holder.ivProduct.setImageResource(imageResource);
+        holder.tvName.setText(shortName);
+        holder.tvDetail.setText(detail);
+        holder.tvPrice.setText(price);
         holder.tvCount.setText(context.getString(R.string.product_count_type_1, orderItem.getCount()));
+        holder.tvEvaluate.setOnClickListener(v -> goEvalute(productData));
     }
 
     @Override
@@ -79,6 +93,8 @@ public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.
         TextView tvDetail;
         TextView tvPrice;
         TextView tvCount;
+        TextView tvEvaluate;
+
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +103,18 @@ public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.
             tvDetail = itemView.findViewById(R.id.tv_product_detail);
             tvPrice = itemView.findViewById(R.id.tv_product_price);
             tvCount = itemView.findViewById(R.id.tv_product_count);
+            tvEvaluate = itemView.findViewById(R.id.tv_product_evaluate);
+            if (orderStatus == Constants.HAVE_PAID) {
+                tvEvaluate.setVisibility(View.VISIBLE);
+            } else {
+                tvEvaluate.setVisibility(View.GONE);
+            }
         }
+    }
+
+    private void goEvalute(String[] data) {
+        Intent intent = new Intent(context, EvaluateActivity.class);
+        intent.putExtra(Constants.PRODUCT_DATA, data);
+        context.startActivity(intent);
     }
 }

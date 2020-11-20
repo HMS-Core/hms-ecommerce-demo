@@ -44,11 +44,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </androidx.recyclerview.widget.RecyclerView>
+
+            <FrameLayout
+                android:id="@+id/ad_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recycler_catalogue_type"
+                android:layout_centerHorizontal="true"
+                />
+
             <TextView
                 android:id="@+id/text_recommendation"
                 android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/recycler_catalogue_type"
+                android:layout_below="@+id/ad_frame"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"

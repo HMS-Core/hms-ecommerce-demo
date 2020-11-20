@@ -18,10 +18,12 @@ package com.huawei.industrydemo.shopping.view;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 
 import com.huawei.hms.scene.sdk.SceneView;
+import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.page.SceneViewActivity;
 
 import static com.huawei.industrydemo.shopping.page.SceneViewActivity.SCENE_VIEW_REQUEST_CODE;
@@ -31,18 +33,21 @@ import static com.huawei.industrydemo.shopping.page.SceneViewActivity.SCENE_VIEW
  * SampleView
  *
  * @author HUAWEI
- * @since 2020-5-13
+ * @since 2020-9-28
  */
 public class MySceneView extends SceneView {
     private Context context;
+    private Handler mHandler;
+
     /**
      * Constructor - used in new mode.
-     *
      * @param context Context of activity.
+     * @param mHandler The current handler.
      */
-    public MySceneView(Context context) {
+    public MySceneView(Context context, Handler mHandler) {
         super(context);
         this.context = context;
+        this.mHandler =mHandler;
     }
 
     /**
@@ -67,10 +72,10 @@ public class MySceneView extends SceneView {
     public void surfaceCreated(SurfaceHolder holder) {
         super.surfaceCreated(holder);
         MyTask task = new MyTask();
-        task.execute();
+        task.execute(context.getResources().getStringArray(R.array.scene_model));
     }
 
-    private final class MyTask extends AsyncTask<String, String, String> {
+    private final class MyTask extends AsyncTask<String, Void, Boolean> {
         private String sceneData;
 
         @Override
@@ -79,23 +84,23 @@ public class MySceneView extends SceneView {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected Boolean doInBackground(String... strings) {
             // Loads the model of a scene by reading files from assets.
             loadScene(sceneData);
             // Loads skybox materials by reading files from assets.
-            loadSkyBox("SceneView/daguangban_cube_equi.dds");
+            loadSkyBox(strings[2]);
 
             // Loads specular maps by reading files from assets.
-            loadSpecularEnvTexture("SceneView/2-specular_venice_sunset.dds");
+            loadSpecularEnvTexture(strings[1]);
 
             // Loads diffuse maps by reading files from assets.
-            loadDiffuseEnvTexture("SceneView/2-diffuse_venice_sunset.dds");
-            return null;
+            loadDiffuseEnvTexture(strings[0]);
+            return true;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            SceneViewActivity.mHandler.obtainMessage(SCENE_VIEW_REQUEST_CODE).sendToTarget();
+        protected void onPostExecute(Boolean res) {
+            mHandler.obtainMessage(SCENE_VIEW_REQUEST_CODE).sendToTarget();
         }
     }
 }

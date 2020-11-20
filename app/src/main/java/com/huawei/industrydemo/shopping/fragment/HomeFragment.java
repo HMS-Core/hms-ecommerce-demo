@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.huawei.hms.ads.BannerAdSize;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.huawei.industrydemo.shopping.MainActivity;
@@ -43,6 +44,7 @@ import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.fragment.home.CatalogueImageInfo;
 import com.huawei.industrydemo.shopping.fragment.home.HomeImageHandler;
 import com.huawei.industrydemo.shopping.page.SearchActivity;
+import com.huawei.industrydemo.shopping.utils.BannerAdUtil;
 import com.huawei.industrydemo.shopping.utils.ProductBase;
 import com.huawei.industrydemo.shopping.viewadapter.CatalogueTypeGridAdapter;
 import com.huawei.industrydemo.shopping.viewadapter.HomeViewPagerAdapter;
@@ -75,7 +77,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     public HomeFragment() {
 
-        setKits(new String[]{SCAN, ML, ANALYTICS});
+        setKits(new String[]{SCAN, ML, ANALYTICS, SAFETY_DETECT});
         handler = new HomeImageHandler(new WeakReference<>(this));
     }
 
@@ -119,6 +121,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         initViewPager(view);
         initCatalogueView(view.findViewById(R.id.recycler_catalogue_type));
         initProductView(view.findViewById(R.id.recycler_product));
+        BannerAdUtil bannerAdUtil = new BannerAdUtil();
+        bannerAdUtil.addBannerAd(getActivity(),view.findViewById(R.id.ad_frame), BannerAdSize.BANNER_SIZE_320_100);
     }
 
 

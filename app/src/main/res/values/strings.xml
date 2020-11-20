@@ -9,22 +9,24 @@
     <string name="used_kits">The following kits are used here:</string>
     <string name="no_login">Login/Register</string>
     <string name="is_shop_tip">Show Kit Information</string>
+    <string name="is_geofence">Show GeoFence</string>
     <string name="market_recommendation">Recommendation</string>
 
 
-    <!-- slpash ad -->
+    <!-- ad -->
     <string name="status_load_ad_success">Ad loading state: loaded successfully.</string>
     <string name="status_load_ad_fail">Ad loading state: failed to be loaded. Error code: </string>
-    <string name="ad_id_splash">testq6zq98hecj</string>
     <string name="owner">HUAWEI Developer</string>
     <string name="media_name">HUAWEI Ads</string>
     <string name="copyright_info">Copyright 2020. Huawei Technologies Co., Ltd</string>
     <string name="status_ad_dismissed">Splash Ad is dismissed.</string>
 
     <string name="customer_service">Customer</string>
+    <string name="customer_evaluation">Comments</string>
     <string name="add_shop_car">Add to cart</string>
     <string name="buy_now">Buy</string>
     <string name="product_price">¥ %d</string>
+    <string name="product_price_2">Actual Payment:¥ %d</string>
     <string name="product_3d">3D</string>
     <string name="product_ar">AR</string>
     <string name="product_color">Color</string>
@@ -35,7 +37,12 @@
     <string name="product_send">To</string>
     <string name="check_order">Confirm Order</string>
     <string name="submit_order">Submit Order</string>
+    <string name="update_order">Update Confirm</string>
     <string name="order_center">Order Center</string>
+    <string name="order_evaluate">Comments</string>
+    <string name="order_evaluate_list">Comments list</string>
+    <string name="order_Automatic_translation">Automatic translation</string>
+    <string name="order_more_translation">More translations</string>
     <string name="my_order">My Order</string>
     <string name="add_address_tip">Please Add Address</string>
     <string name="product_detail">%s %s %s</string>
@@ -47,19 +54,28 @@
     <string name="product_send_method">Delivery Mode</string>
     <string name="add_to_car_success">Add Successfully</string>
     <string name="please_wait">Will be Online Soon</string>
+    <string name="face_view">Try</string>
+    <string name="member_discount">Member Discount(-10%%)</string>
+    <string name="discount_price">Price After Discount</string>
+    <string name="bank_card_payment">Bank card payment</string>
+    <string name="other_payment_methods">Other payment methods</string>
+    <string name="select_payment_method">Select payment method</string>
+    <string name="payment_prompt">prompt</string>
+    <string name="payment_prompt_content">The bank card data identified here will not be saved, just show the scan result</string>
 
     <string name="product_search_result">Identified Offering</string>
     <string name="product_no_result">No Offering Identified</string>
+    <string name="product_no_wifi">Video cannot be played without Wifi connection. You can connect to Wifi and restart the app.</string>
     <string name="product_category">Categorization:</string>
 
     <string name="shopping_cart_title">Cart</string>
     <string name="shopping_cart_edit">Edit</string>
     <string name="shopping_cart_finish">Finish</string>
-    <string name="shopping_cart_price">￥%d</string>
+    <string name="shopping_cart_price">%d</string>
     <string name="shopping_cart_reduce_notice">One Item At Least!</string>
     <string name="shopping_cart_select_all">Select All</string>
     <string name="shopping_cart_pay">Check Out(%d)</string>
-    <string name="shopping_cart_total">Total: ￥%d</string>
+    <string name="shopping_cart_total">Total: %d</string>
     <string name="shopping_cart_delete">Delete</string>
     <string name="shopping_cart_confirm_delete">Do you confirm to Delete?</string>
 
@@ -72,23 +88,25 @@
     <string name="order_center_canceled">Canceled</string>
     <string name="order_center_load_finish">Load Finish</string>
     <string name="order_center_order_number">Order Number：%d</string>
-    <string name="order_center_total">%d Offerings in total, Need：￥ %d</string>
-    <string name="order_center_total_paid">%d Offerings in total, has paid: ￥ %d</string>
-    <string name="order_center_total_canceled">%d Offerings in total, Pending: ￥ %d</string>
+    <string name="order_center_total">%d Offerings in total, Need： %d</string>
+    <string name="order_center_total_paid">%d Offerings in total, has paid:  %d</string>
+    <string name="order_center_total_canceled">%d Offerings in total, Pending:  %d</string>
     <string name="order_center_go_to_pay">Pay</string>
     <string name="order_center_modify_order">Modify</string>
     <string name="order_center_cancel_order">Cancel</string>
     <string name="order_center_confirm_cancel_order">Do you confirm to Cancel?</string>
+    <string name="order_center_to_evaluate">To comment</string>
+    <string name="order_center_commit_evaluate">Submit Comment</string>
 
     <!-- Order Submit -->
-    <string name="country_not_supported_identity">country not supported identity</string>
-    <string name="child_account_not_supported_identity">child account not supported identity</string>
+    <string name="country_not_supported_identity">Identity is not supported in current country.</string>
+    <string name="child_account_not_supported_identity">Identity does not support child account.</string>
 
     <!--  todo (for example, delete when release)  -->
     <string name="shopping_cart_item_example_product_name">HUAWEI</string>
     <string name="shopping_cart_item_example_quantity">1</string>
     <string name="shopping_cart_item_example_config">8GB+256GB,5G All 8GB+256GB, White</string>
-    <string name="shopping_cart_item_example_price">￥ 390</string>
+    <string name="shopping_cart_item_example_price">390</string>
     <string name="ed_search_tip">Please input content to search</string>
     <string name="search_no_tip">Please input content to search</string>
     <string name="search_history">Search History</string>
@@ -102,7 +120,8 @@
     <string name="please_sign_first">Please login first</string>
 
     <string name="payment_succeed">Payment Successfully!</string>
-    <string name="payment_total">Paid ￥ %d</string>
+    <string name="payment_total">Paid %d</string>
+    <string name="payment_need_total">Need to pay %d</string>
     <string name="back_to_home">Back to Home</string>
     <string name="view_order">View Order</string>
     <string name="no_product">No product available.</string>
@@ -114,13 +133,39 @@
     <string name="log_in_success">Login Successfully</string>
     <string name="no_product_tip">No Product</string>
     <string name="empty_address">empty address</string>
-    
+    <string name="my_member">My Member</string>
+    <string name="member_benefits_content">10%% Discount in all purchases\n%s</string>
+    <string name="buy_check">Payment</string>
+    <string name="buy_member_price">Amount: %s</string>
+    <string name="member_benefits">Member Benefits</string>
+    <string name="member_buy">Member Purchase</string>
+    <string name="member_des_1">%s Next renew time:%s</string>
+    <string name="member_des_2">%s Expire on %s</string>
+    <string name="member_des_3">Non-Member</string>
+    <string name="price_member_type_1">%s/Week</string>
+    <string name="price_member_type_2">%s/Month</string>
+    <string name="buy_member_tip_1">Please select the member type</string>
+    <string name="buy_member_tip_2">Purchase Repeated</string>
+    <string name="sub_manager">Sub Mgmt</string>
+    <string name="buy_member_success">Purchase succeeded.</string>
+
     <!-- Privacy Page-->
     <string name="privacyReject">Decline</string>
     <string name="privacyaccept">Accept</string>
     <string name="privacyAnnounce">Privacy Announcement</string>
-    <string name="textview_Privacy">TextView</string>
+    <string name="textview_Privacy">Privacy Content</string>
     <string name="privacyread">Privacy</string>
     <string name="exitMessage">Exit from Shopping Demo App</string>
+
+    <!-- System Integrity Detect -->
+    <string name="sys_integrity_detecting">Detecting...</string>
+    <string name="sys_integrity_detect_success">System integrity is OK</string>
+
+    <string name="confirm_button">OK</string>
+    <string name="radius_number">Radius:</string>
+    <string name="latitude_number">Latitude:</string>
+    <string name="longitude_number">Longitude:</string>
+    <string name="geofence_enabled">The Geo Fence is enabled Successfully</string>
+    <string name="id">id:</string>
 
 </resources>

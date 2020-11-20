@@ -32,6 +32,7 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.fragment.ordercenter.AllOrderFragment;
+import com.huawei.industrydemo.shopping.fragment.ordercenter.CompleteOrderFragment;
 import com.huawei.industrydemo.shopping.fragment.ordercenter.PendingPaymentFragment;
 import com.huawei.industrydemo.shopping.inteface.OnOrderListRefresh;
 
@@ -49,6 +50,7 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
     
     public static final int ALL_ORDER_INDEX = 0;
     private static final int PENDING_PAYMENT_INDEX = 1;
+    private static final int COMPLETED_ORDER_INDEX = 2;
 
     private ViewPager mViewPager;
     private FragmentPagerAdapter mAdapter;
@@ -57,13 +59,14 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
     private View viewAllOrder;
     private TextView textPendingPayment;
     private View viewPendingPayment;
+    private TextView textCompleteOrder;
+    private View viewCompleteOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int startPage = getIntent().getIntExtra("page_index", ALL_ORDER_INDEX);
         setContentView(R.layout.activity_order_center);
-        // TODO 请填写使用到的Kit
         addTipView(new String[] {PUSH});
         initViews();// 初始化控件
         initEvents();// 初始化事件
@@ -77,6 +80,7 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
         // 将四个Fragment加入集合中
         mFragments.add(new AllOrderFragment());
         mFragments.add(new PendingPaymentFragment());
+        mFragments.add(new CompleteOrderFragment());
 
         // 初始化适配器
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -122,6 +126,7 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.iv_back).setOnClickListener(this);
         textAllOrder.setOnClickListener(this);
         textPendingPayment.setOnClickListener(this);
+        textCompleteOrder.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -134,6 +139,8 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
         viewAllOrder = findViewById(R.id.view_all_order);
         textPendingPayment = findViewById(R.id.tab_pending_payment);
         viewPendingPayment = findViewById(R.id.view_pending_payment);
+        textCompleteOrder = findViewById(R.id.tab_complete_order);
+        viewCompleteOrder = findViewById(R.id.view_complete_order);
     }
 
     private void getNotificationData(){
@@ -167,6 +174,9 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
             case R.id.tab_pending_payment:
                 selectTab(PENDING_PAYMENT_INDEX);
                 break;
+            case R.id.tab_complete_order:
+                selectTab(COMPLETED_ORDER_INDEX);
+                break;
             default:
                 break;
         }
@@ -182,6 +192,10 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
                 textPendingPayment.setTextColor(getResources().getColor(R.color.red));
                 viewPendingPayment.setBackgroundColor(getResources().getColor(R.color.red));
                 break;
+            case COMPLETED_ORDER_INDEX:
+                textCompleteOrder.setTextColor(getResources().getColor(R.color.red));
+                viewCompleteOrder.setBackgroundColor(getResources().getColor(R.color.red));
+                break;
             default:
                 break;
         }
@@ -196,6 +210,8 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
         viewAllOrder.setBackgroundColor(getResources().getColor(R.color.white));
         textPendingPayment.setTextColor(getResources().getColor(R.color.black));
         viewPendingPayment.setBackgroundColor(getResources().getColor(R.color.white));
+        textCompleteOrder.setTextColor(getResources().getColor(R.color.black));
+        viewCompleteOrder.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     @Override

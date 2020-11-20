@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +48,7 @@ import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.ShoppingCart;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.push.Messaging;
+import com.huawei.industrydemo.shopping.utils.MemberUtil;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 import com.huawei.industrydemo.shopping.viewadapter.OrderSubmitAdapter;
 
@@ -69,16 +71,20 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
 
     private UserAddress userAddress;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_now);
-        // TODO 请填写使用到的Kit
         addTipView(new String[]{IDENTITY, PUSH});
         Intent intent = getIntent();
         if (intent != null) {
             order = new Gson().fromJson(intent.getStringExtra(KeyConstants.ORDER_KEY), Order.class);
         }
+        userAddress = order.getAddress();
+
+        user = SharedPreferencesUtil.getInstance().getUser();
         initView();
     }
 
@@ -86,20 +92,35 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.text_submit).setOnClickListener(this);
         findViewById(R.id.rv_change_address).setOnClickListener(this);
-        ((TextView) findViewById(R.id.text_price)).setText(getString(R.string.product_price, order.getTotalPrice()));
         ((TextView) findViewById(R.id.tv_title)).setText(getString(R.string.check_order));
         tvAddressTip = findViewById(R.id.tv_address_tip);
         tvUserName = findViewById(R.id.tv_name);
         tvUserPhone = findViewById(R.id.tv_phone);
         tvAddress = findViewById(R.id.tv_address);
+
         initAddress();
         initRecyclerView(findViewById(R.id.rv_product_list));
         initContentBar(findViewById(R.id.lv_send), getString(R.string.product_send_method),
                 getString(R.string.product_stand_send));
         initContentBar(findViewById(R.id.lv_ticket), getString(R.string.product_ticket),
                 getString(R.string.product_ticket_type));
+        initActualPrice();
         initContentBar(findViewById(R.id.lv_sum_price), getString(R.string.product_sum_price),
                 getString(R.string.product_price, order.getTotalPrice()));
+        initContentBar(findViewById(R.id.lv_member_discount), getString(R.string.member_discount),
+                getString(R.string.product_price, 0-(order.getTotalPrice()-order.getActualPrice())));
+
+        if(!(MemberUtil.getInstance().isMember(user))) {
+            (findViewById(R.id.lv_member_discount)).findViewById(R.id.tv_title).setVisibility(View.GONE);
+            (findViewById(R.id.lv_member_discount)).findViewById(R.id.tv_content).setVisibility(View.GONE);
+        }
+    }
+
+    private void initActualPrice() {
+        if (MemberUtil.getInstance().isMember(user)) {
+            order.setActualPrice((int) (order.getActualPrice() * Constants.DISCOUNTED));
+        }
+        ((TextView) findViewById(R.id.text_price)).setText(getString(R.string.product_price_2, order.getActualPrice()));
     }
 
     private void initAddress() {
@@ -112,12 +133,13 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
             tvAddressTip.setVisibility(View.GONE);
             tvUserName.setText(userAddress.getName());
             tvUserPhone.setText(userAddress.getPhoneNumber());
-            tvAddress.setText(String.format(Locale.ROOT,"%s %s", userAddress.getAddressLine1(), userAddress.getAddressLine2()));
+            tvAddress.setText(String.format(Locale.ROOT, "%s %s", userAddress.getAddressLine1(), userAddress.getAddressLine2()));
+            order.setAddress(userAddress);
         }
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {
-        OrderSubmitAdapter adapter = new OrderSubmitAdapter(order.getOrderItemList(), this);
+        OrderSubmitAdapter adapter = new OrderSubmitAdapter(order.getOrderItemList(), this, order.getStatus(), order.getNumber());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -139,7 +161,6 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
                     Toast.makeText(this, R.string.add_address_tip, Toast.LENGTH_SHORT).show();
                     break;
                 }
-                User user = SharedPreferencesUtil.getInstance().getUser();
                 if (user == null || user.getHuaweiAccount() == null) {
                     // 未登录处理
                     Intent intent = new Intent(this, LogInActivity.class);
@@ -164,8 +185,17 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
      * 3. open pay seccess page
      */
     private void saveOrder() {
-        User user = SharedPreferencesUtil.getInstance().getUser();
         List<Order> orderList = user.getOrderList();
+
+        Iterator<Order> iteratorOrder = orderList.iterator();
+        while (iteratorOrder.hasNext()) {
+            Order orderNumber = iteratorOrder.next();
+            if (orderNumber.getNumber() == order.getNumber()) {
+                iteratorOrder.remove();
+                break;
+            }
+        }
+
         orderList.add(order);
         List<ShoppingCart> shoppingCartList = user.getShoppingCartList();
         Iterator<ShoppingCart> iterator = shoppingCartList.iterator();
@@ -177,14 +207,13 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         }
+
         user.setOrderList(orderList);
         user.setShoppingCartList(shoppingCartList);
         SharedPreferencesUtil.getInstance().setUser(user);
-
         String res = sendNotification();
         Log.d(TAG, "send res:" + res);
 
-        // todo (for test, change tp pay success page when release)
         Intent intent = new Intent(this, OrderCenterActivity.class);
         startActivity(intent);
         this.finish();
@@ -227,18 +256,16 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
 
                         if (Constants.NOT_PAID == tempOrder.get().getStatus()) {
                             if ("zh" == locale) {
-                                msgContent = String.format(Locale.ROOT,"您的订单【%s】还未付款，库存有限请尽快支付。", order.getNumber());
-                            }
-                            else {
-                                msgContent = String.format(Locale.ROOT,"Your Order【%s】 is not paid yet. It will be sold out.", order.getNumber());
+                                msgContent = String.format(Locale.ROOT, "您的订单【%s】还未付款，库存有限请尽快支付。", order.getNumber());
+                            } else {
+                                msgContent = String.format(Locale.ROOT, "Your Order【%s】 is not paid yet. It will be sold out.", order.getNumber());
                             }
 
                         } else if (Constants.HAVE_PAID == tempOrder.get().getStatus()) {
                             if ("zh" == locale) {
-                                msgContent = String.format(Locale.ROOT,"您的订单【%s】已支付成功", order.getNumber());
-                            }
-                            else {
-                                msgContent = String.format(Locale.ROOT,"Your Order【%s】is successfully paid.", order.getNumber());
+                                msgContent = String.format(Locale.ROOT, "您的订单【%s】已支付成功", order.getNumber());
+                            } else {
+                                msgContent = String.format(Locale.ROOT, "Your Order【%s】is successfully paid.", order.getNumber());
                             }
                         }
                         msg[0] = messaging.sendNotificationMessage(accessToken, tempOrder.get().getStatus(), msgContent);
@@ -311,7 +338,11 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
             userAddress = UserAddress.parseIntent(data);
             initAddress();
         } else if (requestCode == Constants.LOGIN_REQUEST_CODE) {
-            saveOrder();
+            MemberUtil.getInstance().isMember(this, (isMember, isAutoRenewing, productName, time) -> {
+                user = SharedPreferencesUtil.getInstance().getUser();
+                initActualPrice();
+                saveOrder();
+            });
         }
     }
 }

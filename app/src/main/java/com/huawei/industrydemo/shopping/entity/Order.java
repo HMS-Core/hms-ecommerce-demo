@@ -16,6 +16,8 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
+import com.huawei.hms.identity.entity.UserAddress;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +34,11 @@ public class Order {
 
     private List<OrderItem> orderItemList;
 
-    private String address;
+    private UserAddress address;
 
     private int totalPrice;
+
+    private int actualPrice;
 
     /**
      * 0:paid
@@ -46,6 +50,7 @@ public class Order {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddHHmmss");
         String date = simpleDateFormat.format(new Date().getTime());
         this.number = Integer.parseInt(date);
+        this.address = null;
     }
 
     public int getNumber() {
@@ -64,12 +69,15 @@ public class Order {
         this.orderItemList = orderItemList;
     }
 
-    public String getAddress() {
+    public UserAddress getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress(UserAddress address) {
+        if (address != null) {
+            this.address = address;
+        }
+        return;
     }
 
     public int getTotalPrice() {
@@ -86,5 +94,13 @@ public class Order {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getActualPrice() {
+        return actualPrice;
+    }
+
+    public void setActualPrice(int actualPrice) {
+        this.actualPrice = actualPrice;
     }
 }

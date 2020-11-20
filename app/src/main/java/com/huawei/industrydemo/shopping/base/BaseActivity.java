@@ -16,13 +16,17 @@
 
 package com.huawei.industrydemo.shopping.base;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.huawei.industrydemo.shopping.constants.KitConstants;
 import com.huawei.industrydemo.shopping.constants.LogConfig;
+import com.huawei.industrydemo.shopping.fragment.MyFragment;
 import com.huawei.industrydemo.shopping.utils.KitTipUtil;
 
 /**
@@ -38,6 +42,12 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     protected void addTipView() {
@@ -49,4 +59,8 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
         KitTipUtil.addTipView(this, this.kits);
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 }

@@ -8,10 +8,39 @@
         <item>鞋包</item>
         <item>家具</item>
     </string-array>
+
     <string-array name="search_hot">
         <item>手机</item>
         <item>样品1</item>
         <item>手表</item>
         <item>手提包</item>
+    </string-array>
+
+    <string-array name="language_list">
+        <item>英语</item>
+        <item>法语</item>
+        <item>德语</item>
+        <item>土耳其语</item>
+        <item>西班牙语</item>
+        <item>葡萄牙语</item>
+        <item>意大利语</item>
+        <item>印地语</item>
+        <item>俄语</item>
+        <item>日语</item>
+        <item>中文</item>
+    </string-array>
+
+    <string-array name="iso_639_1_list">
+        <item>en</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>tr</item>
+        <item>es</item>
+        <item>pt</item>
+        <item>it</item>
+        <item>hi</item>
+        <item>ru</item>
+        <item>ja</item>
+        <item>zh</item>
     </string-array>
 </resources>

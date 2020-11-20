@@ -47,7 +47,6 @@ public class LogInActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        // TODO 请填写使用到的Kit
         addTipView(new String[] {ACCOUNT});
         initView();
     }
@@ -116,7 +115,6 @@ public class LogInActivity extends BaseActivity {
     }
 
     private void loginComplete(AuthHuaweiId authHuaweiId){
-        setResult(RESULT_OK);
         saveUserAccountInfo(authHuaweiId);
         Toast.makeText(this, R.string.log_in_success,Toast.LENGTH_SHORT).show();
         finish();

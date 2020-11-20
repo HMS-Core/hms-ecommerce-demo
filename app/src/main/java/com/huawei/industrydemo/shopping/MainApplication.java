@@ -17,7 +17,10 @@
 package com.huawei.industrydemo.shopping;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -58,7 +61,9 @@ public class MainApplication extends Application {
         SharedPreferencesUtil.setContext(this);
 
         initializeProductInfo();
-        initPlayer();
+        if (isWifiConnected(this)) {
+            initPlayer();
+        }
     }
 
     /**
@@ -121,5 +126,15 @@ public class MainApplication extends Application {
 
     private static void setWisePlayerFactory(WisePlayerFactory wisePlayerFactory) {
         MainApplication.wisePlayerFactory = wisePlayerFactory;
+    }
+
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetworkInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }

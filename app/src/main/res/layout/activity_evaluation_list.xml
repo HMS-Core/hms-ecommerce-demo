@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/title_evaluation" />
+    <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/recycler_evaluation"
+       android:layout_marginTop="2dp"
+       android:layout_width="match_parent"
+       android:background="@color/white"
+       android:overScrollMode="never"
+       android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="暂无评价"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

@@ -101,15 +101,16 @@
                 android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/id_tab_setting_img"
+                    android:id="@+id/tab_complete_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/order_center_finish"
-                    android:textColor="@color/color_search_bgd_gray" />
+                    android:textColor="@color/black" />
 
             <View
-                    android:layout_width="20dp"
+                android:id="@+id/view_complete_order"
+                android:layout_width="20dp"
                     android:layout_height="2dp"
                     android:layout_marginTop="5dp"
                     android:background="@color/white" />

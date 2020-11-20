@@ -19,19 +19,28 @@ package com.huawei.industrydemo.shopping;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hms.analytics.HiAnalytics;
 import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.analytics.HiAnalyticsTools;
+import com.huawei.hms.common.ApiException;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScan;
 import com.huawei.hms.push.HmsMessaging;
+import com.huawei.hms.support.api.entity.safetydetect.SysIntegrityResp;
+import com.huawei.hms.support.api.safetydetect.SafetyDetect;
+import com.huawei.hms.support.api.safetydetect.SafetyDetectStatusCodes;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.base.BaseFragment;
 import com.huawei.industrydemo.shopping.constants.Constants;
@@ -42,7 +51,14 @@ import com.huawei.industrydemo.shopping.fragment.MyFragment;
 import com.huawei.industrydemo.shopping.fragment.ShopCarFragment;
 import com.huawei.industrydemo.shopping.page.ProductActivity;
 import com.huawei.industrydemo.shopping.page.ProductVisionSearchAnalyseActivity;
+import com.huawei.industrydemo.shopping.utils.StatusDialogUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +99,10 @@ public class MainActivity extends BaseActivity {
 
     private Map<Integer, Integer> pageIndex = new HashMap<>();
 
+    private String appId;
+
+    private StatusDialogUtil statusDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +111,7 @@ public class MainActivity extends BaseActivity {
         initFragment();
         initAnalytics();
         setPushAutoInit(true);
+        invokeSysIntegrity();
     }
 
     private void initView() {
@@ -216,10 +237,107 @@ public class MainActivity extends BaseActivity {
             Intent intent = new Intent(MainActivity.this, ProductVisionSearchAnalyseActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
-        }else if(requestCode == Constants.LOGIN_REQUEST_CODE){
-            if(myFragment != null){
-                myFragment.initAccount();
+        }
+    }
+
+    private void showStatusDialog(int status,String msg){
+        if(statusDialog == null){
+            statusDialog = new StatusDialogUtil(this);
+        }
+
+        switch(status){
+            case Constants.DETECTING:
+                statusDialog.show(msg);
+                break;
+            case Constants.IS_INTEGRITY:
+                statusDialog.show(msg,true,3000,R.color.light_green_1);
+                break;
+            case Constants.IS_NOT_INTEGRITY:
+                statusDialog.show(msg,false,3000,R.color.light_red_1);
+                break;
+            default:
+                break;
+        }
+
+        statusDialog.setCanceledOnTouchOutside(true);
+    }
+
+    /**
+     * invoke System Integrity test by safety detect kit
+     */
+    private void invokeSysIntegrity() {
+        showStatusDialog(Constants.DETECTING,getResources().getString(R.string.sys_integrity_detecting));
+        byte[] nonce = new byte[24];
+        try {
+            SecureRandom random;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                random = SecureRandom.getInstanceStrong();
+            } else {
+                random = SecureRandom.getInstance("SHA1PRNG");
             }
+            random.nextBytes(nonce);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
+        SafetyDetect.getClient(this)
+                .sysIntegrity(nonce, appId)
+                .addOnSuccessListener(new OnSuccessListener<SysIntegrityResp>() {
+                    @Override
+                    public void onSuccess(SysIntegrityResp response) {
+                        // Indicates communication with the service was successful.
+                        // Use response.getResult() to get the result data.
+                        String jwsStr = response.getResult();
+                        // Process the result data here
+                        String[] jwsSplit = jwsStr.split("\\.");
+                        String jwsPayloadStr = jwsSplit[1];
+                        String payloadDetail = new String(Base64.decode(jwsPayloadStr.getBytes(StandardCharsets.UTF_8), Base64.URL_SAFE), StandardCharsets.UTF_8);
+                        try {
+                            final JSONObject jsonObject = new JSONObject(payloadDetail);
+                            final boolean basicIntegrity = jsonObject.getBoolean("basicIntegrity");
+                            if (!basicIntegrity) {
+                                String advice = "Advice: " + jsonObject.getString("advice");
+                                showStatusDialog(Constants.IS_NOT_INTEGRITY,advice);
+                            }else{
+                                showStatusDialog(Constants.IS_INTEGRITY,getResources().getString(R.string.sys_integrity_detect_success));
+                            }
+                        } catch (JSONException e) {
+                            String errorMsg = e.getMessage();
+                            Log.e(TAG, errorMsg != null ? errorMsg : "unknown error");
+                            if(statusDialog.isShowing()){
+                                statusDialog.hide();
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        if(statusDialog.isShowing()){
+                            statusDialog.hide();
+                        }
+                        String errorMsg;
+                        if (e instanceof ApiException) {
+                            // An error with the HMS API contains some additional details.
+                            ApiException apiException = (ApiException) e;
+                            errorMsg = SafetyDetectStatusCodes.getStatusCodeString(apiException.getStatusCode()) +
+                                    ": " + apiException.getMessage();
+                        } else {
+                            // unknown type of error has occurred.
+                            errorMsg = e.getMessage();
+                        }
+                        Log.e(TAG, errorMsg);
+                        Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(statusDialog != null){
+            statusDialog.dismiss();
         }
     }
 }

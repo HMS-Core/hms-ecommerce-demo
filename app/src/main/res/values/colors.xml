@@ -24,4 +24,9 @@
     <color name="orange_type_2">#f8866a</color>
     <color name="red_type_1">#db4f3a</color>
     <color name="red_type_2">#d24d39</color>
+    <color name="light_yellow">#FFFFF0</color>
+    <color name="gold">#DAA520</color>
+    <color name="light_gold">#D0A520</color>
+    <color name="light_green_1">#72D012</color>
+    <color name="light_red_1">#DF0000</color>
 </resources>

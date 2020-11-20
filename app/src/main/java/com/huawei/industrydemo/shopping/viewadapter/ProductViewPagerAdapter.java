@@ -17,6 +17,8 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -24,18 +26,31 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
+import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.mlsdk.common.MLFrame;
+import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionAnalyzer;
+import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionAnalyzerFactory;
+import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionAnalyzerSetting;
+import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionResult;
 import com.huawei.hms.videokit.player.WisePlayer;
 import com.huawei.hms.videokit.player.common.PlayerConstants;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.constants.Constants;
+import com.huawei.industrydemo.shopping.page.ProductActivity;
 import com.huawei.industrydemo.shopping.utils.TimeUtil;
 
 /**
@@ -87,22 +102,33 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
 
     private void initView(View view, int position) {
         ImageView imageView = view.findViewById(R.id.iv_product);
+        RelativeLayout productRl = view.findViewById(R.id.rl_product);
         surfaceView = view.findViewById(R.id.sf_video);
         RelativeLayout rlVideo = view.findViewById(R.id.rl_video);
+        TextView notice = view.findViewById(R.id.video_notice);
         initPlayView(view);
         if (position < imgs.length) { // image
             surfaceView.setVisibility(View.GONE);
-            imageView.setVisibility(View.VISIBLE);
+            rlVideo.setVisibility(View.GONE);
+            productRl.setVisibility(View.VISIBLE);
             imageView.setImageResource(
-                context.getResources().getIdentifier(imgs[position], "mipmap", context.getPackageName()));
+                    context.getResources().getIdentifier(imgs[position], "mipmap", context.getPackageName()));
+            if (imgs.length >= 1) {
+                imageView.setOnClickListener(v -> initImgSuper(imageView));
+            }
         } else { // video
-            surfaceView.setVisibility(View.VISIBLE);
-            rlVideo.setVisibility(View.VISIBLE);
-            SurfaceHolder surfaceHolder = surfaceView.getHolder();
-            surfaceHolder.addCallback(this);
-            imageView.setVisibility(View.GONE);
-            if (initVideoInterface != null) {
-                initVideoInterface.initVideo(videoUrl, surfaceView);
+            if (wisePlayer != null) {
+                surfaceView.setVisibility(View.VISIBLE);
+                rlVideo.setVisibility(View.VISIBLE);
+                notice.setVisibility(View.GONE);
+                SurfaceHolder surfaceHolder = surfaceView.getHolder();
+                surfaceHolder.addCallback(this);
+                productRl.setVisibility(View.GONE);
+                if (initVideoInterface != null) {
+                    initVideoInterface.initVideo(videoUrl, surfaceView);
+                }
+            }else {
+                notice.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -110,9 +136,9 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
     private void initPlayView(View view) {
         surfaceView = view.findViewById(R.id.sf_video);
         currentTimeTv = view.findViewById(R.id.current_time_tv);
-        totalTimeTv =  view.findViewById(R.id.total_time_tv);
+        totalTimeTv = view.findViewById(R.id.total_time_tv);
         playImg = view.findViewById(R.id.play_btn);
-        seekBar =  view.findViewById(R.id.seek_bar);
+        seekBar = view.findViewById(R.id.seek_bar);
         seekBar.setOnSeekBarChangeListener(this);
         playImg.setOnClickListener(v -> changePlayState());
 
@@ -142,7 +168,7 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
         /**
          * This function is used to initial the video kit.
          *
-         * @param videoUrl The video link url.
+         * @param videoUrl    The video link url.
          * @param surfaceView The interface which is used to play the video.
          */
         void initVideo(String videoUrl, SurfaceView surfaceView);
@@ -162,12 +188,14 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if (surfaceView != null){
-            wisePlayer.setView(surfaceView);
-        }
-        if (isSuspend){
-            isSuspend = false;
-            wisePlayer.resume(PlayerConstants.ResumeType.KEEP);
+        if (wisePlayer != null) {
+            if (surfaceView != null) {
+                wisePlayer.setView(surfaceView);
+            }
+            if (isSuspend) {
+                isSuspend = false;
+                wisePlayer.resume(PlayerConstants.ResumeType.KEEP);
+            }
         }
     }
 
@@ -181,7 +209,9 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
         isSuspend = true;
         isPlaying = false;
         playImg.setImageResource(R.drawable.ic_play);
-        wisePlayer.suspend();
+        if (wisePlayer != null) {
+            wisePlayer.suspend();
+        }
     }
 
     @Override
@@ -255,10 +285,48 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
         updateViewHandler.removeCallbacksAndMessages(null);
     }
 
-    public void removeUpdateViewHandler(){
+    public void removeUpdateViewHandler() {
         if (updateViewHandler != null) {
             updateViewHandler.removeCallbacksAndMessages(null);
             updateViewHandler = null;
         }
+    }
+
+    private void initImgSuper(ImageView imageView) {
+        if (null == imageView) {
+            return;
+        }
+        Bitmap srcBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        if (srcBitmap != null) {
+            MLImageSuperResolutionAnalyzerSetting setting = new MLImageSuperResolutionAnalyzerSetting.Factory()
+                    .setScale(MLImageSuperResolutionAnalyzerSetting.ISR_SCALE_3X)
+                    .create();
+            MLImageSuperResolutionAnalyzer analyzer = MLImageSuperResolutionAnalyzerFactory.getInstance()
+                    .getImageSuperResolutionAnalyzer(setting);
+
+            MLFrame frame = MLFrame.fromBitmap(srcBitmap);
+            Task<MLImageSuperResolutionResult> task = analyzer.asyncAnalyseFrame(frame);
+            task.addOnSuccessListener(new OnSuccessListener<MLImageSuperResolutionResult>() {
+                public void onSuccess(MLImageSuperResolutionResult result) {
+                    // Recognition success.
+                    initImgView(result);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                public void onFailure(Exception e) {
+                    // Recognition failure.
+                    Toast.makeText(context, "Failed£º" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+    }
+
+    private void initImgView(MLImageSuperResolutionResult result) {
+        FrameLayout frameLayout = ((ProductActivity) context).findViewById(R.id.fl_img_super);
+        frameLayout.setVisibility(View.VISIBLE);
+        final View view = LayoutInflater.from(context).inflate(R.layout.view_img, null);
+        ((ImageView) view.findViewById(R.id.view_img)).setImageBitmap(result.getBitmap());
+        view.setOnClickListener(v -> frameLayout.setVisibility(View.GONE));
+        frameLayout.addView(view);
     }
 }

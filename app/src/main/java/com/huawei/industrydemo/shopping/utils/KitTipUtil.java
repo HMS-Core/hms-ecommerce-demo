@@ -57,6 +57,8 @@ public class KitTipUtil implements KitConstants {
         iconMap.put(SCAN, R.mipmap.icon_scan);
         iconMap.put(VIDEO, R.mipmap.icon_vedio);
         iconMap.put(SCENE, R.mipmap.icon_scene);
+        iconMap.put(IAP, R.mipmap.icon_iap);
+        iconMap.put(SAFETY_DETECT,R.mipmap.icon_safety_detect);
     }
 
     public static void addTipView(Activity activity, String[] kits) {

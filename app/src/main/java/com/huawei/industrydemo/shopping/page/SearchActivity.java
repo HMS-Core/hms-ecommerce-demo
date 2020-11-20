@@ -16,18 +16,34 @@
 
 package com.huawei.industrydemo.shopping.page;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.mlplugin.asr.MLAsrCaptureActivity;
+import com.huawei.hms.mlplugin.asr.MLAsrCaptureConstants;
+import com.huawei.hms.mlsdk.asr.MLAsrConstants;
+import com.huawei.hms.mlsdk.common.MLApplication;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
+import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 import com.huawei.industrydemo.shopping.view.SearchContentLayout;
@@ -46,6 +62,7 @@ import java.util.List;
  */
 public class SearchActivity extends BaseActivity {
     private static final int MAX_SIZE = 5;
+    private static final int VOICE_ICON_TO_BOTTOM = 100;
     private EditText searchEdit;
     private SearchView searchView;
     private TextView tvDelete;
@@ -56,12 +73,19 @@ public class SearchActivity extends BaseActivity {
     private List<String> historyList;
     private String searchContent;
     private boolean needCheck;
-    
+    private ImageView ivVoice;
+    private RelativeLayout rlSearch;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        // TODO 请填写使用到的Kit
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            SearchActivity.this.requestCameraPermission();
+        }
+        MLApplication.getInstance().setApiKey(AGConnectServicesConfig.fromContext(this).getString("client/api_key"));
+
         addTipView(new String[]{});
         initView();
         initHotList();
@@ -71,7 +95,6 @@ public class SearchActivity extends BaseActivity {
     private void initView() {
         searchView = findViewById(R.id.view_search);
         searchEdit = searchView.findViewById(R.id.et_search);
-
         searchView.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 edSearch();
@@ -86,6 +109,29 @@ public class SearchActivity extends BaseActivity {
         scHot = findViewById(R.id.view_hot);
         tvDelete = findViewById(R.id.tv_delete);
         tvDelete.setOnClickListener(v -> initDialog());
+        ivVoice = (ImageView) findViewById(R.id.iv_voice);
+        ivVoice.setOnClickListener(v -> startAsr());
+        ivVoice.setOnLongClickListener(v -> {
+            startAsr();
+            return false;
+        });
+        rlSearch = (RelativeLayout) findViewById(R.id.rl_search);
+
+        rlSearch.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect rect = new Rect();
+            rlSearch.getWindowVisibleDisplayFrame(rect);
+            int screenHeight = rlSearch.getRootView().getHeight();
+            int softHeight = screenHeight - (rect.bottom - rect.top) - VOICE_ICON_TO_BOTTOM + 20;
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(142, 142);
+            rl.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            rl.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            if (softHeight > 200) {
+                rl.setMargins(0, 0, 0, softHeight);
+            } else {
+                rl.setMargins(0, 0, 0, VOICE_ICON_TO_BOTTOM);
+            }
+            ivVoice.setLayoutParams(rl);
+        });
     }
 
     private void initHotList() {
@@ -210,5 +256,81 @@ public class SearchActivity extends BaseActivity {
                 })
                 .create()
                 .show();
+    }
+
+    private void startAsr() {
+        Intent intentPlugin = new Intent(this, MLAsrCaptureActivity.class)
+                .putExtra(MLAsrCaptureConstants.LANGUAGE, MLAsrConstants.LAN_ZH_CN)
+                .putExtra(MLAsrCaptureConstants.FEATURE, MLAsrCaptureConstants.FEATURE_WORDFLUX);
+        startActivityForResult(intentPlugin, Constants.ML_ASR_CAPTURE_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String text = "";
+        if (null == data) {
+            addTagItem("Intent data is null.", true);
+        }
+        if (requestCode == Constants.ML_ASR_CAPTURE_CODE) {
+            if (data == null) {
+                return;
+            }
+            Bundle bundle = data.getExtras();
+            if (bundle == null) {
+                return;
+            }
+            switch (resultCode) {
+                // MLAsrCaptureConstants.ASR_SUCCESS: Recognition is successful.
+                case MLAsrCaptureConstants.ASR_SUCCESS:
+                    // Obtain the text information recognized from speech.
+                    if (bundle.containsKey(MLAsrCaptureConstants.ASR_RESULT)) {
+                        text = bundle.getString(MLAsrCaptureConstants.ASR_RESULT);
+                    }
+                    if (text == null || "".equals(text)) {
+                        text = "Result is null.";
+                        Log.e(TAG, text);
+                    } else {
+                        searchEdit.setText(text);
+                        goSearch(text, true);
+                    }
+                    // Process the recognized text information.
+                    break;
+                // MLAsrCaptureConstants.ASR_FAILURE: Recognition fails.
+                case MLAsrCaptureConstants.ASR_FAILURE:
+                    // Check whether a result code is contained.
+                    if (bundle.containsKey(MLAsrCaptureConstants.ASR_ERROR_CODE)) {
+                        text = text + bundle.getInt(MLAsrCaptureConstants.ASR_ERROR_CODE);
+                        // Perform troubleshooting based on the result code.
+                    }
+                    // Check whether error information is contained.
+                    if (bundle.containsKey(MLAsrCaptureConstants.ASR_ERROR_MESSAGE)) {
+                        String errorMsg = bundle.getString(MLAsrCaptureConstants.ASR_ERROR_MESSAGE);
+                        // Perform troubleshooting based on the error information.
+                        if (errorMsg != null && !"".equals(errorMsg)) {
+                            text = "[" + text + "]" + errorMsg;
+                        }
+                    }
+                    // Check whether a sub-result code is contained.
+                    if (bundle.containsKey(MLAsrCaptureConstants.ASR_SUB_ERROR_CODE)) {
+                        int subErrorCode = bundle.getInt(MLAsrCaptureConstants.ASR_SUB_ERROR_CODE);
+                        // Process the sub-result code.
+                        text = "[" + text + "]" + subErrorCode;
+                    }
+
+                    Log.e(TAG, text);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void requestCameraPermission() {
+        final String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO};
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+            ActivityCompat.requestPermissions(this, permissions, Constants.AUDIO_PERMISSION_CODE);
+            return;
+        }
     }
 }

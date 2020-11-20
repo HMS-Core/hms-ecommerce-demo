@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </TextView>
+
     <TextView
         android:id="@+id/tv_product_detail"
         android:layout_toEndOf="@+id/iv_product"
@@ -36,6 +37,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </TextView>
+
+    <TextView
+        android:id="@+id/tv_product_evaluate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="@string/order_center_to_evaluate"
+        android:layout_marginTop="20dp"
+        android:padding="6dp"
+        android:layout_gravity="center_vertical"
+        android:textSize="14sp"
+        android:background="@drawable/corner_submit_type"
+        >
+    </TextView>
+
     <TextView
         android:id="@+id/tv_product_price"
         android:layout_toEndOf="@+id/iv_product"

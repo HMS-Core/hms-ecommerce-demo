@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true">
+
+    <com.huawei.hms.scene.sdk.FaceView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/face_view"
+        app:sdk_type="AR_ENGINE">
+    </com.huawei.hms.scene.sdk.FaceView>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_view"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd ="15dp"
+        android:text="@string/face_view"
+        android:theme="@style/Main_AppTheme"
+        tools:ignore="RelativeOverlap" />
+
+</RelativeLayout>

@@ -9,22 +9,25 @@
     <string name="used_kits">本页面使用了以下Kits:</string>
     <string name="no_login">请登录/注册</string>
     <string name="is_shop_tip">是否展示Kit实现信息</string>
+    <string name="is_geofence">是否开启地理围栏</string>
+
     <string name="market_recommendation">商城推荐</string>
 
 
-    <!-- slpash ad -->
-    <string name="status_load_ad_success">Ad loading state: loaded successfully.</string>
-    <string name="status_load_ad_fail">Ad loading state: failed to be loaded. Error code: </string>
-    <string name="ad_id_splash">testq6zq98hecj</string>
+    <!-- ad -->
+    <string name="status_load_ad_success">广告加载状态：加载完成</string>
+    <string name="status_load_ad_fail">广告加载状态：加载失败，错误码：</string>
     <string name="owner">HUAWEI Developer</string>
     <string name="media_name">HUAWEI Ads</string>
     <string name="copyright_info">Copyright 2020. Huawei Technologies Co., Ltd</string>
-    <string name="status_ad_dismissed">Splash Ad is dismissed.</string>
+    <string name="status_ad_dismissed">开屏广告获取失败</string>
 
     <string name="customer_service">客服</string>
+    <string name="customer_evaluation">评价</string>
     <string name="add_shop_car">加入购物车</string>
     <string name="buy_now">立即购买</string>
     <string name="product_price">¥ %d</string>
+    <string name="product_price_2">实际支付:¥ %d</string>
     <string name="product_3d">3D</string>
     <string name="product_ar">AR</string>
     <string name="product_color">颜色</string>
@@ -35,7 +38,12 @@
     <string name="product_send">送至</string>
     <string name="check_order">确认订单</string>
     <string name="submit_order">提交订单</string>
+    <string name="update_order">确认修改</string>
     <string name="order_center">订单中心</string>
+    <string name="order_evaluate">评价订单</string>
+    <string name="order_evaluate_list">评价列表</string>
+    <string name="order_Automatic_translation">自动翻译</string>
+    <string name="order_more_translation">更多翻译</string>
     <string name="my_order">我的订单</string>
     <string name="add_address_tip">请添加地址</string>
     <string name="product_detail">%s %s %s</string>
@@ -47,19 +55,28 @@
     <string name="product_send_method">配送方式</string>
     <string name="add_to_car_success">添加成功</string>
     <string name="please_wait">敬请期待</string>
+    <string name="face_view">试戴</string>
+    <string name="member_discount">会员折扣(-10%%)</string>
+    <string name="discount_price">折后价格</string>
+    <string name="bank_card_payment">银行卡支付</string>
+    <string name="other_payment_methods">其他支付方式</string>
+    <string name="select_payment_method">选择支付方式</string>
+    <string name="payment_prompt">提示</string>
+    <string name="payment_prompt_content">这里识别的银行卡数据不会进行保存，只是展示扫描结果</string>
 
     <string name="product_search_result">识别到的商品</string>
     <string name="product_no_result">未识别到商品</string>
+    <string name="product_no_wifi">播放视频需要Wifi连接，请连接到Wifi并重新启动当前Demo。</string>
     <string name="product_category">分类：</string>
 
     <string name="shopping_cart_title">购物车</string>
     <string name="shopping_cart_edit">编辑</string>
     <string name="shopping_cart_finish">完成</string>
-    <string name="shopping_cart_price">￥%d</string>
+    <string name="shopping_cart_price">%d</string>
     <string name="shopping_cart_reduce_notice">最少够买一件哦！</string>
     <string name="shopping_cart_select_all">全选</string>
     <string name="shopping_cart_pay">结算(%d)</string>
-    <string name="shopping_cart_total">总计：￥%d</string>
+    <string name="shopping_cart_total">合计：%d</string>
     <string name="shopping_cart_delete">删除</string>
     <string name="shopping_cart_confirm_delete">确认删除商品吗？</string>
 
@@ -72,23 +89,25 @@
     <string name="order_center_canceled">已取消</string>
     <string name="order_center_load_finish">已加载全部</string>
     <string name="order_center_order_number">订单编号：%d</string>
-    <string name="order_center_total">共%d件商品，待付：￥ %d</string>
-    <string name="order_center_total_paid">共%d件商品，实付：￥ %d</string>
-    <string name="order_center_total_canceled">共%d件商品，未支付：￥ %d</string>
+    <string name="order_center_total">共%d件商品，待付： %d</string>
+    <string name="order_center_total_paid">共%d件商品，实付： %d</string>
+    <string name="order_center_total_canceled">共%d件商品，未支付： %d</string>
     <string name="order_center_go_to_pay">去支付</string>
     <string name="order_center_modify_order">修改订单</string>
     <string name="order_center_cancel_order">取消订单</string>
     <string name="order_center_confirm_cancel_order">确认取消订单吗？</string>
+    <string name="order_center_to_evaluate">去评价</string>
+    <string name="order_center_commit_evaluate">提交评价</string>
 
     <!-- Order Submit -->
-    <string name="country_not_supported_identity">country not supported identity</string>
-    <string name="child_account_not_supported_identity">child account not supported identity</string>
+    <string name="country_not_supported_identity">Identity在当前国家不支持</string>
+    <string name="child_account_not_supported_identity">Identity不支持子帐号</string>
 
     <!--  todo (for example, delete when release)  -->
     <string name="shopping_cart_item_example_product_name">HUAWEI</string>
     <string name="shopping_cart_item_example_quantity">1</string>
     <string name="shopping_cart_item_example_config">8GB+256GB,5G全网通 8GB+256GB,白色</string>
-    <string name="shopping_cart_item_example_price">￥ 390</string>
+    <string name="shopping_cart_item_example_price">390</string>
     <string name="ed_search_tip">请输入要搜索的内容</string>
     <string name="search_no_tip">请输入搜索内容</string>
     <string name="search_history">搜索历史</string>
@@ -103,6 +122,7 @@
 
     <string name="payment_succeed">支付成功!</string>
     <string name="payment_total">实付%d元</string>
+    <string name="payment_need_total">需付%d元</string>
     <string name="back_to_home">返回首页</string>
     <string name="view_order">查看订单</string>
     <string name="no_product">暂无商品</string>
@@ -114,13 +134,39 @@
     <string name="log_in_success">登录成功</string>
     <string name="no_product_tip">暂无此商品</string>
     <string name="empty_address">空</string>
-    
+    <string name="my_member">我的会员</string>
+    <string name="member_benefits_content">购买商品9折优惠\n%s</string>
+    <string name="buy_check">确认支付</string>
+    <string name="buy_member_price">需支付:%s</string>
+    <string name="member_benefits">会员福利</string>
+    <string name="member_buy">购买会员</string>
+    <string name="member_des_1">%s 下次自动续费时间:%s</string>
+    <string name="member_des_2">%s %s后到期</string>
+    <string name="member_des_3">非会员</string>
+    <string name="price_member_type_1">%s/周</string>
+    <string name="price_member_type_2">%s/月</string>
+    <string name="buy_member_tip_1">请选择要购买的会员类型</string>
+    <string name="buy_member_tip_2">重复购买</string>
+    <string name="sub_manager">订阅管理</string>
+    <string name="buy_member_success">购买成功</string>
+
     <!-- Privacy Page-->
     <string name="privacyReject">拒绝</string>
     <string name="privacyaccept">同意</string>
     <string name="privacyAnnounce">隐私声明</string>
-    <string name="textview_Privacy">TextView</string>
+    <string name="textview_Privacy">隐私声明</string>
     <string name="privacyread">隐私</string>
     <string name="exitMessage">即将退出Shopping Demo</string>
+
+    <!-- System Integrity Detect -->
+    <string name="sys_integrity_detecting">检查中...</string>
+    <string name="sys_integrity_detect_success">系统完整性检查通过</string>
+
+    <string name="confirm_button">确定</string>
+    <string name="radius_number">半径：</string>
+    <string name="latitude_number">纬度：</string>
+    <string name="longitude_number">经度：</string>
+    <string name="geofence_enabled">打开地理围栏成功</string>
+    <string name="id">id:</string>
 
 </resources>

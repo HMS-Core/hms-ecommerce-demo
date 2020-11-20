@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
 
 /**
  * JSON processing
- * @version [Ecommerce-Demo 1.0.0.300, 2020/9/22]
+ * @version [Ecommerce-Demo 1.0.0.300, 2020/11/05]
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class JsonUtil {

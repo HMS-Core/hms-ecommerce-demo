@@ -59,6 +59,7 @@ public class SplashActivity extends BaseActivity {
     private static final String[] APP_PERMISSIONS = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
@@ -144,7 +145,7 @@ public class SplashActivity extends BaseActivity {
         // Set the audio focus type for a video splash ad.
         splashView.setAudioFocusType(AudioFocusType.NOT_GAIN_AUDIO_FOCUS_WHEN_MUTE);
 
-        splashView.load(getString(R.string.ad_id_splash), ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, adParam,
+        splashView.load(Constants.AD_ID_SPLASH, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, adParam,
             splashAdLoadListener);
         Log.i(TAG, "End to load ad");
 

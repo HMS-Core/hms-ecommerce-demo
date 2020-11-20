@@ -14,4 +14,38 @@
         <item>Watch</item>
         <item>Handbag</item>
     </string-array>
+
+    <string-array name="scene_model">
+        <item>SceneView/bgd_model_1.dds</item>
+        <item>SceneView/bgd_model_2.dds</item>
+        <item>SceneView/bgd_model_3.dds</item>
+    </string-array>
+
+    <string-array name="language_list">
+        <item>English</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Turkish</item>
+        <item>Spanish</item>
+        <item>Portuguese</item>
+        <item>Italian</item>
+        <item>Hindi</item>
+        <item>Russian</item>
+        <item>Japanese</item>
+        <item>Chinese</item>
+    </string-array>
+
+    <string-array name="iso_639_1_list">
+        <item>en</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>tr</item>
+        <item>es</item>
+        <item>pt</item>
+        <item>it</item>
+        <item>hi</item>
+        <item>ru</item>
+        <item>ja</item>
+        <item>zh</item>
+    </string-array>
 </resources>

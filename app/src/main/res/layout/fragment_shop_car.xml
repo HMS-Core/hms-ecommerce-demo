@@ -99,7 +99,7 @@
                     android:textColor="@color/black" />
 
             <TextView
-                    android:id="@+id/textView_total_price"
+                    android:id="@+id/textView_actual_price"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toStartOf="@id/textView_pay"

@@ -1,0 +1,20 @@
+{
+  "number": 5,
+  "basicInfo": {
+    "shortName": "Sunglasses Sample",
+    "name": "Sunglasses Sample",
+    "thumbnail": "thumbnail_glasses",
+    "configuration": {
+      "capacity": "NA",
+      "version": "NA",
+      "color": "Brown"
+    },
+    "price": 18,
+    "link": "value"
+  },
+  "category": "Glasses",
+  "threeDimensional": "SceneView/sunglasses/sunglasses.glb",
+  "images": ["icon_sunglasses"],
+  "videoUrl": "",
+  "ar": "SceneView/sunglasses/sunglasses.glb"
+}

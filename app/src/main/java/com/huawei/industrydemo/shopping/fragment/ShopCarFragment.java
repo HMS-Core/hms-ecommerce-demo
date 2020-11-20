@@ -41,9 +41,11 @@ import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.ShoppingCart;
 import com.huawei.industrydemo.shopping.entity.User;
+import com.huawei.industrydemo.shopping.inteface.MemberCheckCallback;
 import com.huawei.industrydemo.shopping.inteface.OnItemModifyListener;
 import com.huawei.industrydemo.shopping.page.LogInActivity;
 import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
+import com.huawei.industrydemo.shopping.utils.MemberUtil;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 import com.huawei.industrydemo.shopping.viewadapter.ShoppingCartAdapter;
 
@@ -63,7 +65,7 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
 
     private static final String TAG = ShopCarFragment.class.getSimpleName();
     private TextView textFinish;
-    private TextView textTotalPrice;
+    private TextView textActualPrice;
     private TextView textPay;
     private TextView textDelete;
     private CheckBox checkAllSelect;
@@ -75,10 +77,10 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
     private List<ShoppingCart> shoppingCartList = new ArrayList<>();
     private int totalPrice = 0;
     private int totalQuantity = 0;
+    private int actualPrice = 0;
 
     public ShopCarFragment() {
-        // TODO 请填写使用到的Kit
-        setKits(new String[] {});
+        setKits(new String[]{});
     }
 
     @Override
@@ -125,7 +127,7 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
             layoutBottom.setVisibility(View.VISIBLE);
         }
         Collections.sort(shoppingCartList,
-            (shoppingCart1, shoppingCart2) -> shoppingCart2.getNumber() - shoppingCart1.getNumber());
+                (shoppingCart1, shoppingCart2) -> shoppingCart2.getNumber() - shoppingCart1.getNumber());
 
         shoppingCartAdapter.setShoppingCartList(shoppingCartList);
         statistics();
@@ -145,7 +147,7 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
         checkAllSelect = view.findViewById(R.id.checkBox_all_select);
         checkAllSelect.setChecked(isAllChoosed());
         checkAllSelect.setOnClickListener(this);
-        textTotalPrice = view.findViewById(R.id.textView_total_price);
+        textActualPrice = view.findViewById(R.id.textView_actual_price);
         textPay = view.findViewById(R.id.textView_pay);
         textPay.setOnClickListener(this);
         textDelete = view.findViewById(R.id.textView_delete);
@@ -162,7 +164,7 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
             case R.id.textView_edit:
                 textEdit.setVisibility(View.GONE);
                 textFinish.setVisibility(View.VISIBLE);
-                textTotalPrice.setVisibility(View.GONE);
+                textActualPrice.setVisibility(View.GONE);
                 textPay.setVisibility(View.GONE);
                 textDelete.setVisibility(View.VISIBLE);
                 break;
@@ -227,6 +229,7 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
         }
         order.setOrderItemList(orderItemList);
         order.setTotalPrice(totalPrice);
+        order.setActualPrice(totalPrice);
         order.setStatus(Constants.NOT_PAID);
         return order;
     }
@@ -246,19 +249,23 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
     public void statistics() {
         totalPrice = 0;
         totalQuantity = 0;
+        actualPrice = 0;
+        float discount = MemberUtil.getInstance().isMember(SharedPreferencesUtil.getInstance().getUser()) ? Constants.DISCOUNTED : 1f;
         if (null != shoppingCartList) {
             for (int i = 0; i < shoppingCartList.size(); i++) {
                 ShoppingCart shoppingCart = shoppingCartList.get(i);
                 if (shoppingCart.isChoosed()) {
                     totalQuantity += shoppingCart.getQuantity();
-                    totalPrice += shoppingCart.getProduct().getBasicInfo().getPrice() * shoppingCart.getQuantity();
+                    int tempPrice = shoppingCart.getProduct().getBasicInfo().getPrice() * shoppingCart.getQuantity();
+                    totalPrice += tempPrice;
+                    actualPrice += tempPrice * discount;
                 }
             }
         }
         if (0 == totalQuantity) {
             checkAllSelect.setChecked(false);
         }
-        textTotalPrice.setText(getString(R.string.shopping_cart_total, totalPrice));
+        textActualPrice.setText(getString(R.string.shopping_cart_total, totalPrice));
         textPay.setText(getString(R.string.shopping_cart_pay, totalQuantity));
     }
 
@@ -307,14 +314,19 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
         textEdit.setVisibility(View.VISIBLE);
         textDelete.setVisibility(View.GONE);
         textPay.setVisibility(View.VISIBLE);
-        textTotalPrice.setVisibility(View.VISIBLE);
+        textActualPrice.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Constants.LOGIN_REQUEST_CODE == requestCode) {
-            initData();
+            MemberUtil.getInstance().isMember(getActivity(), new MemberCheckCallback() {
+                @Override
+                public void onResult(boolean isMember, boolean isAutoRenewing, String productName, String time) {
+                    initData();
+                }
+            });
         }
     }
 }

@@ -1,0 +1,20 @@
+{
+  "number": 5,
+  "basicInfo": {
+    "shortName": "太阳眼镜样品",
+    "name": "太阳眼镜样品",
+    "thumbnail": "thumbnail_glasses",
+    "configuration": {
+      "capacity": "不涉及",
+      "version": "不涉及",
+      "color": "棕色"
+    },
+    "price": 18,
+    "link": "value"
+  },
+  "category": "眼镜",
+  "threeDimensional": "SceneView/sunglasses/sunglasses.glb",
+  "images": ["icon_sunglasses"],
+  "videoUrl": "",
+  "ar": "SceneView/sunglasses/sunglasses.glb"
+}

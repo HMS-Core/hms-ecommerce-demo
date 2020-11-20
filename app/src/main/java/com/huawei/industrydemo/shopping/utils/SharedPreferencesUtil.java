@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.huawei.industrydemo.shopping.constants.SharedPreferencesParams;
+import com.huawei.industrydemo.shopping.entity.Evaluation;
 import com.huawei.industrydemo.shopping.entity.User;
 
 import java.util.ArrayList;
@@ -89,7 +90,8 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         if (null == res) {
             return new ArrayList<>();
         }
-        return new Gson().fromJson(res, new TypeToken<List<String>>() {}.getType());
+        return new Gson().fromJson(res, new TypeToken<List<String>>() {
+        }.getType());
     }
 
     public String getPushToken() {
@@ -143,5 +145,31 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     public void setPushToken(String flag) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(pushToken, flag);
         editor.apply();
+    }
+
+    public void setEvaluateData(Evaluation data, int productId) {
+        List<Evaluation> dataList = getEvaluateData(productId);
+        if (data == null){
+            return;
+        }
+        if (null == dataList) {
+            dataList = new ArrayList<>();
+            dataList.add(data);
+            SharedPreferences.Editor editor = getSpWithEdit().putString(evaluateList + productId, new Gson().toJson(dataList));
+            editor.apply();
+        } else {
+            dataList.add(data);
+            SharedPreferences.Editor editor = getSpWithEdit().putString(evaluateList + productId, new Gson().toJson(dataList));
+            editor.apply();
+        }
+    }
+
+    public List<Evaluation> getEvaluateData(int productId) {
+        String res = sp.getString(evaluateList+productId, null);
+        if (null == res) {
+            return new ArrayList<>();
+        }
+        return new Gson().fromJson(res, new TypeToken<List<Evaluation>>() {
+        }.getType());
     }
 }

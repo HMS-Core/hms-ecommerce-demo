@@ -131,6 +131,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </include>
+            <include
+                android:padding="8dp"
+                android:id="@+id/lv_member_discount"
+                android:layout_marginTop="4dp"
+                layout="@layout/item_content_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_red_card">
+            </include>
+            <!--include
+                android:id="@+id/lv_discount_price"
+                android:layout_marginTop="4dp"
+                layout="@layout/item_content_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </include-->
         </LinearLayout>
     </ScrollView>
 
