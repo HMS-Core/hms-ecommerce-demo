@@ -16,19 +16,19 @@ Firstly choose the area you are in, then you can download the Demo App from scan
 
 <table><tr>
 <td>
-![China](images/barcode/China.png)
+<img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/China.png" width="200">
 <p>China</p>
 </td>
 <td>
-![Asia-Africa-and-Latin-America](images/barcode/Asia-Africa-and-Latin-America.png)
+<img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/Asia-Africa-and-Latin-America.png" width="200">
 <p>Asia, Africa, and Latin America</p>
 </td>
 <td>
-![Europe](images/barcode/Europe.png)
+<img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/Europe.png" width=200>
 <p>Europe</p>
 </td>
 <td>
-![Russia](images/barcode/Russia.png)
+<img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/Russia.png" width=200>
 <p>Russia</p>
 </td>
 </tr></table>
