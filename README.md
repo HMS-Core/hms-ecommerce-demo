@@ -1,5 +1,5 @@
 <div align="center">
-![Logo](images/logo.png)
+<img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/logo.png" width=250>
 </div>
 
 # HMS E-commerce Demo
