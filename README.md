@@ -1,3 +1,4 @@
+English | [中文](README_ZH.md)
 <div align="center">
 ![Logo](images/logo.png)
 </div>
@@ -39,14 +40,20 @@ Features of this application with HMS Core solution
 - Product detail page
 - Picture/video/3D product showcase
 - Ads placement
-- Filter by category
 - Barcode scanning-based search
 - Photo scanning-based search
-- Search by product name
-- Add/update to shopping cart
 - One-tap login in/out
 - Notifications for order/payment update
 - User location/location filling
+- Membership purchase
+- System integrity check
+- Comments, which can be translated in app
+- AR Wearing
+- Bank card recognition
+- Image Super-Resolution
+- Geo-fencing
+- Voice Search
+
 
 ## Application Generation
 **Environment Requirement**:
@@ -62,9 +69,9 @@ Features of this application with HMS Core solution
 
 You can also download the zip file containing the code in this page
 
-2. Copy jks file and agconnect-services.json to app folder.
+2. Copy jks file and agconnect-services.json to app folder. About how to get these files, you can refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/config-agc-0000001050196065)
 
-3. Update jks file information in app/build.gradle file.
+3. Update jks file information and application ID in app/build.gradle file.
 
 4. Build the application from the command line:
 
@@ -75,15 +82,15 @@ You can also download the zip file containing the code in this page
 ## Kit Usage Description
 - When opening the App, Ads kit will be called to show the splash Ads.
 
-![AdsKit](images/kit-usage-gif/AdsKit.gif)
+![AdsKit](images/kit-usage-gif-english/AdsKit.gif)
 
 - When you log in your Huawei Account, the account kit will used.
 
-![AccountKit](images/kit-usage-gif/AccountKit.gif)
+![AccountKit](images/kit-usage-gif-english/AccountKit.gif)
 
 - Scan kit is used to scan the barcode/QR Code to view the product.
 
-![ScanKit](images/kit-usage-gif/ScanKit.gif)
+![ScanKit](images/kit-usage-gif-english/ScanKit.gif)
 
 You can use the following barcode picture to test barcode buy function:
 
@@ -91,15 +98,15 @@ You can use the following barcode picture to test barcode buy function:
 
 - You can also take a photo to the physical goods and system will search for the similar item in the system. ML kit capability is used here.
 
-![MLKit](images/kit-usage-gif/MLKit.gif)
+![MLKit](images/kit-usage-gif-english/PhotoShopping.gif)
 
 - After you create a purchase order, a notification will be sent to you via push kit.
 
-![PushKit](images/kit-usage-gif/PushKit.gif)
+![PushKit](images/kit-usage-gif-english/PushKit.gif)![PushKit](images/kit-usage-gif-english/GroFence.gif)
 
 - When you view the product information, video kit is used to show the product video.
 
-![VideoKit](images/kit-usage-gif/VideoKit.gif)
+![VideoKit](images/kit-usage-gif-english/VideoKit.gif)
 
 - Location kit is used to get your current location to get the district information.
 - Identity kit is used to get configured address to make it fast for delivery address.
@@ -107,13 +114,33 @@ You can use the following barcode picture to test barcode buy function:
 
 - Scene Kit can show the 3D model of the product.
 
-![SceneKit](images/kit-usage-gif/SceneKit.gif)
+![SceneKit](images/kit-usage-gif-english/SceneKit.gif)
+
+
+- IAP Kit can help user to subscribe the membership in App to enjoy membership discount.
+
+![IapKit](images/kit-usage-gif-english/Iap.gif)
+
+- Safety Detect can make the system integrity check to make sure the system environment is secure.
+
+![SafetyDetect](images/kit-usage-gif-english/SafetyDetect.gif)
+
+- You can use ML kit to make translation and image super-resolution. It can also recognize the bank card and recognize your voice to make voice search.
+
+![MLKit](images/kit-usage-gif-english/Translation.gif)![MLKit](images/kit-usage-gif-english/BankCardRecognization.gif)![MLKit](images/kit-usage-gif-english/VoiceSearch.gif)
+
+- AR kit can help you to try the goods virtually, like wearing the glasses on AR.
+
+![AREngine](images/kit-usage-gif-english/AR.gif)
+
 
 ## Precautions
 The Shopping Demo is a Demo app which simulate a shopping process. There are limited products in the App. Some functions are unavailable or virtual service.
 
 - Customer Service is unavailable.
 - It is virtual payment in the App. There will be no deduction from anywhere.
+- The membership purchase in the App will make real deduction from your account. The deduction will not be refunded.
+- After membership purchase, please cancel the subscription in the "Sub Mgmt". Otherwise it will make deduction in next cycle. After cancellation, the existing membership will continue until the end of the current cycle.
 - The product in the App is virtual. 
 - The order you made in the App is virtual, there will not be product delivery.
 - The Ads in the App is test Ads.

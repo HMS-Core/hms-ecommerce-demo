@@ -16,6 +16,12 @@
         <item>手提包</item>
     </string-array>
 
+    <string-array name="scene_model">
+        <item>SceneView/bgd_model_1.dds</item>
+        <item>SceneView/bgd_model_2.dds</item>
+        <item>SceneView/bgd_model_3.dds</item>
+    </string-array>
+
     <string-array name="language_list">
         <item>英语</item>
         <item>法语</item>

@@ -314,7 +314,7 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
             }).addOnFailureListener(new OnFailureListener() {
                 public void onFailure(Exception e) {
                     // Recognition failure.
-                    Toast.makeText(context, "Failed£º" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Failed:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
