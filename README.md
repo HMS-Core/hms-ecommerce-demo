@@ -1,6 +1,6 @@
 English | [中文](README_ZH.md)
 <div align="center">
-<img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/logo.png" width=250>
+![Logo](images/logo.png)
 </div>
 
 # HMS E-commerce Demo
