@@ -169,4 +169,9 @@
     <string name="geofence_enabled">打开地理围栏成功</string>
     <string name="id">id:</string>
 
+
+    <string name="geofence">地理围栏</string>
+    <string name="geofence_in">欢迎光临</string>
+    <string name="geofence_stay">感谢驻足</string>
+    <string name="geofence_out">欢迎下次惠顾</string>
 </resources>

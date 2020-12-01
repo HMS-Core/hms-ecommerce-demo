@@ -50,65 +50,58 @@ public class NotificatioHelper {
     public NotificatioHelper(Context context, String title, String text) {
         mContext = context;
         NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        //
-
 
         Log.d(TAG, "NotificatioHelper:Build.VERSION.SDK_INT  " + Build.VERSION.SDK_INT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // 如果该channel已经存在，则可以不用再次创建
+            // If the channel exists, no need to create again.
             NotificationChannel channel = new NotificationChannel(channelId, CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
-            //是否绕过请勿打扰模式
             channel.canBypassDnd();
-            //闪光灯
+            //Whether use flash light
             channel.enableLights(true);
-            //锁屏显示通知
+            //Show the notification in screen lock
             channel.setLockscreenVisibility(VISIBILITY_SECRET);
-            //闪关灯的灯光颜色
+            //The flash light color
             channel.setLightColor(Color.RED);
-            //桌面launcher的消息角标
+
             channel.canShowBadge();
-            //是否允许震动
+            //Enable Viration mode.
             channel.enableVibration(true);
-            //获取系统通知响铃声音的配置
+
             channel.getAudioAttributes();
-            //获取通知取到组
+
             channel.getGroup();
-            //设置可绕过  请勿打扰模式
+
             channel.setBypassDnd(true);
-            //设置震动模式
+
             channel.setVibrationPattern(new long[]{100, 100, 200});
-            //是否会有灯光
+
             channel.shouldShowLights();
-            // 如果该channel已经存在，则可以不用再次创建
+
             manager.createNotificationChannel(channel);
         }
 
         Intent resultIntent = new Intent(context, MainActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //
+
         Notification notification = new NotificationCompat.Builder(context, channelId)
 //                .setContentIntent(resultPendingIntent)
-                .setContentTitle(title)  //设置标题
-                .setContentText(text) //设置内容
-                .setWhen(System.currentTimeMillis())  //设置时间
-                .setSmallIcon(R.mipmap.ic_launcher)  //设置小图标
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))   //设置大图标
-                .setAutoCancel(true)      //设置点击后取消Notification
+                .setContentTitle(title)
+                .setContentText(text)
+                .setWhen(System.currentTimeMillis())
+//                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher)
+//                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+                .setAutoCancel(true)
                 .setPriority(PRIORITY_MAX)
                 .build();
         manager.notify(NOTIFYID_1, notification);
-
-//        context.startForeground(R.mipmap.ic_launcher, notification);
-//        showNotification(title,text);
     }
 
 
     public void showNotification(String title, String text) {
-
-//        final int NOTIFICATION_ID = 12234;
-
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         //准备intent
         Intent intent = new Intent();

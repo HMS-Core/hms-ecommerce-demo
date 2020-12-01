@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.huawei.industrydemo.shopping"
+        applicationId "com.xx.xx.xx"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
@@ -15,16 +15,16 @@ android {
     }
     signingConfigs {
         config {
-            storeFile file('shopping.jks')
-            storePassword '123456'
-            keyAlias = 'key0'
-            keyPassword '123456'
+            storeFile file('xxxxx.jks')
+            storePassword 'xxxx'
+            keyAlias = 'xxxx'
+            keyPassword 'xxxx'
         }
         debug {
-            storeFile file('shopping.jks')
-            storePassword '123456'
-            keyAlias 'key0'
-            keyPassword '123456'
+            storeFile file('xxxx.jks')
+            storePassword 'xxxx'
+            keyAlias 'xxxx'
+            keyPassword 'xxxx'
         }
     }
     buildTypes {

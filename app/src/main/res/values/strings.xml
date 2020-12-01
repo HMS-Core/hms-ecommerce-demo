@@ -168,4 +168,8 @@
     <string name="geofence_enabled">The Geo Fence is enabled Successfully</string>
     <string name="id">id:</string>
 
+    <string name="geofence">Geo-Fence</string>
+    <string name="geofence_in">Welcom to here</string>
+    <string name="geofence_stay">You are welcome to take a look.</string>
+    <string name="geofence_out">Welcome next time.</string>
 </resources>

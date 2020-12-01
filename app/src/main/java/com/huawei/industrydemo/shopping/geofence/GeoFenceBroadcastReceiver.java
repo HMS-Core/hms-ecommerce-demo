@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.huawei.hms.location.Geofence;
 import com.huawei.hms.location.GeofenceData;
+import com.huawei.industrydemo.shopping.R;
 
 import java.util.ArrayList;
 
@@ -56,34 +57,28 @@ public class GeoFenceBroadcastReceiver extends BroadcastReceiver {
                     sb.append("conversion: " + conversion + next);
                     if (list != null) {
                         for (int i = 0; i < list.size(); i++) {
-                            sb.append("geoFence id :" + list.get(i).getUniqueId() + next);
+                            sb.append("geofence id :" + list.get(i).getUniqueId() + next);
                         }
                     }
                     if (myLocation != null) {
                         sb.append("location is :" + myLocation.getLongitude() + " " + myLocation.getLatitude() + next);
                     }
                     sb.append("is successful :" + status);
-//                    LocationLog.i(TAG, sb.toString());
-                    Toast.makeText(context, "" + sb.toString(), Toast.LENGTH_SHORT).show();
-                    //
-//                    new PushSendUtils().netSendMsg(sb.toString());
 
                     Log.w(TAG, "onReceive: "  + sb.toString() );
 
-
-                    // TODO: 2020/11/6 Notifica
                     switch (conversion){
-                        case 1://进入
-                            Toast.makeText(context, "欢迎光临", Toast.LENGTH_SHORT).show();
-                            new NotificatioHelper(context,"地理围栏","欢迎光临");
+                        case 1:// Enter the geofence
+                            new NotificatioHelper(context,context.getResources().getString(R.string.geofence),
+                                    context.getResources().getString(R.string.geofence_in));
                             break;
-                        case 4:// 停留
-                            Toast.makeText(context, "感谢驻足", Toast.LENGTH_SHORT).show();
-                            new NotificatioHelper(context,"地理围栏","感谢驻足");
+                        case 4:// Stay in geofence
+                            new NotificatioHelper(context,context.getResources().getString(R.string.geofence),
+                                    context.getResources().getString(R.string.geofence_stay));
                             break;
-                        case 2://退出
-                            Toast.makeText(context, "欢迎下次惠顾", Toast.LENGTH_SHORT).show();
-                            new NotificatioHelper(context,"地理围栏","欢迎下次惠顾");
+                        case 2:// Go out of geofence
+                            new NotificatioHelper(context,context.getResources().getString(R.string.geofence),
+                                    context.getResources().getString(R.string.geofence_out));
                             break;
 
                     }
