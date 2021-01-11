@@ -11,26 +11,26 @@ HMS Core Offers an innovative solution that assists e-commerce apps with quick c
 This project contains the shopping demo app based on HMS Core Kits. It shows how to use the HMS Core solution in shopping app. It provides the demo of the whole shopping process except payment.
 
 ## Demo Link
-Demo website: https://developer.huawei.com/consumer/en/solution/hms/ecommerce
+[Demo website](https://developer.huawei.com/consumer/en/solution/hms/ecommerce)
 
 Firstly choose the area you are in, then you can download the Demo App from scanning the corresponding QR code.
 
 <table><tr>
 <td>
 <img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/China.png" width="200">
-<p>China</p>
+<p align="center">China</p>
 </td>
 <td>
 <img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/Asia-Africa-and-Latin-America.png" width="200">
-<p>Asia, Africa, and Latin America</p>
+<p align="center">Asia, Africa, and Latin America</p>
 </td>
 <td>
 <img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/Europe.png" width=200>
-<p>Europe</p>
+<p align="center">Europe</p>
 </td>
 <td>
 <img src="https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/images/barcode/Russia.png" width=200>
-<p>Russia</p>
+<p align="center">Russia</p>
 </td>
 </tr></table>
 
