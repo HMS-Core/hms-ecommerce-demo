@@ -55,7 +55,7 @@
     <string name="add_to_car_success">Add Successfully</string>
     <string name="please_wait">Will be Online Soon</string>
     <string name="face_view">Try</string>
-    <string name="member_discount">Member Discount(-10%%)</string>
+    <string name="member_discount">Member Discount(-10%)</string>
     <string name="discount_price">Price After Discount</string>
     <string name="bank_card_payment">Bank card payment</string>
     <string name="other_payment_methods">Other payment methods</string>

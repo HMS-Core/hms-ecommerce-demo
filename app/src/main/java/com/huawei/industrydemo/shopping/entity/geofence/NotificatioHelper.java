@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-package com.huawei.industrydemo.shopping.geofence;
+package com.huawei.industrydemo.shopping.entity.geofence;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -35,7 +35,6 @@ import com.huawei.industrydemo.shopping.R;
 import static android.app.Notification.VISIBILITY_SECRET;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.os.Build.VERSION_CODES.LOLLIPOP_MR1;
-import static androidx.core.app.NotificationCompat.PRIORITY_HIGH;
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 
 public class NotificatioHelper {

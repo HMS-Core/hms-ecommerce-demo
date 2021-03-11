@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,8 +23,31 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseActivity;
+import com.huawei.industrydemo.shopping.entity.Order;
+import com.huawei.industrydemo.shopping.entity.OrderItem;
+import com.huawei.industrydemo.shopping.entity.User;
+import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import static com.huawei.hms.analytics.type.HAEventType.COMPLETEPURCHASE;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
+import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
+import static com.huawei.hms.analytics.type.HAParamType.OCCURREDTIME;
+import static com.huawei.hms.analytics.type.HAParamType.ORDERID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
+import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
+import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
+import static com.huawei.hms.analytics.type.HAParamType.TRANSACTIONID;
 
 /**
  * Payment Succeeded Activity
@@ -33,7 +56,7 @@ import com.huawei.industrydemo.shopping.R;
  * @see com.huawei.industrydemo.shopping.MainActivity
  * @since [Ecommerce-Demo 1.0.0.300]
  */
-public class PaymentSucceededActivity extends AppCompatActivity implements View.OnClickListener {
+public class PaymentSucceededActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView textTotalPay;
     private TextView btnBackToHome;
@@ -47,8 +70,46 @@ public class PaymentSucceededActivity extends AppCompatActivity implements View.
         initAction();
         int totalPrice = getIntent().getIntExtra("total_price", 0);
         textTotalPay.setText(getString(R.string.payment_total, totalPrice));
+        int orderNumber = getIntent().getIntExtra("order_number",0);
+        reportPaymentEvent(orderNumber);
     }
 
+    private void reportPaymentEvent(int orderNumber) {
+        /* Find the order and Report the event */
+        User user = SharedPreferencesUtil.getInstance().getUser();
+        List<Order> orderorders = user.getOrderList();
+
+        for (Order tempOrder : orderorders) {
+            if (tempOrder.getNumber() == orderNumber) {
+                HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+
+                Bundle bundle = new Bundle();
+                List<OrderItem> productList = tempOrder.getOrderItemList();
+                Iterator<OrderItem> iteratorProduct = productList.iterator();
+                java.text.SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                String purchaseTime = simpleDateFormat.format(new Date());
+
+                while (iteratorProduct.hasNext()) {
+                    OrderItem productItem = iteratorProduct.next();
+
+                    // Initiate Parameters
+                    bundle.putString(PRODUCTID, Integer.toString(productItem.getProduct().getNumber()).trim());
+                    bundle.putString(PRODUCTNAME, productItem.getProduct().getBasicInfo().getShortName().trim());
+                    bundle.putLong(QUANTITY, productItem.getCount());
+                    bundle.putString(ORDERID, Integer.toString(tempOrder.getNumber()).trim());
+                    bundle.putString(TRANSACTIONID, Integer.toString(tempOrder.getNumber()).trim());
+                    bundle.putString(CATEGORY, productItem.getProduct().getCategory().trim());
+                    bundle.putString(OCCURREDTIME, purchaseTime.trim());
+                    bundle.putDouble(REVENUE, (productItem.getProduct().getBasicInfo().getPrice()*productItem.getCount()));
+                    bundle.putString(CURRNAME, "CNY");
+
+                    instance.onEvent(COMPLETEPURCHASE, bundle);
+                }
+                break;
+            }
+        }
+
+    }
     private void initAction() {
         btnBackToHome.setOnClickListener(this);
         btnViewOrder.setOnClickListener(this);

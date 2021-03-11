@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,12 +24,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.entity.Evaluation;
+import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.User;
+import com.huawei.industrydemo.shopping.utils.ProductBase;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 
 import java.text.DateFormat;
@@ -37,10 +40,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class EvaluateActivity extends AppCompatActivity implements View.OnClickListener {
+import static com.huawei.hms.analytics.type.HAEventType.RATE;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
+import static com.huawei.hms.analytics.type.HAParamType.COMMENTTYPE;
+import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
+import static com.huawei.hms.analytics.type.HAParamType.DETAILS;
+import static com.huawei.hms.analytics.type.HAParamType.PRICE;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
+import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
+import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
+
+public class EvaluateActivity extends BaseActivity implements View.OnClickListener {
     private EditText ed_evaluate;
     private String orderNumber;
     private int productId;
+    private int productAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +80,7 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
         tvPrice.setText(data[3]);
         orderNumber = data[4];
         productId = Integer.parseInt(data[5]);
+        productAmount = Integer.parseInt(data[6]);
     }
 
 
@@ -93,6 +109,7 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
                     Intent intent1 = new Intent(EvaluateActivity.this, EvaluationListActivity.class);
                     intent1.putExtra(Constants.PRODUCT_ID, productId);
                     startActivity(intent1);
+                    reporteReviewEvent(data);
                     Toast.makeText(getApplicationContext(), "评论成功", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -100,6 +117,31 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
         }
+    }
+
+    private void reporteReviewEvent(String data) {
+        Product product = ProductBase.getInstance().queryByNumber(productId);
+        if(product == null) {
+            return;
+        }
+
+        /* Report log out event*/
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        bundle.putString(PRODUCTID, Integer.toString(product.getNumber()).trim());
+        bundle.putString(PRODUCTNAME, product.getBasicInfo().getShortName().trim());
+        bundle.putString(CATEGORY, product.getCategory().trim());
+        bundle.putDouble(PRICE, product.getBasicInfo().getPrice());
+        bundle.putDouble(REVENUE, (product.getBasicInfo().getPrice()*productAmount));
+        bundle.putString(CURRNAME, "CNY");
+        bundle.putInt(QUANTITY, productAmount);
+
+
+        bundle.putString(COMMENTTYPE, "End User");
+        bundle.putString(DETAILS, data.trim());
+
+        instance.onEvent(RATE, bundle);
     }
 
     private void addTolist(String data) {

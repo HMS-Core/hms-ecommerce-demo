@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -65,6 +65,7 @@ public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.
     public void onBindViewHolder(@NonNull OrderSubmitAdapter.ViewHolder holder, int position) {
         OrderItem orderItem = list.get(position);
         Product product = orderItem.getProduct();
+        int productAmount = orderItem.getCount();
         int imageResource = context.getResources().getIdentifier(product.getBasicInfo().getThumbnail(), "mipmap", context.getPackageName());
         String shortName = product.getBasicInfo().getShortName();
         String detail = context.getString(R.string.product_detail,
@@ -72,7 +73,7 @@ public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.
                 product.getBasicInfo().getConfiguration().getVersion(),
                 product.getBasicInfo().getConfiguration().getCapacity());
         String price = context.getString(R.string.product_price, product.getBasicInfo().getPrice());
-        String[] productData = new String[]{String.valueOf(imageResource), shortName, detail, price, String.valueOf(orderNumber), String.valueOf(product.getNumber())};
+        String[] productData = new String[]{String.valueOf(imageResource), shortName, detail, price, String.valueOf(orderNumber), String.valueOf(product.getNumber()), String.valueOf(productAmount)};
 
         holder.ivProduct.setImageResource(imageResource);
         holder.tvName.setText(shortName);

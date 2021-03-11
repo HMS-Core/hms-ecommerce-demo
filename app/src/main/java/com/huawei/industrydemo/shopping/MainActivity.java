@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -64,6 +64,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.huawei.hms.analytics.type.HAEventType.STARTAPP;
+
 /**
  * Main Page
  *
@@ -73,7 +75,10 @@ import java.util.Map;
 public class MainActivity extends BaseActivity {
     public static final String RESULT = "SCAN_RESULT";
 
-    public static final int CAMERA_REQ_CODE = 1;
+    public static final int HOME_INDEX = 0;
+    public static final int CATALOGUE_INDEX = 1;
+    public static final int SHOP_CAR_INDEX = 2;
+    public static final int MY_INDEX = 3;
 
     public static final int REQUEST_CODE_SCAN_ONE = 0X01;
     private HiAnalyticsInstance instance;
@@ -117,10 +122,11 @@ public class MainActivity extends BaseActivity {
     private void initView() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
-        pageIndex.put(R.id.tab_home, 0);
-        pageIndex.put(R.id.tab_catalogue, 1);
-        pageIndex.put(R.id.tab_shop, 2);
-        pageIndex.put(R.id.tab_my, 3);
+        pageIndex.put(R.id.tab_home, HOME_INDEX);
+        pageIndex.put(R.id.tab_catalogue, CATALOGUE_INDEX);
+        pageIndex.put(R.id.tab_shop, SHOP_CAR_INDEX);
+        pageIndex.put(R.id.tab_my, MY_INDEX);
+
     }
 
     private void initFragment() {
@@ -162,6 +168,9 @@ public class MainActivity extends BaseActivity {
         HiAnalyticsTools.enableLog();
         instance = HiAnalytics.getInstance(this);
         instance.setAnalyticsEnabled(true);
+
+        Bundle bundle = new Bundle();
+        instance.onEvent(STARTAPP,bundle);
     }
 
     private void setPushAutoInit(boolean isEnabled) {

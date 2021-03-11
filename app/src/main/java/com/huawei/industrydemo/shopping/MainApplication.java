@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.huawei.hms.network.NetworkKit;
 import com.huawei.hms.videokit.player.InitFactoryCallback;
 import com.huawei.hms.videokit.player.WisePlayerFactory;
-import com.huawei.hms.videokit.player.WisePlayerFactoryOptions;
+import com.huawei.hms.videokit.player.WisePlayerFactoryOptionsExt;
 import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.utils.JsonUtil;
 import com.huawei.industrydemo.shopping.utils.ProductBase;
@@ -58,6 +59,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initNetworkKit();
         SharedPreferencesUtil.setContext(this);
 
         initializeProductInfo();
@@ -72,7 +74,7 @@ public class MainApplication extends Application {
     public void initializeProductInfo() {
         ProductBase productBase = ProductBase.getInstance();
         AssetManager assetManager = this.getAssets();
-    
+
         String productFilePath = PRODUCT_FILE_PATH;
         String locale = Locale.getDefault().getLanguage();
         switch (locale) {
@@ -97,14 +99,14 @@ public class MainApplication extends Application {
 
     private void initPlayer() {
         // DeviceId test is used in the demo, specific access to incoming deviceId after encryption
-        WisePlayerFactoryOptions factoryOptions = new WisePlayerFactoryOptions.Builder().setDeviceId("xxx").build();
-        WisePlayerFactory.initFactory(this, factoryOptions, initFactoryCallback);
+        WisePlayerFactoryOptionsExt factoryOptions = new WisePlayerFactoryOptionsExt.Builder().setDeviceId("xxx").build();
+        WisePlayerFactory.initFactory(this, factoryOptions, INIT_FACTORY_CALLBACK);
     }
 
     /**
      * Player initialization callback
      */
-    private static InitFactoryCallback initFactoryCallback = new InitFactoryCallback() {
+    private static final InitFactoryCallback INIT_FACTORY_CALLBACK = new InitFactoryCallback() {
         @Override
         public void onSuccess(WisePlayerFactory wisePlayerFactory) {
             setWisePlayerFactory(wisePlayerFactory);
@@ -129,12 +131,30 @@ public class MainApplication extends Application {
     }
 
     public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager =
+            (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetworkInfo == null) {
+            return false;
+        }
+
         if (wifiNetworkInfo.isConnected()) {
             return true;
         }
         return false;
+    }
+    
+    private void initNetworkKit() {
+        NetworkKit.init(this, new NetworkKit.Callback() {
+            @Override
+            public void onResult(boolean result) {
+                if (result) {
+                    Log.i(TAG, "Networkkit init success");
+                } else {
+                    Log.i(TAG, "Networkkit init failed");
+                }
+            }
+        });
     }
 }

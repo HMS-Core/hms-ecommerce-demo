@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ import com.google.gson.Gson;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.common.ApiException;
 import com.huawei.hms.common.ResolvableApiException;
 import com.huawei.hms.location.FusedLocationProviderClient;
@@ -71,6 +73,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.huawei.hms.analytics.type.HAEventType.ADDPRODUCT2CART;
+import static com.huawei.hms.analytics.type.HAEventType.VIEWCONTENT;
+import static com.huawei.hms.analytics.type.HAEventType.VIEWPRODUCT;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
+import static com.huawei.hms.analytics.type.HAParamType.CONTENTTYPE;
+import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
+import static com.huawei.hms.analytics.type.HAParamType.PRICE;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
+import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
+import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
 
 public class ProductActivity extends BaseActivity implements View.OnClickListener {
 
@@ -108,6 +122,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
             product = ProductBase.getInstance().queryByNumber(intent.getIntExtra(KeyConstants.PRODUCT_KEY, 1));
             if (product != null) {
                 initView();
+                reportWatchEvent();
                 requestLocationPermission();
             } else {
                 Toast.makeText(this, R.string.no_product_tip, Toast.LENGTH_SHORT).show();
@@ -164,7 +179,6 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 wisePlayer.setVideoType(0);
                 wisePlayer.setBookmark(10000);
                 wisePlayer.setCycleMode(1);
-                wisePlayer.reset();
                 wisePlayer.setPlayUrl(videoUrl);
                 wisePlayer.setPlayEndListener(wisePlayer -> adapter.updatePlayCompleteView());
                 wisePlayer.ready();
@@ -217,6 +231,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                     startActivity(intent3d);
                 }
                 lastClickTime = curClickTime1;
+                reportProductViewEvent("3D View");
                 break;
             case R.id.iv_ar:
 
@@ -229,6 +244,7 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                     intentAr.putExtra(Constants.THREEDIMENSIONAL_DATA, product.getAr());
                     startActivity(intentAr);
                 }
+                reportProductViewEvent("AR View");
                 break;
             case R.id.btn_add:
                 ++productCount;
@@ -291,7 +307,49 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
             shoppingCartList.add(shoppingCart);
         }
         SharedPreferencesUtil.getInstance().setUser(user);
+        reportShopcartEvent();
         Toast.makeText(this, R.string.add_to_car_success, Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void reportShopcartEvent() {
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        bundle.putString(PRODUCTID, Integer.toString(product.getNumber()).trim());
+        bundle.putString(PRODUCTNAME, product.getBasicInfo().getShortName().trim());
+        bundle.putString(CATEGORY, product.getCategory().trim());
+        bundle.putInt(QUANTITY, productCount);
+        bundle.putDouble(PRICE, product.getBasicInfo().getPrice());
+        bundle.putDouble(REVENUE, (product.getBasicInfo().getPrice()*productCount));
+        bundle.putString(CURRNAME, "CNY");
+
+        instance.onEvent(ADDPRODUCT2CART, bundle);
+
+    }
+
+    private void reportProductViewEvent(String contentType) {
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        bundle.putString(PRODUCTID, Integer.toString(product.getNumber()).trim());
+        bundle.putString(CONTENTTYPE, contentType.trim());
+
+        instance.onEvent(VIEWCONTENT, bundle);
+    }
+
+    private void reportWatchEvent() {
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        bundle.putString(PRODUCTID, Integer.toString(product.getNumber()).trim());
+        bundle.putString(PRODUCTNAME, product.getBasicInfo().getShortName().trim());
+        bundle.putString(CATEGORY, product.getCategory().trim());
+        bundle.putDouble(PRICE, product.getBasicInfo().getPrice());
+        bundle.putDouble(REVENUE, product.getBasicInfo().getPrice());
+        bundle.putString(CURRNAME, "CNY");
+
+        instance.onEvent(VIEWPRODUCT, bundle);
     }
 
     private Order initOrder() {

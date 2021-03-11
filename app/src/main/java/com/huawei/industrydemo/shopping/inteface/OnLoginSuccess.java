@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.huawei.industrydemo.shopping.inteface;
 
-import com.huawei.hms.support.hwid.result.AuthHuaweiId;
+import com.huawei.hms.support.account.result.AuthAccount;
 
 /**
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/24]
@@ -28,7 +28,7 @@ public interface OnLoginSuccess {
     /**
      * Inform the login is successful
      *
-     * @param authHuaweiId The login huawei ID information
+     * @param authAccount The login huawei ID information
      */
-    void loginSuccess(AuthHuaweiId authHuaweiId);
+    void loginSuccess(AuthAccount authAccount);
 }

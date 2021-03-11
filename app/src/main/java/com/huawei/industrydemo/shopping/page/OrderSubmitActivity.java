@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
 import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.common.ApiException;
 import com.huawei.hms.identity.Address;
 import com.huawei.hms.identity.entity.GetUserAddressResult;
@@ -51,6 +52,17 @@ import com.huawei.industrydemo.shopping.push.Messaging;
 import com.huawei.industrydemo.shopping.utils.MemberUtil;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 import com.huawei.industrydemo.shopping.viewadapter.OrderSubmitAdapter;
+
+import static com.huawei.hms.analytics.type.HAEventType.CREATEORDER;
+import static com.huawei.hms.analytics.type.HAEventType.UPDATEORDER;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
+import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
+import static com.huawei.hms.analytics.type.HAParamType.ORDERID;
+import static com.huawei.hms.analytics.type.HAParamType.PRICE;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
+import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
+import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
 
 import java.util.Iterator;
 import java.util.List;
@@ -168,6 +180,52 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     // 已登录处理
                     saveOrder();
+                    HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+                    List<Order> orderList = user.getOrderList();
+                    if(order.getModifyflag() == false) {
+                        Bundle bundle = new Bundle();
+                        List<OrderItem> productList = order.getOrderItemList();
+                        Iterator<OrderItem> iteratorProduct = productList.iterator();
+
+                        while (iteratorProduct.hasNext()) {
+                            OrderItem productItem = iteratorProduct.next();
+
+                            // Initiate Parameters
+                            bundle.putString(PRODUCTID, Integer.toString(productItem.getProduct().getNumber()).trim());
+                            bundle.putString(PRODUCTNAME, productItem.getProduct().getBasicInfo().getShortName().trim());
+                            bundle.putLong(QUANTITY, productItem.getCount());
+                            bundle.putDouble(PRICE, productItem.getProduct().getBasicInfo().getPrice());
+                            bundle.putDouble(REVENUE, (productItem.getProduct().getBasicInfo().getPrice()*productItem.getCount()));
+                            bundle.putString(ORDERID, Integer.toString(order.getNumber()).trim());
+                            bundle.putString(CURRNAME, "CNY");
+
+                            bundle.putString(CATEGORY, productItem.getProduct().getCategory().trim());
+
+                            // Report a customzied Event
+                            instance.onEvent(CREATEORDER, bundle);
+                        }
+                    } else {
+                        Bundle bundle = new Bundle();
+                        List<OrderItem> productList = order.getOrderItemList();
+                        Iterator<OrderItem> iteratorProduct = productList.iterator();
+
+                        while (iteratorProduct.hasNext()) {
+                            OrderItem productItem = iteratorProduct.next();
+
+                            // Initiate Parameters
+                            bundle.putString(PRODUCTID, Integer.toString(productItem.getProduct().getNumber()).trim());
+                            bundle.putString(PRODUCTNAME, productItem.getProduct().getBasicInfo().getShortName().trim());
+                            bundle.putLong(QUANTITY, productItem.getCount());
+                            bundle.putDouble(PRICE, productItem.getProduct().getBasicInfo().getPrice());
+                            bundle.putString(ORDERID, Integer.toString(order.getNumber()).trim());
+                            bundle.putString(CATEGORY, productItem.getProduct().getCategory().trim());
+                            bundle.putDouble(REVENUE, (productItem.getProduct().getBasicInfo().getPrice()*productItem.getCount()));
+                            bundle.putString(CURRNAME, "CNY");
+
+                            // Report a customzied Event
+                            instance.onEvent(UPDATEORDER, bundle);
+                        }
+                    }
                 }
                 break;
             case R.id.rv_change_address:
@@ -323,8 +381,6 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
             status.startResolutionForResult(this, Constants.GET_ADDRESS_REQUEST_CODE);
         } else {
             Log.i(TAG, "the response is wrong, the return code is " + result.getReturnCode());
-//            Toast.makeText(getApplicationContext(),"errorCode:" + result.getReturnCode() + ", errMsg:" + result.getReturnDesc(), Toast.LENGTH_SHORT)
-//                    .show();
         }
     }
 

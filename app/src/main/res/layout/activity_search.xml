@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".page.SearchActivity">
-  <com.huawei.industrydemo.shopping.view.SearchView
+  <com.huawei.industrydemo.shopping.wight.SearchView
       android:id="@+id/view_search"
       android:background="@color/white"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
-  </com.huawei.industrydemo.shopping.view.SearchView>
+  </com.huawei.industrydemo.shopping.wight.SearchView>
   <TextView
       android:id="@+id/tv_history"
       android:textColor="@color/black"
@@ -23,7 +23,7 @@
       android:layout_marginTop="2dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
-  <com.huawei.industrydemo.shopping.view.SearchContentLayout
+  <com.huawei.industrydemo.shopping.wight.SearchContentLayout
       android:id="@+id/view_history"
       android:background="@color/white"
       android:layout_below="@+id/tv_history"
@@ -31,7 +31,7 @@
       android:layout_width="match_parent"
       android:layout_marginBottom="8dp"
       android:layout_height="wrap_content">
-  </com.huawei.industrydemo.shopping.view.SearchContentLayout>
+  </com.huawei.industrydemo.shopping.wight.SearchContentLayout>
   <TextView
       android:id="@+id/tv_hot"
       android:textColor="@color/black"
@@ -42,14 +42,14 @@
       android:layout_marginTop="2dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
-  <com.huawei.industrydemo.shopping.view.SearchContentLayout
+  <com.huawei.industrydemo.shopping.wight.SearchContentLayout
       android:id="@+id/view_hot"
       android:layout_below="@+id/tv_hot"
       android:background="@color/white"
       android:padding="8dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
-  </com.huawei.industrydemo.shopping.view.SearchContentLayout>
+  </com.huawei.industrydemo.shopping.wight.SearchContentLayout>
   <TextView
       android:id="@+id/tv_delete"
       android:text="@string/delete_history"

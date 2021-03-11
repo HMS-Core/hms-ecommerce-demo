@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
-import com.huawei.hms.support.hwid.result.AuthHuaweiId;
+import com.huawei.hms.support.account.result.AuthAccount;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class User {
-    private AuthHuaweiId huaweiAccount;
+    private AuthAccount huaweiAccount;
 
     private List<String> recentSearchList;
 
@@ -45,11 +45,11 @@ public class User {
 
     private boolean privacyFlag = false;
 
-    public AuthHuaweiId getHuaweiAccount() {
+    public AuthAccount getHuaweiAccount() {
         return huaweiAccount;
     }
 
-    public void setHuaweiAccount(AuthHuaweiId huaweiAccount) {
+    public void setHuaweiAccount(AuthAccount huaweiAccount) {
         this.huaweiAccount = huaweiAccount;
     }
 

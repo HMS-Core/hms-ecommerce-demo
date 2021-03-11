@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-package com.huawei.industrydemo.shopping.geofence;
+package com.huawei.industrydemo.shopping.entity.geofence;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -49,6 +49,7 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
 
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,10 +106,19 @@ public class GeoTestAct extends BaseActivity {
         byte[] bytes = null;
         if (len > 0 && len < 1024) {
             bytes = new byte[len];
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(bytes);
-            String s = new String(bytes, StandardCharsets.UTF_8);
-            return s;
+            try {
+                SecureRandom random;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    random = SecureRandom.getInstanceStrong();
+                } else {
+                    random = SecureRandom.getInstance("SHA1PRNG");
+                }
+                random.nextBytes(bytes);
+                String s = new String(bytes, StandardCharsets.UTF_8);
+                return s;
+            } catch (NoSuchAlgorithmException e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
         return "";
     }

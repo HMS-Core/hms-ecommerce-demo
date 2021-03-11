@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,10 +15,8 @@
 */
 
 
-package com.huawei.industrydemo.shopping.geofence;
+package com.huawei.industrydemo.shopping.entity.geofence;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -27,8 +25,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -50,8 +46,8 @@ import com.huawei.hms.location.LocationSettingsRequest;
 import com.huawei.hms.location.LocationSettingsResponse;
 import com.huawei.hms.location.LocationSettingsStatusCodes;
 import com.huawei.hms.location.SettingsClient;
-import com.huawei.industrydemo.shopping.R;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,9 +120,18 @@ public class GeoService extends Service {
         byte[] bytes = null;
         if (len > 0 && len < 1024) {
             bytes = new byte[len];
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(bytes);
-            return bytes.toString();
+            try {
+                SecureRandom random;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    random = SecureRandom.getInstanceStrong();
+                } else {
+                    random = SecureRandom.getInstance("SHA1PRNG");
+                }
+                random.nextBytes(bytes);
+                return bytes.toString();
+            } catch (NoSuchAlgorithmException e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
         return "";
     }

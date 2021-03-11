@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCapture;
@@ -36,6 +35,7 @@ import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureFactory;
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureResult;
 import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseActivity;
 
 /**
  * Payment Succeeded Activity
@@ -44,12 +44,13 @@ import com.huawei.industrydemo.shopping.R;
  * @see MainActivity
  * @since [Ecommerce-Demo 1.0.0.300]
  */
-public class PaymentSelectActivity extends AppCompatActivity implements View.OnClickListener {
+public class PaymentSelectActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = PaymentSelectActivity.class.getSimpleName();
 
     private TextView btnOhterPay;
     private TextView btnBcrPay;
     private int totalPrice;
+    private int orderNumber;
     private int CAMERA_PERMISSION_CODE = 1;
     private int READ_EXTERNAL_STORAGE_CODE = 2;
 
@@ -60,6 +61,8 @@ public class PaymentSelectActivity extends AppCompatActivity implements View.OnC
         initView();
         initAction();
         totalPrice = getIntent().getIntExtra("total_price", 0);
+        orderNumber = getIntent().getIntExtra("order_number",0);
+
         ((TextView) findViewById(R.id.payment_total)).setText(getString(R.string.payment_need_total, totalPrice));
 
         if (!(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
@@ -91,7 +94,7 @@ public class PaymentSelectActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.other_payment:
                 startActivity(new Intent(this, PaymentSucceededActivity.class)
-                        .putExtra("total_price", totalPrice));
+                        .putExtra("total_price", totalPrice).putExtra("order_number", orderNumber));
                 break;
             case R.id.iv_back:
                 finish();
@@ -134,7 +137,7 @@ public class PaymentSelectActivity extends AppCompatActivity implements View.OnC
                 return;
             }
             startActivity(new Intent(PaymentSelectActivity.this, BcrAnalyseActivity.class)
-                    .putExtra("total_price", totalPrice).putExtra("resultData",formatIdCardResult(bankCardResult)));
+                    .putExtra("total_price", totalPrice).putExtra("order_number", orderNumber).putExtra("resultData",formatIdCardResult(bankCardResult)));
         }
 
         // User cancellation processing.

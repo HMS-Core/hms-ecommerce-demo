@@ -56,7 +56,7 @@
     <string name="add_to_car_success">添加成功</string>
     <string name="please_wait">敬请期待</string>
     <string name="face_view">试戴</string>
-    <string name="member_discount">会员折扣(-10%%)</string>
+    <string name="member_discount">会员折扣(-10%)</string>
     <string name="discount_price">折后价格</string>
     <string name="bank_card_payment">银行卡支付</string>
     <string name="other_payment_methods">其他支付方式</string>

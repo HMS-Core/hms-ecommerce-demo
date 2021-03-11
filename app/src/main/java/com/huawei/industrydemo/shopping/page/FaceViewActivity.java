@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,10 +26,11 @@ import android.widget.Switch;
 import com.huawei.hms.scene.sdk.FaceView;
 import com.huawei.hms.scene.sdk.common.LandmarkType;
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.constants.Constants;
 
 
-public class FaceViewActivity extends Activity {
+public class FaceViewActivity extends BaseActivity {
     private FaceView mFaceView;
 
     @Override

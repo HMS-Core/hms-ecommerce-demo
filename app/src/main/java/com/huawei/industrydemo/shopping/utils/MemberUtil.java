@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -17,8 +17,11 @@
 package com.huawei.industrydemo.shopping.utils;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.iap.Iap;
 import com.huawei.hms.iap.IapApiException;
 import com.huawei.hms.iap.entity.InAppPurchaseData;
@@ -32,6 +35,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import static com.huawei.hms.analytics.type.HAEventType.UPDATEMEMBERSHIPLEVEL;
+import static com.huawei.hms.analytics.type.HAParamType.CURRVLEVEL;
+import static com.huawei.hms.analytics.type.HAParamType.PREVLEVEL;
+import static com.huawei.hms.analytics.type.HAParamType.REASON;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 import static com.huawei.industrydemo.shopping.page.BuyMemberActivity.TYPE_SUBSCRIBED_PRODUCT;
 
@@ -97,6 +104,18 @@ public class MemberUtil {
                             e.printStackTrace();
                         }
                     }
+
+                    /*If member relation expired, it needs to be reported*/
+                    if(true == user.isMember()) {
+                        HiAnalyticsInstance eventInstance = HiAnalytics.getInstance(activity);
+                        Bundle bundle = new Bundle();
+
+                        bundle.putString(PREVLEVEL, "Member");
+                        bundle.putString(CURRVLEVEL, "Non-Member");
+                        bundle.putString(REASON, "Member Purchase");
+                        eventInstance.onEvent(UPDATEMEMBERSHIPLEVEL, bundle);
+                    }
+
                     user.setAutoRenewing(false);
                     user.setExpirationDate(0);
                     user.setMember(false);

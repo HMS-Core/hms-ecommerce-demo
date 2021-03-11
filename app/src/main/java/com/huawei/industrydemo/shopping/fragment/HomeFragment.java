@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -65,7 +65,6 @@ import java.util.Objects;
  */
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
-
     /**
      * Dot below the rotation images
      */
@@ -122,7 +121,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         initCatalogueView(view.findViewById(R.id.recycler_catalogue_type));
         initProductView(view.findViewById(R.id.recycler_product));
         BannerAdUtil bannerAdUtil = new BannerAdUtil();
-        bannerAdUtil.addBannerAd(getActivity(),view.findViewById(R.id.ad_frame), BannerAdSize.BANNER_SIZE_320_100);
+        bannerAdUtil.addBannerAd(getActivity(), view.findViewById(R.id.ad_frame), BannerAdSize.BANNER_SIZE_320_100);
     }
 
 

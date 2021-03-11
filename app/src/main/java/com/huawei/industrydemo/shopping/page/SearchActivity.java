@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +36,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.mlplugin.asr.MLAsrCaptureActivity;
 import com.huawei.hms.mlplugin.asr.MLAsrCaptureConstants;
 import com.huawei.hms.mlsdk.asr.MLAsrConstants;
@@ -46,11 +47,14 @@ import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
-import com.huawei.industrydemo.shopping.view.SearchContentLayout;
-import com.huawei.industrydemo.shopping.view.SearchView;
+import com.huawei.industrydemo.shopping.wight.SearchContentLayout;
+import com.huawei.industrydemo.shopping.wight.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.huawei.hms.analytics.type.HAEventType.SEARCH;
+import static com.huawei.hms.analytics.type.HAParamType.SEARCHKEYWORDS;
 
 
 /**
@@ -188,6 +192,15 @@ public class SearchActivity extends BaseActivity {
     private void goSearch(String content, boolean needCheck) {
         this.searchContent = content;
         this.needCheck = needCheck;
+
+        /* Report search event begin*/
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        bundle.putString(SEARCHKEYWORDS, searchContent);
+        instance.onEvent(SEARCH, bundle);
+        /* Report search event end*/
+
         Intent intent = new Intent(this, SearchResultActivity.class);
         intent.putExtra(KeyConstants.SEARCH_CONTENT, searchContent);
         startActivity(intent);

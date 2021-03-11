@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.huawei.industrydemo.shopping.R;
@@ -44,6 +46,9 @@ import com.huawei.industrydemo.shopping.viewadapter.CatalogueTypeListAdapter;
 
 import java.util.List;
 import java.util.Objects;
+
+import static com.huawei.hms.analytics.type.HAEventType.VIEWPRODUCTLIST;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
 
 
 /**
@@ -130,6 +135,14 @@ public class CatalogueFragment extends BaseFragment implements View.OnClickListe
         productRecyclerView.setLayoutManager(gridLayoutManager);
         productRecyclerView.setNestedScrollingEnabled(false);
         productRecyclerView.setAdapter(adapter);
+
+        /* Report category view event*/
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(getActivity());
+        Bundle bundle = new Bundle();
+
+        bundle.putString(CATEGORY, type.trim());
+        instance.onEvent(VIEWPRODUCTLIST, bundle);
+
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
@@ -33,6 +35,9 @@ import com.huawei.industrydemo.shopping.utils.ProductBase;
 import com.huawei.industrydemo.shopping.viewadapter.SearchResAdapter;
 
 import java.util.List;
+
+import static com.huawei.hms.analytics.type.HAEventType.VIEWSEARCHRESULT;
+import static com.huawei.hms.analytics.type.HAParamType.SEARCHKEYWORDS;
 
 /**
  * Catalogue Specific Product Page
@@ -67,6 +72,14 @@ public class SearchResultActivity extends BaseActivity implements View.OnClickLi
     private void initData() {
         productList = ProductBase.getInstance().queryByKeywords(searchContent);
         searchContent = "".equals(searchContent) ? "null" : searchContent;
+
+        /* Report Search result event*/
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        bundle.putString(SEARCHKEYWORDS, searchContent.trim());
+        instance.onEvent(VIEWSEARCHRESULT, bundle);
+
     }
 
     private void initView() {

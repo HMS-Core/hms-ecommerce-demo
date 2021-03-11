@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseFragment;
 import com.huawei.industrydemo.shopping.constants.Constants;
@@ -53,6 +55,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.huawei.hms.analytics.type.HAEventType.DELPRODUCTFROMCART;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
+import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
+import static com.huawei.hms.analytics.type.HAParamType.PRICE;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
+import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
+import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
+
 
 /**
  * ShopCar page
@@ -192,9 +204,24 @@ public class ShopCarFragment extends BaseFragment implements View.OnClickListene
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
                     Iterator<ShoppingCart> iterator = shoppingCartList.iterator();
+                    HiAnalyticsInstance instance = HiAnalytics.getInstance(getActivity());
+                    Bundle bundle = new Bundle();
+
                     while (iterator.hasNext()) {
                         ShoppingCart shoppingCart = iterator.next();
                         if (shoppingCart.isChoosed()) {
+                            // Initiate Parameters
+                            bundle.putLong(QUANTITY, shoppingCart.getQuantity());
+                            bundle.putString(CATEGORY, shoppingCart.getProduct().getCategory().trim());
+                            bundle.putString(PRODUCTNAME, shoppingCart.getProduct().getBasicInfo().getShortName().trim());
+                            bundle.putString(PRODUCTID, Integer.toString(shoppingCart.getProduct().getNumber()));
+                            bundle.putDouble(PRICE, shoppingCart.getProduct().getBasicInfo().getPrice());
+                            bundle.putDouble(REVENUE, (shoppingCart.getProduct().getBasicInfo().getPrice()*shoppingCart.getQuantity()));
+                            bundle.putString(CURRNAME, "CNY");
+
+                            // Report a customzied Event
+                            instance.onEvent(DELPRODUCTFROMCART, bundle);
+
                             iterator.remove();
                         }
                     }

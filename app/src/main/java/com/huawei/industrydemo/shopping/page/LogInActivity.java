@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,12 +24,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.common.ApiException;
-import com.huawei.hms.support.hwid.HuaweiIdAuthManager;
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams;
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper;
-import com.huawei.hms.support.hwid.result.AuthHuaweiId;
-import com.huawei.hms.support.hwid.service.HuaweiIdAuthService;
+import com.huawei.hms.support.account.AccountAuthManager;
+import com.huawei.hms.support.account.request.AccountAuthParams;
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
+import com.huawei.hms.support.account.result.AuthAccount;
+import com.huawei.hms.support.account.service.AccountAuthService;
 import com.huawei.hms.support.hwid.ui.HuaweiIdAuthButton;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
@@ -39,9 +41,9 @@ import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 import static com.huawei.industrydemo.shopping.constants.Constants.LOGIN_REQUEST_CODE;
 
 public class LogInActivity extends BaseActivity {
-    private HuaweiIdAuthParams mAuthParam;
+    private AccountAuthParams mAuthParam;
 
-    private HuaweiIdAuthService mAuthManager;
+    private AccountAuthService mAuthManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +67,11 @@ public class LogInActivity extends BaseActivity {
      */
     private void silentSignIn() {
         initAccountConfig();
-        Task<AuthHuaweiId> taskSilentSignIn = mAuthManager.silentSignIn();
-        taskSilentSignIn.addOnSuccessListener(authHuaweiId -> {
+        Task<AuthAccount> taskSilentSignIn = mAuthManager.silentSignIn();
+        taskSilentSignIn.addOnSuccessListener(authAccount -> {
             // Obtain the user's HUAWEI ID information.
-            Log.i(TAG, "displayName:" + authHuaweiId.getDisplayName());
-            loginComplete(authHuaweiId);
+            Log.i(TAG, "displayName:" + authAccount.getDisplayName());
+            loginComplete(authAccount);
         });
         taskSilentSignIn.addOnFailureListener(e -> {
             // The sign-in failed. Try to sign in explicitly using getSignInIntent().
@@ -92,30 +94,45 @@ public class LogInActivity extends BaseActivity {
 
     private void initAccountConfig(){
         if(mAuthParam == null){
-            mAuthParam = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM).createParams();
-            mAuthManager = HuaweiIdAuthManager.getService(this, mAuthParam);
+            mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).createParams();
+            mAuthManager = AccountAuthManager.getService(this, mAuthParam);
         }
     }
 
     /**
      * Save User Account
      *
-     * @param authHuaweiId Signed-in HUAWEI ID information, including the ID, nickname, profile picture URI, permission, and access token.
+     * @param authAccount Signed-in HUAWEI ID information, including the ID, nickname, profile picture URI, permission, and access token.
      */
-    private void saveUserAccountInfo(AuthHuaweiId authHuaweiId) {
-        if (authHuaweiId != null) {
-            String openId = authHuaweiId.getOpenId();
+    private void saveUserAccountInfo(AuthAccount authAccount) {
+        if (authAccount != null) {
+            String openId = authAccount.getOpenId();
             User user = SharedPreferencesUtil.getInstance().getHistoryUser(openId);
             if (user == null) {
                 user = new User();
             }
-            user.setHuaweiAccount(authHuaweiId);
+            user.setHuaweiAccount(authAccount);
             SharedPreferencesUtil.getInstance().setUser(user);
         }
     }
 
-    private void loginComplete(AuthHuaweiId authHuaweiId){
-        saveUserAccountInfo(authHuaweiId);
+    private void loginComplete(AuthAccount authAccount){
+        saveUserAccountInfo(authAccount);
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+
+        /*If you login with Account Kit, Sign In event will be reported automatically*/
+//        Bundle bundle = new Bundle();
+//        bundle.putString(CHANNEL,loginType);
+//
+//        java.text.SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+//        String loginTime = simpleDateFormat.format(new Date());
+//        bundle.putString(OCCURREDTIME,loginTime);
+//        instance.onEvent(SIGNIN, bundle);
+
+        if(null != authAccount) {
+            instance.setUserId(authAccount.getUid());
+        }
+
         Toast.makeText(this, R.string.log_in_success,Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -124,16 +141,16 @@ public class LogInActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == LOGIN_REQUEST_CODE) {
-            AuthHuaweiId authHuaweiId = null;
+            AuthAccount authAccount = null;
 
-            Task<AuthHuaweiId> authHuaweiIdTask = HuaweiIdAuthManager.parseAuthResultFromIntent(data);
-            if (authHuaweiIdTask.isSuccessful()) {
-                authHuaweiId = authHuaweiIdTask.getResult();
-                Log.i(TAG, "Authorization code:" + authHuaweiId.getAuthorizationCode());
+            Task<AuthAccount> authAccountTask = AccountAuthManager.parseAuthResultFromIntent(data);
+            if (authAccountTask.isSuccessful()) {
+                authAccount = authAccountTask.getResult();
+                Log.i(TAG, "Authorization code:" + authAccount.getAuthorizationCode());
             } else {
-                Log.e(TAG, "sign in failed : " + ((ApiException) authHuaweiIdTask.getException()).getStatusCode());
+                Log.e(TAG, "sign in failed : " + ((ApiException) authAccountTask.getException()).getStatusCode());
             }
-            loginComplete(authHuaweiId);
+            loginComplete(authAccount);
         }
     }
 

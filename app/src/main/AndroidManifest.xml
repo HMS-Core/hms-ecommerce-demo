@@ -60,7 +60,7 @@
             android:configChanges="screenSize|orientation|uiMode|density"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@style/Main_AppTheme"
             tools:targetApi="n">
         </activity>
         <activity
@@ -78,11 +78,11 @@
             android:launchMode="singleTask" />
 
         <activity
-            android:name=".geofence.GeoTestAct"
+            android:name=".entity.geofence.GeoTestAct"
             android:exported="true" />
 
         <activity
-            android:name=".geofence.GeoDialogAct"
+            android:name=".entity.geofence.GeoDialogAct"
             android:theme="@style/dialog"
             android:launchMode="singleTop"/>
 
@@ -95,19 +95,22 @@
         </service>
 
         <service
-            android:name=".geofence.GeoService"
+            android:name=".entity.geofence.GeoService"
             android:exported="false">
 
         </service>
 
         <receiver
-            android:name=".geofence.GeoFenceBroadcastReceiver"
+            android:name=".entity.geofence.GeoFenceBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.huawei.hmssample.geofence.GeoFenceBroadcastReceiver.ACTION_PROCESS_LOCATION" />
             </intent-filter>
         </receiver>
 
+        <meta-data
+                android:name="com.huawei.hms.ml.DEPENDENCY"
+                android:value="bcr,imagesuperresolution" />
     </application>
 
 </manifest>

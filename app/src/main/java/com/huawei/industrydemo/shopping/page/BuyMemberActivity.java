@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.iap.Iap;
 import com.huawei.hms.iap.IapApiException;
 import com.huawei.hms.iap.entity.ProductInfo;
@@ -42,6 +44,12 @@ import com.huawei.industrydemo.shopping.viewadapter.MemberBuyAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.huawei.hms.analytics.type.HAEventType.UPDATEMEMBERSHIPLEVEL;
+import static com.huawei.hms.analytics.type.HAParamType.CURRVLEVEL;
+import static com.huawei.hms.analytics.type.HAParamType.PREVLEVEL;
+import static com.huawei.hms.analytics.type.HAParamType.REASON;
+
 
 /**
  * @version [Ecommerce-Demo 1.0.0.300, 2020/10/31]
@@ -207,6 +215,16 @@ public class BuyMemberActivity extends BaseActivity implements View.OnClickListe
         int resCode = result.getReturnCode();
         if(resCode == 0){
             Toast.makeText(this, R.string.buy_member_success, Toast.LENGTH_SHORT).show();
+
+            /* Report category view event*/
+            HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+            Bundle bundle = new Bundle();
+
+            bundle.putString(PREVLEVEL, "Non-Member");
+            bundle.putString(CURRVLEVEL, "Member");
+            bundle.putString(REASON, "Member Purchase");
+            instance.onEvent(UPDATEMEMBERSHIPLEVEL, bundle);
+
             finish();
         }else if(resCode == 60051){
             Toast.makeText(this, R.string.buy_member_tip_2, Toast.LENGTH_SHORT).show();

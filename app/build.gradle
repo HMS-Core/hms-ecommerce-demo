@@ -12,6 +12,8 @@ android {
         versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN"
+
+        multiDexEnabled true
     }
     signingConfigs {
         config {
@@ -59,30 +61,30 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
-    //RecyclerView
+    // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    //Glide
+    // Glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     // gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
-    //HMS
-    implementation 'com.huawei.hms:hwid:5.0.3.301'
-    implementation 'com.huawei.hms:ads-lite:13.4.34.300'
-    implementation 'com.huawei.hms:ads-consent:3.4.34.300'
-    implementation 'com.huawei.hms:hianalytics:5.0.4.301'
-    implementation 'com.huawei.hms:identity:4.0.4.300'
-    implementation 'com.huawei.hms:location:5.0.4.300'
-    implementation 'com.huawei.hms:push:5.0.2.300'
-    implementation 'com.huawei.hms:iap:5.0.4.301'
-    implementation 'com.huawei.hms:scan:1.2.4.300'
-    implementation 'com.huawei.hms:videokit-player:1.0.1.300'
-    implementation 'com.huawei.hms:ml-computer-voice-asr-plugin:2.0.3.300'
-    implementation 'com.huawei.hms:safetydetect:5.0.3.300'
-    implementation 'com.huawei.hms:ml-computer-translate:2.0.4.300'
+    // HMS
+    implementation 'com.huawei.hms:hwid:5.1.1.300'
+    implementation 'com.huawei.hms:ads-lite:13.4.37.300'
+    implementation 'com.huawei.hms:hianalytics:5.1.0.301'
+    implementation 'com.huawei.hms:identity:5.1.0.300'
+    implementation 'com.huawei.hms:location:5.1.0.300'
+    implementation 'com.huawei.hms:push:5.1.1.301'
+    implementation 'com.huawei.hms:iap:5.1.0.300'
+    implementation 'com.huawei.hms:scan:1.3.0.300'
+    implementation 'com.huawei.hms:videokit-player:1.0.3.301'
+    implementation 'com.huawei.hms:safetydetect:5.0.5.302'
+    implementation 'com.huawei.hms:ml-computer-voice-asr-plugin:2.1.0.301'
+    implementation 'com.huawei.hms:ml-computer-translate:2.1.0.300'
     implementation 'com.huawei.hms:ml-computer-card-bcr-plugin:2.0.3.301'
-    implementation'com.huawei.hms:ml-computer-vision-imagesuperresolution:2.0.4.300'
-    implementation'com.huawei.hms:ml-computer-vision-imagesuperresolution-model:2.0.4.300'
+    implementation 'com.huawei.hms:ml-computer-vision-imagesuperresolution:2.0.4.300'
+    implementation 'com.huawei.hms:ml-computer-vision-imagesuperresolution-model:2.0.4.300'
+    implementation 'com.huawei.hms:network-embedded:5.0.1.301'
 
     // scene
     implementation 'com.huawei.scenekit:full-sdk:5.0.2.302'

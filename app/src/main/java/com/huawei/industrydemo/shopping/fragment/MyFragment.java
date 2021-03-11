@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -43,19 +43,19 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.ads.BannerAdSize;
 import com.huawei.hms.iap.Iap;
-import com.huawei.hms.support.hwid.HuaweiIdAuthManager;
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams;
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper;
-import com.huawei.hms.support.hwid.result.AuthHuaweiId;
-import com.huawei.hms.support.hwid.service.HuaweiIdAuthService;
+import com.huawei.hms.support.account.AccountAuthManager;
+import com.huawei.hms.support.account.request.AccountAuthParams;
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
+import com.huawei.hms.support.account.result.AuthAccount;
+import com.huawei.hms.support.account.service.AccountAuthService;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseFragment;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KitConstants;
 import com.huawei.industrydemo.shopping.constants.LogConfig;
 import com.huawei.industrydemo.shopping.entity.User;
+import com.huawei.industrydemo.shopping.entity.geofence.GeoService;
 import com.huawei.industrydemo.shopping.page.BuyMemberActivity;
-import com.huawei.industrydemo.shopping.geofence.GeoService;
 import com.huawei.industrydemo.shopping.page.LogInActivity;
 import com.huawei.industrydemo.shopping.page.OrderCenterActivity;
 import com.huawei.industrydemo.shopping.utils.BannerAdUtil;
@@ -68,9 +68,9 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.UUID;
 
+import static android.content.Context.BIND_AUTO_CREATE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.content.Context.BIND_AUTO_CREATE;
 
 /**
  * Mine page
@@ -97,9 +97,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     private ImageView ivMember;
 
-    private HuaweiIdAuthParams mAuthParam;
+    private AccountAuthParams mAuthParam;
 
-    private HuaweiIdAuthService mAuthManager;
+    private AccountAuthService mAuthManager;
 
     private Activity mActivity;
 
@@ -218,8 +218,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             ivMember.setVisibility(GONE);
             tvMember.setVisibility(GONE);
         } else {
-            AuthHuaweiId authHuaweiId = user.getHuaweiAccount();
-            setUserAccountInfo(authHuaweiId);
+            AuthAccount authAccount = user.getHuaweiAccount();
+            setUserAccountInfo(authAccount);
             isSupportIap();
         }
     }
@@ -262,17 +262,17 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     /**
      * Set User Account
      *
-     * @param authHuaweiId The user huawei id information
+     * @param authAccount The user huawei id information
      */
-    private void setUserAccountInfo(AuthHuaweiId authHuaweiId) {
-        if (authHuaweiId != null) {
+    private void setUserAccountInfo(AuthAccount authAccount) {
+        if (authAccount != null) {
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-                if (authHuaweiId.getAvatarUri() == Uri.EMPTY) {
+                if (authAccount.getAvatarUri() == Uri.EMPTY) {
                     Glide.with(MyFragment.this).load(R.drawable.head_my).apply(option).into(imageHead);
                 } else {
-                    Glide.with(MyFragment.this).load(authHuaweiId.getAvatarUriString()).apply(option).into(imageHead);
+                    Glide.with(MyFragment.this).load(authAccount.getAvatarUriString()).apply(option).into(imageHead);
                 }
-                tvName.setText(authHuaweiId.getDisplayName());
+                tvName.setText(authAccount.getDisplayName());
             });
         }
     }
@@ -306,15 +306,44 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         String openId = user.getHuaweiAccount().getOpenId();
         sharedPreferencesUtil.setHistoryUser(openId, user);
         if (mAuthParam == null) {
-            mAuthParam = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM).createParams();
-            mAuthManager = HuaweiIdAuthManager.getService(Objects.requireNonNull(getContext()), mAuthParam);
+            mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).createParams();
+            mAuthManager = AccountAuthManager.getService(Objects.requireNonNull(getContext()), mAuthParam);
         }
         Task<Void> signOutTask = mAuthManager.signOut();
         signOutTask.addOnSuccessListener(aVoid -> {
             Log.i(TAG, "signOut Success");
             SharedPreferencesUtil.getInstance().setUser(null);
             initAccount();
-        }).addOnFailureListener(e -> Log.i(TAG, "signOut fail"));
+
+            /*If you login with Account Kit, Sign Out event will be reported automatically*/
+//            HiAnalyticsInstance instance = HiAnalytics.getInstance(getActivity());
+//            Bundle bundle = new Bundle();
+//
+//            bundle.putString(CHANNEL, "App Logout");
+//            bundle.putString(EVTRESULT, "Logout Success");
+//
+//            java.text.SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+//            String logoutTime = simpleDateFormat.format(new Date());
+//            bundle.putString(OCCURREDTIME, logoutTime.trim());
+//
+//            instance.onEvent(SIGNOUT, bundle);
+
+        }).addOnFailureListener(e -> {
+            Log.i(TAG, "signOut fail");
+
+            /*If you login with Account Kit, Sign Out event will be reported automatically*/
+//            HiAnalyticsInstance instance = HiAnalytics.getInstance(getActivity());
+//            Bundle bundle = new Bundle();
+//
+//            bundle.putString(CHANNEL, "App Logout");
+//            bundle.putString(EVTRESULT, "Logout Failed");
+//
+//            java.text.SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+//            String logoutTime = simpleDateFormat.format(new Date());
+//            bundle.putString(OCCURREDTIME, logoutTime.trim());
+//
+//            instance.onEvent(SIGNOUT, bundle);
+        });
     }
 
     private String privacyContentReading() {

@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -69,9 +69,6 @@ public class HomeViewPagerAdapter extends PagerAdapter {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_home_view_page, container, false);
         ImageView imageView = itemView.findViewById(R.id.item_image);
         imageView.setImageResource(urls[position]);
-
-        int finalPosition = position;
-//        itemView.setOnClickListener(v -> Toast.makeText(context, "图片" + finalPosition, Toast.LENGTH_SHORT).show());
 
         container.addView(itemView);
         return itemView;

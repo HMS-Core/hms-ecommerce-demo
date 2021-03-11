@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.huawei.industrydemo.shopping.viewadapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
@@ -39,11 +42,25 @@ import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
 import com.huawei.industrydemo.shopping.page.PaymentSelectActivity;
-import com.huawei.industrydemo.shopping.page.PaymentSucceededActivity;
 import com.huawei.industrydemo.shopping.utils.MemberUtil;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 
+import java.util.Iterator;
 import java.util.List;
+
+import static com.huawei.hms.analytics.type.HAEventType.CANCELORDER;
+import static com.huawei.hms.analytics.type.HAEventType.STARTCHECKOUT;
+import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
+import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
+import static com.huawei.hms.analytics.type.HAParamType.ORDERID;
+import static com.huawei.hms.analytics.type.HAParamType.PRICE;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
+import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
+import static com.huawei.hms.analytics.type.HAParamType.REASON;
+import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
+import static com.huawei.hms.analytics.type.HAParamType.TRANSACTIONID;
+
 
 /**
  * OrderCenterList Adapter
@@ -153,6 +170,30 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
     private void cancelOrder(Order order) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setPositiveButton(mActivity.getString(R.string.confirm), (dialog, which) -> {
+            /* Report Order Cancel Event Begin*/
+            HiAnalyticsInstance instance = HiAnalytics.getInstance(mActivity);
+            Bundle bundle = new Bundle();
+            List<OrderItem> productList = order.getOrderItemList();
+            Iterator<OrderItem> iteratorProduct = productList.iterator();
+
+            while (iteratorProduct.hasNext()) {
+                OrderItem productItem = iteratorProduct.next();
+
+                // Initiate Parameters
+                bundle.putString(PRODUCTID, Integer.toString(productItem.getProduct().getNumber()).trim());
+                bundle.putString(PRODUCTNAME, productItem.getProduct().getBasicInfo().getShortName().trim());
+                bundle.putLong(QUANTITY, productItem.getCount());
+                bundle.putDouble(PRICE, productItem.getProduct().getBasicInfo().getPrice());
+                bundle.putString(ORDERID, Integer.toString(order.getNumber()).trim());
+                bundle.putString(CATEGORY, productItem.getProduct().getCategory().trim());
+                bundle.putString(REASON, "Don't Like it");
+                bundle.putDouble(REVENUE, (productItem.getProduct().getBasicInfo().getPrice()*productItem.getCount()));
+                bundle.putString(CURRNAME, "CNY");
+
+                instance.onEvent(CANCELORDER, bundle);
+            }
+            /* Report Order Cancel Event end*/
+
             User user = SharedPreferencesUtil.getInstance().getUser();
             List<Order> orderorders = user.getOrderList();
             for (Order tempOrder : orderorders) {
@@ -166,8 +207,12 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
             if (!isAllOrder) {
                 orderList.remove(order);
                 this.setOrderList(orderList);
-                notifyDataSetChanged();
+            } else {
+                this.setOrderList(orderorders);
             }
+            notifyDataSetChanged();
+
+
         }).setNegativeButton(mActivity.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         builder.setMessage(mActivity.getString(R.string.order_center_confirm_cancel_order));
         builder.show();
@@ -184,19 +229,36 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         }
         user.setOrderList(orderorders);
         SharedPreferencesUtil.getInstance().setUser(user);
+
         if (!isAllOrder) {
             orderList.remove(order);
             this.setOrderList(orderList);
             notifyDataSetChanged();
         }
+
+        /* Report the checkout Event Begin*/
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(mActivity);
+        Bundle bundle = new Bundle();
+
+        // Initiate Parameters
+        bundle.putString(TRANSACTIONID, Integer.toString(order.getNumber()).trim());
+        bundle.putDouble(REVENUE, order.getActualPrice());
+        bundle.putString(CURRNAME, "CNY");
+
+        instance.onEvent(STARTCHECKOUT, bundle);
+        /* Report the checkout Event End*/
+
+
         Intent intent = new Intent(mActivity, PaymentSelectActivity.class);
         intent.putExtra("total_price", order.getActualPrice());
+        intent.putExtra("order_number",order.getNumber());
+
         mActivity.startActivity(intent);
     }
 
     private void modifyOrder(Order order) {
         Intent intent = new Intent(mActivity, OrderSubmitActivity.class);
-
+        order.setModifyflag(true);
         intent.putExtra(KeyConstants.ORDER_KEY, new Gson().toJson(order));
         mActivity.startActivity(intent);
     }

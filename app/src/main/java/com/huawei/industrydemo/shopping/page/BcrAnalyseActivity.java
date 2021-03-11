@@ -1,5 +1,5 @@
 /*
- * Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+ * Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseActivity;
 
 /**
  * It provides the identification function of the bank card,
@@ -32,9 +32,10 @@ import com.huawei.industrydemo.shopping.R;
  * @see com.huawei.industrydemo.shopping.page
  * @since [Ecommerce-Demo 1.0.1.300]
  */
-public class BcrAnalyseActivity extends AppCompatActivity implements View.OnClickListener {
+public class BcrAnalyseActivity extends BaseActivity implements View.OnClickListener {
     private TextView mTextView;
     private int totalPrice;
+    private int orderNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class BcrAnalyseActivity extends AppCompatActivity implements View.OnClic
         this.setContentView(R.layout.activity_image_bcr_analyse);
 
         totalPrice = getIntent().getIntExtra("total_price", 0);
+        orderNumber = getIntent().getIntExtra("order_number", 0);
+
         String cardResult = getIntent().getStringExtra("resultData");
         ((TextView)findViewById(R.id.text_result)).setText(cardResult);
         this.findViewById(R.id.complete_payment).setOnClickListener(this);
@@ -53,7 +56,7 @@ public class BcrAnalyseActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()){
             case R.id.complete_payment:
                 startActivity(new Intent(this, PaymentSucceededActivity.class)
-                        .putExtra("total_price", totalPrice));
+                        .putExtra("total_price", totalPrice).putExtra("order_number", orderNumber));
                 break;
         }
     }

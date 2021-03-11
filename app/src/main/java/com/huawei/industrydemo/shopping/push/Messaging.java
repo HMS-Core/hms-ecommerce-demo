@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,15 +16,17 @@
 
 package com.huawei.industrydemo.shopping.push;
 
-import android.util.Log;
-
+import com.huawei.hms.network.httpclient.HttpClient;
+import com.huawei.hms.network.httpclient.Request;
+import com.huawei.hms.network.httpclient.RequestBody;
+import com.huawei.hms.network.httpclient.Response;
+import com.huawei.hms.network.httpclient.ResponseBody;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -32,9 +34,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Messaging {
-    private String sendAPI = "https://push-api.cloud.huawei.com/v1/102936599/messages:send";
-    private String getAccessTokenAPI = "https://oauth-login.cloud.huawei.com/oauth2/v2/token";
-    private String msgBodyFormat = new String("{" +
+    private final String sendAPI = "https://push-api.cloud.huawei.com/v1/102936599/messages:send";
+    private final String getAccessTokenAPI = "https://oauth-login.cloud.huawei.com/oauth2/v3/token";
+    private final String msgBodyFormat = new String("{" +
             "\"validate_only\":false," +
             "\"message\":{" +
             "\"notification\":{" +
@@ -45,7 +47,7 @@ public class Messaging {
             "\"collapse_key\":-1," +
             "\"urgency\":\"HIGH\"," +
             "\"notification\":{" +
-//                        "\"image\":\"https://res.vmallres.com/pimages//common/config/logo/SXppnESYv4K11DBxDFc2.png\"," +
+        // "\"image\":\"https://res.vmallres.com/pimages//common/config/logo/SXppnESYv4K11DBxDFc2.png\"," +
             "\"importance\":\"HIGH\"," +
             "\"click_action\":{" +
             "\"type\":1," +
@@ -57,7 +59,7 @@ public class Messaging {
             "}" +
             "}").trim();
 
-    private String msgBodyFormat_zh = new String("{" +
+    private final String msgBodyFormat_zh = new String("{" +
             "\"validate_only\":false," +
             "\"message\":{" +
             "\"notification\":{" +
@@ -68,7 +70,7 @@ public class Messaging {
             "\"collapse_key\":-1," +
             "\"urgency\":\"HIGH\"," +
             "\"notification\":{" +
-//                        "\"image\":\"https://res.vmallres.com/pimages//common/config/logo/SXppnESYv4K11DBxDFc2.png\"," +
+        // "\"image\":\"https://res.vmallres.com/pimages//common/config/logo/SXppnESYv4K11DBxDFc2.png\"," +
             "\"importance\":\"HIGH\"," +
             "\"click_action\":{" +
             "\"type\":1," +
@@ -80,40 +82,45 @@ public class Messaging {
             "}" +
             "}").trim();
 
-    public String getAccessToken(String appId,String secretKey){
-        HttpURLConnection conn = null;
-        String msg = "";
-        try{
-            conn = (HttpURLConnection) new URL(getAccessTokenAPI).openConnection();
-            conn.setRequestMethod("POST");
-            conn.setReadTimeout(5000);
-            conn.setConnectTimeout(5000);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setUseCaches(false);
-            conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-
-            Map<String, String> params = new HashMap<String, String>();
-            //client id & client secret
-            params.put("client_id", appId);
-            params.put("client_secret", secretKey);
-            params.put("grant_type", "client_credentials");
-            StringBuffer buffer = new StringBuffer();
-            if (!params.isEmpty()) {// 迭代器
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    buffer.append(entry.getKey()).append("=")
-                        .append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
-                }
+    public String getAccessToken(String appId, String secretKey) {
+        HttpClient httpClient = new HttpClient.Builder().readTimeout(5000).connectTimeout(5000).build();
+        Request.Builder requestBuilder = httpClient.newRequest().url(getAccessTokenAPI).method("POST");
+        requestBuilder.requestBody(new RequestBody() {
+            @Override
+            public String contentType() {
+                return "application/x-www-form-urlencoded";
             }
-            // 删除最后一个字符&，多了一个;主体设置完毕
-            buffer.deleteCharAt(buffer.length()-1);
-            byte[] mydata = buffer.toString().getBytes(Charset.defaultCharset());
 
-            OutputStream out = conn.getOutputStream();
-            out.write(mydata,0,mydata.length);
-            out.flush();
-            if (conn.getResponseCode() == 200) {
-                InputStream is = conn.getInputStream();
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                Map<String, String> params = new HashMap<>();
+                // client id & client secret
+                params.put("client_id", appId);
+                params.put("client_secret", secretKey);
+                params.put("grant_type", "client_credentials");
+                StringBuffer buffer = new StringBuffer();
+                if (!params.isEmpty()) {// 迭代器
+                    for (Map.Entry<String, String> entry : params.entrySet()) {
+                        buffer.append(entry.getKey())
+                            .append("=")
+                            .append(URLEncoder.encode(entry.getValue(), "UTF-8"))
+                            .append("&");
+                    }
+                }
+                // 删除最后一个字符&，多了一个;主体设置完毕
+                buffer.deleteCharAt(buffer.length() - 1);
+                byte[] mydata = buffer.toString().getBytes(Charset.defaultCharset());
+
+                outputStream.write(mydata, 0, mydata.length);
+                outputStream.flush();
+            }
+        });
+
+        String msg = "";
+        try {
+            Response<ResponseBody> response = httpClient.newSubmit(requestBuilder.build()).execute();
+            if (response.getCode() == 200) {
+                InputStream is = response.getBody().getInputStream();
                 ByteArrayOutputStream message = new ByteArrayOutputStream();
                 int len = 0;
                 byte[] byteBuffer = new byte[1024];
@@ -123,44 +130,43 @@ public class Messaging {
                 is.close();
                 message.close();
                 msg = new String(message.toByteArray(), Charset.defaultCharset());
-                return msg;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
         }
         return msg;
     }
 
-    public String sendNotificationMessage(String accessToken,int orderStatus,String msgContent){
-        HttpURLConnection conn = null;
+    public String sendNotificationMessage(String accessToken, int orderStatus, String msgContent) {
         String pushToken = SharedPreferencesUtil.getInstance().getPushToken();
-        String msg = "";
-        try{
-            conn = (HttpURLConnection) new URL(sendAPI).openConnection();
-            conn.setRequestMethod("POST");
-            conn.setReadTimeout(5000);
-            conn.setConnectTimeout(5000);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setUseCaches(false);
-            conn.setRequestProperty("Content-Type","application/json");
-            conn.setRequestProperty("Authorization",accessToken);
-
-            OutputStream out = conn.getOutputStream();
-            String bodyData = String.format(Locale.ROOT,msgBodyFormat, msgContent,orderStatus,pushToken);
-            String locale = Locale.getDefault().getLanguage();
-
-            if ("zh" == locale) {
-                bodyData = String.format(Locale.ROOT,msgBodyFormat_zh, msgContent,orderStatus,pushToken);
+        HttpClient httpClient = new HttpClient.Builder().readTimeout(5000).connectTimeout(5000).build();
+        Request.Builder requestBuilder = httpClient.newRequest().url(sendAPI).method("POST");
+        requestBuilder.addHeader("Authorization", accessToken);
+        requestBuilder.requestBody(new RequestBody() {
+            @Override
+            public String contentType() {
+                return "application/json";
             }
-            out.write(bodyData.getBytes(Charset.defaultCharset()));
-            out.flush();
-            if (conn.getResponseCode() == 200) {
-                InputStream is = conn.getInputStream();
+
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                String bodyData = String.format(Locale.ROOT, msgBodyFormat, msgContent, orderStatus, pushToken);
+                String locale = Locale.getDefault().getLanguage();
+
+                if ("zh".equals(locale)) {
+                    bodyData = String.format(Locale.ROOT, msgBodyFormat_zh, msgContent, orderStatus, pushToken);
+                }
+
+                outputStream.write(bodyData.getBytes(Charset.defaultCharset()));
+                outputStream.flush();
+            }
+        });
+
+        String msg = "";
+        try {
+            Response<ResponseBody> response = httpClient.newSubmit(requestBuilder.build()).execute();
+            if (response.getCode() == 200) {
+                InputStream is = response.getBody().getInputStream();
                 ByteArrayOutputStream message = new ByteArrayOutputStream();
                 int len = 0;
                 byte[] buffer = new byte[1024];
@@ -172,14 +178,9 @@ public class Messaging {
                 is.close();
                 message.close();
                 msg = new String(message.toByteArray(), Charset.defaultCharset());
-                return msg;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
         }
         return msg;
     }

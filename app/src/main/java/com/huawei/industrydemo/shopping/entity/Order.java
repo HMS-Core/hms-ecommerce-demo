@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ public class Order {
     private int totalPrice;
 
     private int actualPrice;
+    private boolean modifyFlag = false;
 
     /**
      * 0:paid
@@ -51,6 +52,15 @@ public class Order {
         String date = simpleDateFormat.format(new Date().getTime());
         this.number = Integer.parseInt(date);
         this.address = null;
+    }
+
+    public boolean getModifyflag() {
+        return modifyFlag;
+    }
+
+
+    public void setModifyflag(boolean modifyFlag) {
+        this.modifyFlag = modifyFlag;
     }
 
     public int getNumber() {

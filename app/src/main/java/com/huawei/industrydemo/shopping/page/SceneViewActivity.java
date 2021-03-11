@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -28,10 +28,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.constants.Constants;
-import com.huawei.industrydemo.shopping.view.MySceneView;
+import com.huawei.industrydemo.shopping.wight.MySceneView;
 
-public class SceneViewActivity extends AppCompatActivity {
+public class SceneViewActivity extends BaseActivity {
     public static final int SCENE_VIEW_REQUEST_CODE = 1;
     private View view;
     private boolean allowReturn = false;

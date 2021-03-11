@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".page.SceneViewActivity">
 
-    <com.huawei.industrydemo.shopping.view.MySceneView
+    <com.huawei.industrydemo.shopping.wight.MySceneView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

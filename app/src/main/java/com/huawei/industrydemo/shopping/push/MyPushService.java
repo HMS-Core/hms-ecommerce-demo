@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package com.huawei.industrydemo.shopping.push;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 
@@ -46,6 +48,8 @@ public class MyPushService extends HmsMessageService {
         Log.i(TAG, "sending token to local. token:" + token);
         if (!token.equals(SharedPreferencesUtil.getInstance().getPushToken())) {
             SharedPreferencesUtil.getInstance().setPushToken(token);
+            HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+            instance.setPushToken(token);
         }
     }
 

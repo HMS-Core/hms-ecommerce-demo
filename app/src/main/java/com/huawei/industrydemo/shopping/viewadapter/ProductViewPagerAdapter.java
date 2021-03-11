@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -280,7 +280,8 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
     public void updatePlayCompleteView() {
         playImg.setImageResource(R.drawable.ic_play);
         isPlaying = false;
-        wisePlayer.seek(0);
+        wisePlayer.reset();
+        wisePlayer.setPlayUrl(videoUrl);
         seekBar.setProgress(0);
         updateViewHandler.removeCallbacksAndMessages(null);
     }
