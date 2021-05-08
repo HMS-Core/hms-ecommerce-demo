@@ -70,11 +70,12 @@ Features of this application with HMS Core solution
 
 - Geo-fencing
 
-- 
-
 - Membership rewards points 
+
 - Offline store guidance
+
 - Discount price marketing
+
 - Product link share
 
 ## Application Generation
