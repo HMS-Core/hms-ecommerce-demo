@@ -5,24 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <include layout="@layout/title_evaluation" />
+
+    <include layout="@layout/title_page" />
+
     <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/recycler_evaluation"
-       android:layout_marginTop="2dp"
-       android:layout_width="match_parent"
-       android:background="@color/white"
-       android:overScrollMode="never"
-       android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:id="@+id/recycler_evaluation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/tv_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="暂无评价"
         android:textSize="24dp"
-        android:gravity="center"
-        android:visibility="gone"
-        />
-
+        android:visibility="gone" />
 </LinearLayout>

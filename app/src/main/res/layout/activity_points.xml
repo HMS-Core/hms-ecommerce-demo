@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".page.PointsActivity">
+
+    <include layout="@layout/title_page" />
+
+    <TextView
+        android:id="@+id/tv_sum_point"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_circle_point"
+        android:gravity="center"
+        android:text="3000"
+        android:textColor="#FC0000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="@string/sum"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="30dp">
+
+        <LinearLayout
+            android:id="@+id/linear_points_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#C5C5C5" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

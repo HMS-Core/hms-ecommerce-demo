@@ -1,67 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".page.PrivacyActivity">
-
-    <ScrollView
-        android:id="@+id/scrollView_privacy"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="622dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".page.PrivacyActivity">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textview_privacycontent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/textview_Privacy" />
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/button_agree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/privacyaccept"
-        android:background="@drawable/textview_radius"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_reject"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView_privacy" />
-
-    <Button
-        android:id="@+id/button_reject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/privacyReject"
-        android:background="@drawable/textview_radius_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_agree"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView_privacy" />
+    <ImageView
+            android:id="@+id/icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/ic_launcher"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_privacy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/privacyAnnounce"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView_privacy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icon"
+            android:layout_marginTop="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginBottom="10dp"
+            android:src="@mipmap/privacy_icon"
+            app:layout_constraintBottom_toTopOf="@+id/textView_privacy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+            android:id="@+id/textView_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:text="@string/privacy_summary"
+            app:layout_constraintBottom_toTopOf="@+id/button_agree"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+            android:id="@+id/button_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/textview_radius"
+            android:text="@string/privacyaccept"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_reject" />
+
+    <Button
+            android:id="@+id/button_reject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/textview_radius_white"
+            android:text="@string/privacyReject"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_agree"
+            app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

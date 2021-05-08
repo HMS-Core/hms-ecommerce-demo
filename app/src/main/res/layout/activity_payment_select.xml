@@ -2,70 +2,113 @@
   ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2020. All rights reserved.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".page.PaymentSucceededActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".page.PaymentSucceededActivity">
 
-    <include layout="@layout/title_product" />
+    <include layout="@layout/title_page" />
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/select_payment_method"
-                android:textSize="40sp"
-                android:paddingStart="@dimen/hiad_10_dp"
-                android:paddingEnd="@dimen/hiad_10_dp"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/payment_amount"
+            android:textColor="@color/payment_select_text1"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/payment_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:text="@string/payment_need_total"
-            android:textSize="20sp" />
-
-        <TextView
-                android:id="@+id/bcr_payment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:layout_marginHorizontal="20dp"
-                android:paddingVertical="8dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:background="@drawable/corner_submit_type"
-                android:text="@string/bank_card_payment" />
-        <TextView
-                android:id="@+id/other_payment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="20dp"
-                android:paddingVertical="8dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:background="@drawable/corner_submit_type"
-                android:text="@string/other_payment_methods" />
-
+            android:textColor="@color/payment_select_text2"
+            android:textSize="16sp" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_bdg_gray" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="@string/select_payment_method"
+        android:textColor="@color/payment_select_text1"
+        android:textSize="12sp" />
+
+    <RadioGroup
+        android:id="@+id/payment_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <RadioButton
+            android:id="@+id/bcr_payment_button"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:checked="true"
+            android:drawableStart="@drawable/icon_bcr_payment"
+            android:drawablePadding="11dp"
+            android:paddingStart="11dp"
+            android:text="@string/bank_card_payment"
+            android:textColor="@color/payment_select_text3"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_bdg_gray" />
+
+        <RadioButton
+            android:id="@+id/other_payment_button"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:drawableStart="@drawable/icon_other_payment"
+            android:drawablePadding="11dp"
+            android:paddingStart="11dp"
+            android:text="@string/other_payment_methods"
+            android:textColor="@color/payment_select_text3"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_bdg_gray" />
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/confirm_button"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/payment_select_submit"
+        android:gravity="center"
+        android:text="@string/confirm_payment"
+        android:textColor="@color/payment_select_text4"
+        android:textSize="16sp" />
+
+</LinearLayout>

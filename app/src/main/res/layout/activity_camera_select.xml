@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/camera_bgd"
+    android:orientation="vertical"
+    tools:context=".page.CameraSelectActivity">
+
+    <ImageView
+        android:id="@+id/iv_local"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:src="@mipmap/photo"></ImageView>
+
+    <FrameLayout
+        android:id="@+id/frame_camera"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></FrameLayout>
+
+    <com.huawei.industrydemo.shopping.wight.TypeSelectView
+        android:id="@+id/rv_select"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"></com.huawei.industrydemo.shopping.wight.TypeSelectView>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_selected"></View>
+
+    <ImageView
+        android:id="@+id/btn_take_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@mipmap/camera_take_photo"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"></ImageView>
+</LinearLayout>

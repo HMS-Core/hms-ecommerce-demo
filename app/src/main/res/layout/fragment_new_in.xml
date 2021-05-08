@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2020. All rights reserved.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bdg_gray"
+    tools:context=".fragment.NewInFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_new_in"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="6dp"
+        android:overScrollMode="never" />
+
+</RelativeLayout>

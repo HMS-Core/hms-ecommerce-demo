@@ -1,76 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include layout="@layout/title_member">
-    </include>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_page"></include>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_member"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:overScrollMode="never"
-        android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:text="@string/member_benefits"
-        android:textColor="@color/black"
-        android:layout_marginTop="2dp"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </TextView>
-    <TextView
-        android:id="@+id/tv_member_des"
-        android:background="@color/white"
-        android:textColor="@color/black"
-        android:padding="6dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </TextView>
-    <View
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-    </View>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_price"
-            android:padding="6dp"
-            android:text="@string/buy_member_price"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dp">
-        </View>
-        <Button
-            android:id="@+id/btn_pay"
-            android:text="@string/buy_check"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:paddingEnd="24dp"
-            android:paddingStart="24dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_width="wrap_content"
-            android:background="@drawable/bdg_buy_member"
-            android:layout_height="wrap_content">
-        </Button>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

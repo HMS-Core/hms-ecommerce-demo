@@ -1,128 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2020. All rights reserved.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2021. All rights reserved.
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".page.OrderCenterActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".page.OrderCenterActivity">
 
     <include
-            android:id="@+id/title_order_center"
-            layout="@layout/title_product" />
+        android:id="@+id/title_order_center"
+        layout="@layout/title_page" />
 
     <LinearLayout
-            android:id="@+id/tab_order_center"
+        android:id="@+id/tab_order_center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/tab_all_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/order_center_all_order"
-                    android:textColor="@color/black" />
+                android:id="@+id/tab_all_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/order_center_all_order"
+                android:textColor="@color/black" />
 
             <View
-                    android:id="@+id/view_all_order"
-                    android:layout_width="20dp"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white" />
+                android:id="@+id/view_all_order"
+                android:layout_width="20dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/tab_pending_payment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/order_center_pending_payment"
-                    android:textColor="@color/black" />
+                android:id="@+id/tab_pending_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/order_center_pending_payment"
+                android:textColor="@color/black" />
 
             <View
-                    android:id="@+id/view_pending_payment"
-                    android:layout_width="20dp"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white" />
+                android:id="@+id/view_pending_payment"
+                android:layout_width="20dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/id_tab_address_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/order_center_pending_receive"
-                    android:textColor="@color/color_search_bgd_gray" />
+                android:id="@+id/tab_address_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/order_center_pending_receive"
+                android:textColor="@color/black" />
 
             <View
-                    android:layout_width="20dp"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white" />
+                android:id="@+id/view_to_be_received"
+                android:layout_width="20dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/tab_complete_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/order_center_finish"
-                    android:textColor="@color/black" />
+                android:id="@+id/tab_complete_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/order_center_finish"
+                android:textColor="@color/black" />
 
             <View
                 android:id="@+id/view_complete_order"
                 android:layout_width="20dp"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white" />
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager_order_center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:id="@+id/viewpager_order_center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </androidx.viewpager.widget.ViewPager>
 

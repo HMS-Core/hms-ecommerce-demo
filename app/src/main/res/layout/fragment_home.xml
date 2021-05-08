@@ -1,80 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.HomeFragment">
-    <include
-        android:id="@+id/bar_home"
-        layout="@layout/home_bar">
-    </include>
+
     <ScrollView
-        android:scrollbars="none"
-        android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_toStartOf="@+id/sw_kit_tip"
+                android:gravity="center"
+                android:text="@string/show_kit"
+                android:textColor="@color/switch_kit_tip" />
+
+            <Switch
+                android:id="@+id/sw_kit_tip"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:theme="@style/Custom.MySwitch"
+                tools:ignore="UseSwitchCompatOrMaterialXml">
+            </Switch>
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/pager_home"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                >
-            </androidx.viewpager.widget.ViewPager>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sw_kit_tip"/>
+
             <LinearLayout
                 android:id="@+id/layout_dot"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
                 android:layout_alignBottom="@+id/pager_home"
-                android:layout_width="match_parent"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:gravity="end|center"
-                android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                android:layout_height="20dp">
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_catalogue_type"
-                android:background="@color/white"
-                android:layout_marginTop="6dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="6dp"
-                android:layout_below="@+id/pager_home"
-                android:overScrollMode="never"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:paddingEnd="16dp"/>
 
-            <FrameLayout
-                android:id="@+id/ad_frame"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_new"
+                android:layout_below="@+id/pager_home"
                 android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/home_ads"/>
+            </androidx.cardview.widget.CardView>
+
+            <include
+                android:id="@+id/layout_article"
+                android:layout_below="@+id/card_new"
+                layout="@layout/view_home_article"
+                android:layout_height="300dp"
+                android:layout_width="match_parent" />
+            <TextView
+                android:id="@+id/tv_store"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_catalogue_type"
-                android:layout_centerHorizontal="true"
-                />
+                android:layout_below="@+id/layout_article"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/near_store"
+                android:textColor="@color/switch_kit_tip"
+                android:textSize="12sp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@+id/tv_store"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="15dp"
+                app:cardPreventCornerOverlap="true">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.huawei.industrydemo.shopping.page.map.MapMarkerFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_bdg_gray" />
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
-                android:id="@+id/text_recommendation"
-                android:layout_marginTop="6dp"
+                android:id="@+id/tv_history"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/ad_frame"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/map_view"
                 android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@color/white"
-                android:textStyle="bold"
-                android:padding="6dp"
-                android:text="@string/market_recommendation"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/recently_viewed"
+                android:textColor="@color/switch_kit_tip"
+                android:textSize="14sp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_product"
-                android:background="@color/white"
-                android:layout_below="@+id/text_recommendation"
-                android:overScrollMode="never"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_history"
+                android:background="@color/white"
+                android:overScrollMode="never" />
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

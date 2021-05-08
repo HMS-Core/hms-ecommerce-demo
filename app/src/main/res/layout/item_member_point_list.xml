@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_background_underline"
+    android:orientation="horizontal"
+    android:paddingVertical="20dp">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="start"
+        android:minEms="10"
+        android:singleLine="true"
+        android:text="20210325" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4.4"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLength="22"
+        android:singleLine="true"
+        android:text="HUAWEI Mobile Sample 1" />
+
+    <TextView
+        android:id="@+id/tv_points"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLength="5"
+        android:singleLine="true"
+        android:text="+7988"
+        android:textColor="#E44142" />
+</LinearLayout>

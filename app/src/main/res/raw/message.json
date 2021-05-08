@@ -1,0 +1,27 @@
+{
+  "validate_only": false,
+  "message": {
+    "notification": {
+      "title": "title",
+      "body": "body"
+    },
+    "android": {
+      "collapse_key": -1,
+      "urgency": "HIGH",
+      "notification": {
+        "title_loc_key": "%s",
+        "body_loc_key": "%s",
+        "body_loc_args": ["%s","%s"],
+        "icon": "%s",
+        "importance": "HIGH",
+        "click_action": {
+          "type": 1,
+          "intent": "%s"
+        }
+      }
+    },
+    "token": [
+      "%s"
+    ]
+  }
+}

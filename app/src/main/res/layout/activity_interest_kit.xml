@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/interest_page_bdg"
+    tools:context=".page.InterestKitActivity">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardElevation="8dp"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_title"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:text="@string/my_favorite_title1"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/interest_title"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="@string/my_favorite_title2"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/interest_title"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/tv_title"
+                android:layout_height="wrap_content">
+            </TextView>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_no_kits_tip"
+        android:gravity="center"
+        android:text="@string/no_interest_kits_tip"
+        android:textSize="30sp"
+        android:visibility="gone"
+        android:textColor="@color/interest_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </TextView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_marginTop="10dp"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

@@ -37,25 +37,48 @@ Firstly choose the area you are in, then you can download the Demo App from scan
 ## Features
 Features of this application with HMS Core solution
 - Product list page
-- Product detail page
-- Picture/video/3D product showcase
-- Ads placement
-- Barcode scanning-based search
-- Photo scanning-based search
-- One-tap login in/out
-- Notifications for order/payment update
-- User location/location filling
-- Membership purchase
-- System integrity check
-- Comments, which can be translated in app
-- AR Wearing
-- Bank card recognition
-- Image Super-Resolution
-- Geo-fencing
-- Voice Search
 
+- Product detail page
+
+- Favorite product collection/shopping cart
+
+- Picture/video/3D product showcase
+
+- Barcode scanning-based search
+
+- Photo scanning-based search//Voice Search
+
+- QR code scanning payment/QR code generation
+
+- One-tap login in/out
+
+- Notifications for order/payment update
+
+- User location/location filling
+
+- Membership purchase
+
+- System integrity check
+
+- Comments, which can be translated in app
+
+- AR Wearing
+
+- Bank card recognition
+
+- Image Super-Resolution
+
+- Geo-fencing
+
+- 
+
+- Membership rewards points 
+- Offline store guidance
+- Discount price marketing
+- Product link share
 
 ## Application Generation
+
 **Environment Requirement**:
 
 - Android Studio: 4.1
@@ -64,7 +87,7 @@ Features of this application with HMS Core solution
 
 **Run locally**
 1. Clone the repository:
-     
+  
         git clone https://github.com/HMS-Core/hms-ecommerce-demo.git
 
 You can also download the zip file containing the code in this page
@@ -80,15 +103,11 @@ You can also download the zip file containing the code in this page
         gradle build
 
 ## Kit Usage Description
-- When opening the App, Ads kit will be called to show the splash Ads.
-
-![AdsKit](images/kit-usage-gif-english/AdsKit.gif)
-
-- When you log in your Huawei Account, the account kit will used.
+- When you log in your Huawei Account, the account kit will be used.
 
 ![AccountKit](images/kit-usage-gif-english/AccountKit.gif)
 
-- Scan kit is used to scan the barcode/QR Code to view the product.
+- Scan kit is used to scan the barcode/QR Code to view the product, pay for product and  to generate QR code.
 
 ![ScanKit](images/kit-usage-gif-english/ScanKit.gif)
 
@@ -96,20 +115,26 @@ You can use the following barcode picture to test barcode buy function:
 
 ![Bar Code](images/barcode.gif)
 
+![ScanKit](images/kit-usage-gif-english/scan-for-payment.gif)![ScanKit](images/kit-usage-gif-english/QR-Code-generation.gif)
+
 - You can also take a photo to the physical goods and system will search for the similar item in the system. ML kit capability is used here.
 
 ![MLKit](images/kit-usage-gif-english/PhotoShopping.gif)
 
 - After you create a purchase order, a notification will be sent to you via push kit.
 
-![PushKit](images/kit-usage-gif-english/PushKit.gif)![PushKit](images/kit-usage-gif-english/GroFence.gif)
+![PushKit](images/kit-usage-gif-english/PushKit.gif)
 
 - When you view the product information, video kit is used to show the product video.
 
 ![VideoKit](images/kit-usage-gif-english/VideoKit.gif)
 
 - Location kit is used to get your current location to get the district information.
+
+  ![LocationKit](images/kit-usage-gif-english/VideoKit.gif)
+
 - Identity kit is used to get configured address to make it fast for delivery address.
+
 - Analytics Kit will collect the basic usage information to App developer to analyze the App usage statistics.
 
 - Scene Kit can show the 3D model of the product.
@@ -133,8 +158,32 @@ You can use the following barcode picture to test barcode buy function:
 
 ![AREngine](images/kit-usage-gif-english/AR.gif)
 
+- Map and location kit can help to display offline store information generate navigation paths.
+
+  ![Mapkit](images/kit-usage-gif-english/stores-around.gif)
+
+- Search kit prodives developers with the open capability of smart assistant, which can automatically respond to users' questions through robotic conversations.
+
+  ![Searchkit](images/kit-usage-gif-english/SmartAssistantServices.gif)
+
+- CaaS Kit capabilities allow users to share screens during shopping. When the user is browsing product page, he can click the share button to start sharing shoppping experience with friends.
+
+- Crash kit can collect and record statistics on application crash information.
+
+- Favorite products: Users can collect favorite products together and display them on the  one favorites 
+
+  page.
+
+- Product discount price: The original price and discount price are displayed for all commodity prices. The discount price is highlighted.
+
+- New product: The new product is displayed on a separate page. The remaining time of the discount activity is displayed in the discount countdown. The users can subscribe to the products and trigger a push message.
+
+- Membership rewards points : When a user purchases a product, rewards points are added to the account based on the price of the product purchased by the user.
+
+- Product sharing: Users can share the product they like to social app, including but not limited to Alipay, WeChat, and Facebook.
 
 ## Precautions
+
 The Shopping Demo is a Demo app which simulate a shopping process. There are limited products in the App. Some functions are unavailable or virtual service.
 
 - Customer Service is unavailable.

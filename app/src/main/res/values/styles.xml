@@ -5,19 +5,26 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!-- 避免控件会顶到状态栏上 -->
+        <!-- Prevent the control from hitting the status bar -->
         <item name="android:fitsSystemWindows">true</item>
     </style>
+    <!-- vertical division  -->
+    <style name="common_vertical_division_line_style">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:background">@color/product_text</item>
+    </style>
 
-    <!-- 开屏图片-->
+
+    <!-- Splash image -->
     <style name="Main_AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="Main_AppTheme.Splash" parent="Main_AppTheme.NoActionBar">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowFullscreen">true</item>
-        <!--<item name="android:layout">@layout/activity_splash</item>-->
         <item name="android:windowBackground">@drawable/x_splash</item>
     </style>
 
@@ -25,19 +32,24 @@
     <style name="Custom" />
     <!-- 主页导航栏 -->
     <style name="Custom.TabRadioButton">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:singleLine">true</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">5dp</item>
         <item name="android:gravity">center</item>
         <item name="android:button">@null</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@drawable/tab_text_color_selector</item>
+
     </style>
     <!-- switch开关 -->
     <style name="Custom.MySwitch" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/green</item>
         <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="android:colorForeground">@color/switch_close</item>
     </style>
 
     <!--  checkbox勾选  -->
@@ -58,11 +70,27 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="dialog" parent="android:style/Theme.Dialog">
+    <style name="dialog" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">#00000000</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="myRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_drawable</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:maxHeight">32dp</item>
+    </style>
+
+    <!--payment succeed-->
+    <style name="paymentSucceedText1">
+        <item name="android:textColor">@color/payment_succeed_text3</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="paymentSucceedText2">
+        <item name="android:textColor">@color/payment_succeed_text4</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

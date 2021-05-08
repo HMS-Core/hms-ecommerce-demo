@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/my_account_bgd"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/lv_title"
+        layout="@layout/title_page_2" />
+
+    <ImageView
+        android:id="@+id/useravantar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="20dp"
+        tools:srcCompat="@mipmap/head_my" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="5dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="5dp"
+        android:text="1.00"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="5dp"
+        android:text="@string/pay_result" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+
+        <TextView
+            android:id="@+id/serialnumber"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="@string/serial_number"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toRightOf="@id/serialnumber"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="99999999999"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/paymenttype"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="@string/payment_type"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/content2"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toRightOf="@id/paymenttype"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="@string/bank_card_payment"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/ordernumber"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="@string/order_number"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/content3"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toRightOf="@id/ordernumber"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="99999999999"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="@string/create_time"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toRightOf="@id/createtime"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="Textview"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/productname"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="@string/product_name"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toRightOf="@id/productname"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:text="Textview"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</LinearLayout>

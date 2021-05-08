@@ -8,23 +8,20 @@
 
     <include
         android:id="@+id/title_order_evaluation"
-        layout="@layout/title_evaluation" />
+        layout="@layout/title_page" />
 
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_order_evaluation"
-        android:layout_marginTop="@dimen/hiad_20_dp">
+        android:layout_below="@+id/title_order_evaluation">
 
         <ImageView
             android:id="@+id/iv_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_alignTop="@+id/tv_product_name"
             android:layout_alignBottom="@+id/tv_product_price"
-            android:minWidth="120dp"
-            android:minHeight="120dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/thumbnail_phonesample1" />
 
@@ -46,7 +43,7 @@
             android:layout_toEndOf="@+id/iv_product"
             android:padding="6dp"
             android:text="@string/product_detail"
-            android:textSize="15sp" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/tv_product_price"
@@ -62,30 +59,27 @@
 
     <EditText
         android:id="@+id/ed_evaluate"
-        android:layout_below="@+id/rl_top"
-        android:layout_marginTop="@dimen/hiad_20_dp"
         android:layout_width="match_parent"
-        android:layout_height="142dp"
-        android:gravity="top"
-        android:padding="@dimen/hiad_10_dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/rl_top"
+        android:layout_marginTop="@dimen/tab_corners"
         android:background="@drawable/type_text_no_select"
-        />
+        android:gravity="top"
+        android:padding="@dimen/tab_corners" />
 
 
     <TextView
         android:id="@+id/tv_evaluate"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ed_evaluate"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="@string/order_center_commit_evaluate"
-        android:layout_marginTop="20dp"
-        android:padding="6dp"
         android:layout_centerHorizontal="true"
-        android:textSize="16sp"
+        android:layout_marginTop="250dp"
         android:background="@drawable/corner_submit_type"
-        >
-    </TextView>
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/order_center_commit_evaluate"
+        android:textColor="@color/white"
+        android:textSize="16sp"></TextView>
 
 </RelativeLayout>

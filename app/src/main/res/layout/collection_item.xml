@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="0dp"
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/collection_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <ImageView
+            android:id="@+id/image_product"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:adjustViewBounds="true"></ImageView>
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="0dp"
+            android:textColor="@color/product_text"
+            android:textSize="14sp"
+            android:textStyle="bold"></TextView>
+
+        <ImageView
+            android:id="@+id/image_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="6dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="40dp"
+            android:maxHeight="40dp"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/product_saved"></ImageView>
+
+    </LinearLayout>
+</LinearLayout>

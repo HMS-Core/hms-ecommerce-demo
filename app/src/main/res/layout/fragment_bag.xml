@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2021. All rights reserved.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".page.BagActivity">
+
+    <include
+        android:id="@+id/title_order_evaluation"
+        layout="@layout/title_page" />
+
+    <LinearLayout
+        android:id="@+id/layout_login_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/textview_border_shape"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/tip_sign_in_first" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_shopping_cart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:scrollbars="none" />
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <CheckBox
+            android:id="@+id/checkBox_all_select"
+            style="@style/MyCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="@string/shopping_cart_select_all"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView_actual_price"
+            android:layout_toStartOf="@id/textView_actual_price"
+            android:padding="3dp"
+            android:text="@string/shopping_cart_total"
+            android:textColor="@color/black"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView_actual_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_toStartOf="@id/textView_pay"
+            android:paddingVertical="1.5dp"
+            android:text="@string/shopping_cart_item_example_quantity"
+            android:textColor="#FF3C3D"
+            android:textSize="20sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView_ship_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_actual_price"
+            android:layout_alignEnd="@+id/textView_actual_price"
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:text="@string/shopping_shipping"
+            android:textColor="#A7A7A7"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView_pay"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/background_check_out"
+            android:gravity="center"
+            android:text="@string/shopping_cart_pay"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView_delete"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/background_delete_bag_item"
+            android:gravity="center"
+            android:text="@string/shopping_cart_delete"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

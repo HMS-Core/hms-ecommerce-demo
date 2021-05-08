@@ -7,6 +7,7 @@
         <item>电子产品</item>
         <item>鞋包</item>
         <item>家具</item>
+        <item>眼镜</item>
     </string-array>
 
     <string-array name="search_hot">
@@ -48,5 +49,27 @@
         <item>ru</item>
         <item>ja</item>
         <item>zh</item>
+    </string-array>
+
+    <string-array name="feedback_list">
+        <item>功能建议</item>
+        <item>异常反馈</item>
+        <item>问题投诉</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="shop_name_list">
+        <item>华为旗舰店</item>
+        <item>华为售后维修</item>
+        <item>华为加盟店</item>
+    </string-array>
+    <string-array name="shop_addr_list">
+        <item>模拟地址1</item>
+        <item>模拟地址2</item>
+        <item>模拟地址3</item>
+    </string-array>
+
+    <string-array name="camera_select">
+        <item>扫码购</item>
+        <item>拍照购</item>
     </string-array>
 </resources>

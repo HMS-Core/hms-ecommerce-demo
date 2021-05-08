@@ -1,32 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--no need night-->
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="tab_text_color_selected">#d81e06</color>
-    <color name="tab_text_color_no_selected">#000000</color>
+    <color name="green">#008B00</color>
     <color name="color_bdg_gray">#F2F2F2</color>
-    <color name="color_light_gray">#d6d6d6</color>
     <color name="color_search_bgd_gray">#C4C8D0</color>
     <color name="text_color_type_1">#666666</color>
-    <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
-    <color name="green">#008B00</color>
     <color name="red">#ab1515</color>
-    <color name="tip_view_bdg">#8f000000</color>
-    <color name="catalogue_type_color_1">#ffbb33</color>
-    <color name="catalogue_type_color_2">#99cc00</color>
-    <color name="catalogue_type_color_3">#7D7DFF</color>
-    <color name="catalogue_type_color_4">#FE8649</color>
-    <color name="catalogue_type_color_5">#FAFFBD</color>
-    <color name="catalogue_type_color_6">#37a0d2</color>
+
+    <color name="background_button_default">#F65959</color>
+
+    <color name="light_green_1">#72D012</color>
+    <color name="light_red_1">#DF0000</color>
+
+    <!--MainActivity-->
+    <color name="tab_text_color_selected">#ffffff</color>
+    <color name="tab_text_color_no_selected">#000000</color>
+    <color name="tab_bgd_color_selected">#666666</color>
+    <color name="tab_bgd_color_no_selected">#ffffff</color>
+
+    <!--Drawer Left-->
+    <color name="drawer_text_color1">#000000</color>
+    <color name="drawer_text_color2">#ffffff</color>
+    <color name="drawer_line_bgd">#dddddd</color>
+    <color name="drawer_layout_bgd">#eeeeee</color>
+
+    <!--HomePage-->
+    <color name="home_bar_bgd">#ffffff</color>
+    <color name="bar_line">#dddddd</color>
+    <color name="home_page_bgd">#ffffff</color>
+    <color name="switch_kit_tip">#666666</color>
+    <color name="tv_ar">#000000</color>
+    <color name="switch_close">#666666</color>
+
+    <!--CatalogueFragment-->
+    <color name="item_catalogue_no_select">#000000</color>
+    <color name="item_catalogue_selected">#ab1515</color>
+    <color name="catalogue_no_product">#000000</color>
+    <color name="catalogue_product_list">#ffffff</color>
+    <!--count down-->
+    <color name="count_down_background">#cccccc</color>
+
+    <!--InterestKitActivity-->
+    <color name="interest_page_bdg">#ffffff</color>
+    <color name="interest_title">#000000</color>
+    <color name="interest_kit_info">#ffffff</color>
+    <color name="interest_line_bdg">#dddddd</color>
+    <color name="interest_line_bdg_2">#bbbbbb</color>
+    <color name="interest_kit_item_title">#ffffff</color>
+
+    <!--ProductActivity-->
+    <color name="color_light_gray">#d6d6d6</color>
     <color name="orange_type_1">#ff5227</color>
     <color name="orange_type_2">#f8866a</color>
     <color name="red_type_1">#db4f3a</color>
     <color name="red_type_2">#d24d39</color>
-    <color name="light_yellow">#FFFFF0</color>
+    <color name="product_layout">#ffffff</color>
+    <color name="product_text">#000000</color>
+
+    <!--ProductVisionSearchAnalyseActivity-->
+    <color name="analytics_text">#000000</color>
+    <color name="analytics_bdg">#ffffff</color>
+    <color name="analytics_item_text">#000000</color>
+    <color name="product_vision_text1">#999999</color>
+    <color name="product_vision_text2">#e9480e</color>
+    <color name="product_vision_bgd">#fbf7f7</color>
+
+    <!--title layout-->
+    <color name="title_color">#000000</color>
+    <color name="title_line">#000000</color>
+
+    <!--Setting layout-->
+    <color name="setting_bgd">#ffffff</color>
+    <color name="setting_tv">#000000</color>
+
+    <!--MyAccountActivity-->
+    <color name="my_account_bgd">#F3F3F3</color>
+    <color name="tv_my_account">#000000</color>
+    <color name="arc_color">#000000</color>
+    <color name="account_item">#000000</color>
+    <color name="account_item_bdg">#ffffff</color>
+    <color name="account_item_line">#000000</color>
+
+    <!--SearchActivity-->
+    <color name="search_item">#000000</color>
+
+    <!--SearchResultActivity-->
+    <color name="tip_view_bdg">#8f000000</color>
+    <color name="tip_view_bdg2">#D0878684</color>
+
+    <!--BuyMemberActivity-->
     <color name="gold">#DAA520</color>
     <color name="light_gold">#D0A520</color>
-    <color name="light_green_1">#72D012</color>
-    <color name="light_red_1">#DF0000</color>
+    <color name="item_member">#edeaea</color>
+    <color name="item_member_buy">#80000000</color>
+    <color name="item_member_week">#ff7a13</color>
+    <color name="item_member_month">#fab7c1</color>
+    <color name="item_member_year">#ffd9b6</color>
+
+    <!--CameraSelectActivity-->
+    <color name="camera_bgd">#000000</color>
+
+    <!--PaymentSelectActivity-->
+    <color name="payment_select_text1">#999999</color>
+    <color name="payment_select_text2">#fa4c42</color>
+    <color name="payment_select_text3">#383838</color>
+    <color name="payment_select_text4">#ffffff</color>
+
+    <!--PaymentSucceededActivity-->
+    <color name="payment_succeed_text1">#0e0e0e</color>
+    <color name="payment_succeed_text2">#e6333333</color>
+    <color name="payment_succeed_text3">#99333333</color>
+    <color name="payment_succeed_text4">#e6333333</color>
 </resources>

@@ -1,51 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/draw_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/frame_main"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_height="match_parent">
 
-    <RadioGroup
-        android:id="@+id/tabs_rg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#dcdcdc"
-        android:paddingTop="2dp"
-        android:paddingBottom="0dp"
-        android:orientation="horizontal">
+        <include
+                android:id="@+id/bar_home"
+                layout="@layout/home_bar" />
 
-        <RadioButton
-            android:id="@+id/tab_home"
-            style="@style/Custom.TabRadioButton"
-            android:checked="true"
-            android:drawableTop="@drawable/tab_home_selector"
-            android:text="@string/title_home" />
+        <FrameLayout
+                android:id="@+id/frame_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/bar_home" />
 
-        <RadioButton
-            android:id="@+id/tab_catalogue"
-            style="@style/Custom.TabRadioButton"
-            android:drawableTop="@drawable/tab_catalogue_selector"
-            android:text="@string/title_catalogue" />
+        <RadioGroup
+            android:id="@+id/tabs_rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/tab_bgd_config"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/tab_shop"
-            style="@style/Custom.TabRadioButton"
-            android:drawableTop="@drawable/tab_shop_selector"
-            android:text="@string/title_shop" />
+            <RadioButton
+                android:id="@+id/tab_home"
+                style="@style/Custom.TabRadioButton"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/tab_start_bgd_color_selector"
+                android:checked="true"
+                android:text="@string/title_home" />
 
-        <RadioButton
-            android:id="@+id/tab_my"
-            style="@style/Custom.TabRadioButton"
-            android:drawableTop="@drawable/tab_my_selector"
-            android:text="@string/title_my" />
-    </RadioGroup>
-</LinearLayout>
+            <RadioButton
+                android:id="@+id/tab_catalogue"
+                style="@style/Custom.TabRadioButton"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/tab_center_bgd_color_selector"
+                android:text="@string/title_catalogue" />
+
+            <RadioButton
+                android:id="@+id/tab_new_in"
+                style="@style/Custom.TabRadioButton"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/tab_end_bgd_color_selector"
+                android:text="@string/title_new_in" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/drawer_left"
+        layout="@layout/drawer_main_left"></include>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -38,25 +38,26 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
 应用以下页面中使用到HMS Core的特性
 - 商品列表页面
 - 商品详情页面
+- 商品收藏/购物车
 - 图片/视频/3D产品展示
-- 广告展示
 - 条形码扫描搜索
-- 产品图片搜索
+- 产品图片搜索/语音搜索
+- 扫码支付/二维码生成
 - 一键登录登出
 - 产品订单提醒推送
 - 用户位置信息获取
 - 用户地址获取
-- 开屏广告
 - 会员功能
 - 系统完整性检查
 - 用户评价功能，并可以进行自动翻译
-- 眼镜AR试戴
+- AR试戴
 - 银行卡识别
-- 图片超分
 - 地理围栏
-- 语音搜索
-
-
+- 智能客服
+- 积分功能
+- 线下门店引导
+- 优惠价营销
+- 产品分享
 
 
 ## 应用生成
@@ -68,7 +69,7 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
 
 **本地运行**
 1. 克隆代码仓:
-     
+  
         git clone https://github.com/HMS-Core/hms-ecommerce-demo.git
 
 您也可以下载包含该项目的Zip包。
@@ -84,21 +85,21 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
         gradle build
 
 ## Kit使用描述
-- 打开App时，Ads Kit将展示开屏广告。
-
-![AdsKit](images/kit-usage-gif-english/AdsKit.gif)
-
 - Account Kit将帮助您直接使用Huawei帐号进行登录。
 
-![AccountKit](images/kit-usage-gif-english/AccountKit.gif)
+![AccountKit](images/kit-usage-gif-chinese/账户登录.gif)
 
-- Scan kit可以进行条形码/二维码扫描，进行产品查看。
+- Scan kit可以进行条形码/二维码扫描，进行产品查看、扫码支付，并可以生成二维码
 
-![ScanKit](images/kit-usage-gif-english/ScanKit.gif)
+![ScanKit](images/kit-usage-gif-chinese/扫码购物.gif)
 
 您可以使用下面的条形码，测试条形码购买的功能：
 
 ![Bar Code](images/barcode.gif)
+
+![ScanKit](images/kit-usage-gif-chinese/扫码支付.gif)
+
+![ScanKit](images/kit-usage-gif-chinese/生成二维码.gif)
 
 - 您可以通过给物品拍照，由ML Kit帮您在系统中搜索相似的商品。
 
@@ -106,13 +107,15 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
 
 - 当您下单之后，Push Kit将收到向您推送的相关通知。
 
-![PushKit](images/kit-usage-gif-english/PushKit.gif)![PushKit](images/kit-usage-gif-english/GroFence.gif)
+![PushKit](images/kit-usage-gif-chinese/消息推送.gif)
 
 - 当您查看商品信息时，Video Kit将向您展示商品的相关视频。
 
-![VideoKit](images/kit-usage-gif-english/VideoKit.gif)
+![VideoKit](images/kit-usage-gif-chinese/视频展示.gif)
 
 - Location kit可以获取您当前的位置信息，并从其中获得您所在的地区信息。并且可以提供地理围栏功能，当用户进出指定范围时可以收到提醒。
+
+  ![PushKit](images/kit-usage-gif-chinese/地理围栏.gif)
 
 
 - Identity kit可以获取用户已配置的地址信息，已快速进行快递地址填写。
@@ -124,25 +127,40 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
 
 - IAP Kit可以帮助进行会员关系的订购，以提供会员优惠。
 
-![IapKit](images/kit-usage-gif-english/Iap.gif)
-
 - Safety Detect可以在启动时检查系统完整性，以保证运行环境安全。
 
-![SafetyDetect](images/kit-usage-gif-english/SafetyDetect.gif)
+![SafetyDetect](images/kit-usage-gif-chinese/安全检测.gif)
 
-- ML Kit可以提供评论翻译，图片超分，银行卡识别，语音搜索等功能
+- ML Kit可以提供评论翻译，银行卡识别，语音搜索等功能
 
-![MLKit](images/kit-usage-gif-english/Translation.gif)![MLKit](images/kit-usage-gif-english/BankCardRecognization.gif)![MLKit](images/kit-usage-gif-english/VoiceSearch.gif)
+![MLKit](images/kit-usage-gif-chinese/自动翻译.gif)![MLKit](images/kit-usage-gif-chinese/银行卡识别.gif)![MLKit](images/kit-usage-gif-chinese/语音搜索购物.gif)
 
 - AR Kit可以提供商品试穿试戴的功能，如眼镜试戴。
 
 ![AREngine](images/kit-usage-gif-english/AR.gif)
 
+- Map/Location Kit可以展示线下门店信息并生成导航路径
+
+
+![Map/location](images/kit-usage-gif-chinese/线下门店.gif)
+
+- Search Kit可以提供智能客服功能，通过机器人对话的方式自动回复用户问题
+
+
+![Search](images/kit-usage-gif-chinese/智能客服.gif)
+
+- 集成CaaS Kit能力，用户可以借助畅连功能在购物过程中进行屏幕共享。在商品浏览界面使用分享按钮进行界面共享启动。 
+- 集成Crash Kit能力可以记录统计应用崩溃信息。
+- 收藏商品：用户可以将喜爱的商品添加至收藏夹，并单独展示在商品收藏页面。
+- 产品优惠价：所有商品价格均展示原价与优惠价两个价格，优惠价突出展示。
+- 产品上新：新产品单独展示页面，优惠倒计时显示折扣活动剩余时间，用户可选择订阅商品，并触发推送消息
+- 会员积分：当用户购买商品时，根据用户购买的商品金额，在账户中增加积分。
+- 商品链接分享：当用户查看商品时，可将该商品通过链接的方式，在社交软件中进行分享，包括但不限于支付宝，微信，facebook等。
+
 
 ## 注意事项
 购物App Demo是模拟真实购物流程的演示。因此其中商品数量是有限的，部分功能是不具备的，部分功能是虚拟的。
 
-- 不具备客服功能。
 - 商品购买的功能为虚拟购买，不会进行实际扣费。
 - App中的会员订购为真实订购，将会从您的帐户中进行实际扣费，并且不会退费。
 - 会员订购完成后请及时通过“订阅管理”取消订购，否则将会导致持续扣费。取消订购后当前会员关系将保持到周期结束。

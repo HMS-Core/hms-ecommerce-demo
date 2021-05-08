@@ -5,51 +5,45 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     tools:context=".fragment.CatalogueFragment">
-    <include
-        android:id="@+id/bar_catalogue"
-        layout="@layout/home_bar">
-    </include>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_catalogue_type"
-        android:layout_below="@+id/bar_catalogue"
         android:layout_width="wrap_content"
-        android:overScrollMode="never"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_catalogue_product"
-        android:layout_below="@+id/bar_catalogue"
-        android:layout_toEndOf="@+id/recycler_catalogue_type"
         android:layout_width="match_parent"
-        android:overScrollMode="never"
-        android:background="@color/white"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/recycler_catalogue_type"
+        android:background="@color/catalogue_product_list"
+        android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+
     <LinearLayout
         android:id="@+id/lv_no_product"
-        android:layout_below="@+id/bar_catalogue"
-        android:layout_toEndOf="@+id/recycler_catalogue_type"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/recycler_catalogue_type"
         android:gravity="center"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
+
         <ImageView
-            android:src="@drawable/no_product"
             android:layout_width="wrap_content"
-            android:maxHeight="60dp"
-            android:maxWidth="60dp"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:layout_height="wrap_content">
-        </ImageView>
+            android:maxWidth="60dp"
+            android:maxHeight="60dp"
+            android:src="@mipmap/no_product"></ImageView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/no_product"
-            android:textColor="@color/black"
-            android:textSize="16sp">
-        </TextView>
+            android:textColor="@color/catalogue_no_product"
+            android:textSize="16sp"></TextView>
     </LinearLayout>
 
 </RelativeLayout>

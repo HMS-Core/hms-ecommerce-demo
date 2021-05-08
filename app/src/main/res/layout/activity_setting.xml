@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/setting_bgd"
+        android:orientation="vertical"
+        tools:context=".page.SettingActivity">
+
+    <include layout="@layout/title_page" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:paddingVertical="10dp"
+            android:text="@string/message_settings"
+            android:textColor="@color/setting_tv"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <include
+            android:id="@+id/lv_sub_product"
+            layout="@layout/setting_switch" />
+
+    <include
+            android:id="@+id/lv_order"
+            layout="@layout/setting_switch" />
+
+    <include
+            android:id="@+id/lv_bag"
+            layout="@layout/setting_switch" />
+
+    <include
+            android:id="@+id/lv_discount"
+            layout="@layout/setting_switch" />
+
+    <include
+            android:id="@+id/lv_geocode"
+            layout="@layout/setting_switch" />
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/color_bdg_gray" />
+
+    <TextView
+            android:id="@+id/tv_private"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="@string/privacy_statement"
+            android:textColor="@color/setting_tv"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/tv_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
+            android:text="@string/help_and_feedback"
+            android:textColor="@color/setting_tv"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
+            android:text="@string/version_update"
+            android:textColor="@color/setting_tv"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+</LinearLayout>

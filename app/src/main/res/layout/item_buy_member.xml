@@ -1,33 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lv_item"
-    android:background="@drawable/no_selected_item_member"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/tv_member_name"
-        android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:padding="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
-    <TextView
-        android:id="@+id/tv_member_price"
-        android:layout_gravity="center"
+    android:layout_marginBottom="20dp"
+    android:background="@color/item_member"
+    android:orientation="horizontal">
 
-        android:textColor="@color/gold"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:padding="8dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="6dp">
+
+        <ImageView
+            android:id="@+id/iv_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:maxHeight="120dp"
+            android:src="@mipmap/member_vip_month"></ImageView>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/vip_week"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="2dp"
+            android:text="@string/vip_week"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/member_item_buy"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            android:text="@string/buy_member"
+            android:textColor="@color/white"
+            android:textSize="16sp"></TextView>
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
     <TextView
         android:id="@+id/catalogue_type"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:padding="10dp"
-        android:layout_weight="1"
-        android:text="@string/title_my"
-        android:gravity="center"
         android:layout_width="0dp"
-        android:layout_height="wrap_content">
-    </TextView>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/item_catalogue_no_select"
+        android:textSize="14sp"></TextView>
+
     <View
         android:id="@+id/item_bar"
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        android:visibility="invisible"
-        android:background="@drawable/catalogue_type_background"
         android:layout_width="2dp"
-        android:layout_height="18dp">
-    </View>
+        android:layout_height="18dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/catalogue_type_background"
+        android:visibility="gone"></View>
 </LinearLayout>

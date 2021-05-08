@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".page.OrderSubmitActivity">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <include layout="@layout/title_product" />
+
+            <RelativeLayout
+                    android:id="@+id/rv_change_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/white"
+                    android:padding="8dp">
+
+                <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center"
+                        android:padding="6dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/tv_name"
+                        android:gravity="center"
+                        android:padding="6dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_alignStart="@+id/iv_enter"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/iv_enter"
+                        android:gravity="start"
+                        android:padding="6dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                <TextView
+                        android:id="@+id/tv_address_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:padding="6dp"
+                        android:text="@string/add_address_tip"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                <ImageView
+                        android:id="@+id/iv_enter"
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_enter" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                        android:id="@+id/iv_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv_shop"
+                        android:layout_alignBottom="@+id/tv_shop"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="20dp"
+                        android:maxHeight="20dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_launcher" />
+
+                <TextView
+                        android:id="@+id/tv_shop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/iv_app"
+                        android:padding="8dp"
+                        android:text="@string/app_name"
+                        android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_product_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+
+            <include
+                    android:id="@+id/lv_send"
+                    layout="@layout/item_content_bar" />
+
+            <include
+                    android:id="@+id/lv_ticket"
+                    layout="@layout/item_content_bar" />
+
+            <include
+                    android:id="@+id/lv_sum_price"
+                    layout="@layout/item_content_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp" />
+
+            <include
+                    android:id="@+id/lv_member_discount"
+                    layout="@layout/item_content_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="8dp"
+                    android:textColor="@color/color_red_card" />
+            <!--include
+                android:id="@+id/lv_discount_price"
+                android:layout_marginTop="4dp"
+                layout="@layout/item_content_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </include-->
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/tab_product_buy_now" />
+
+</LinearLayout>

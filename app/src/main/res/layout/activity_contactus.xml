@@ -1,0 +1,368 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".page.ContactUsActivity">
+
+    <include
+        android:id="@+id/title_order_center"
+        layout="@layout/title_page" />
+
+    <ImageView
+        android:id="@+id/iconView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:paddingTop="20dp"
+        app:srcCompat="@mipmap/home_interest_kit" />
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/sparkle_store"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/versionView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/contact_version" />
+
+        <TextView
+            android:id="@+id/versionView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/tab_5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/versionView1"
+            android:text="Version Number"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_dev"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:id="@+id/imageView_dev"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="0dp"
+            android:adjustViewBounds="false"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon_forward" />
+
+        <TextView
+            android:id="@+id/textView_dev"
+            android:layout_width="296dp"
+            android:layout_height="35dp"
+            android:layout_above="@+id/textView_dev_addr"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/imageView_dev"
+            android:gravity="center_vertical"
+            android:text="@string/contact_developer"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_dev_addr"
+            android:layout_width="288dp"
+            android:layout_height="26dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="6dp"
+            android:layout_toStartOf="@+id/imageView_dev"
+            android:gravity="center_vertical"
+            android:text="@string/developer_address" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/rel_mail"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/imageView_mail"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="0dp"
+            android:adjustViewBounds="false"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon_forward" />
+
+        <TextView
+            android:id="@+id/textView_mail"
+            android:layout_width="296dp"
+            android:layout_height="36dp"
+            android:layout_above="@+id/textView_mail_addr"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/imageView_mail"
+            android:gravity="center_vertical"
+            android:text="@string/contact_mail"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_mail_addr"
+            android:layout_width="345dp"
+            android:layout_height="26dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="6dp"
+            android:layout_toStartOf="@+id/imageView_mail"
+            android:gravity="center_vertical"
+            android:text="@string/mail_address" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/rel_sof"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/imageView_sof"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="0dp"
+            android:adjustViewBounds="false"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon_forward" />
+
+        <TextView
+            android:id="@+id/textView_sof"
+            android:layout_width="296dp"
+            android:layout_height="36dp"
+            android:layout_above="@+id/textView_sof_adds"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@+id/imageView_sof"
+            android:text="@string/contact_sof"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_sof_adds"
+            android:layout_width="288dp"
+            android:layout_height="26dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="6dp"
+            android:layout_toStartOf="@+id/imageView_sof"
+            android:text="@string/sof_address" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/rel_git"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/imageView_git"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="0dp"
+            android:adjustViewBounds="false"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon_forward" />
+
+        <TextView
+            android:id="@+id/textView_github"
+            android:layout_width="296dp"
+            android:layout_height="36dp"
+            android:layout_above="@+id/textView_github_adds"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/imageView_git"
+            android:gravity="center_vertical"
+            android:text="@string/contact_git"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_github_adds"
+            android:layout_width="288dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="6dp"
+            android:layout_toStartOf="@+id/imageView_git"
+            android:text="@string/git_address" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/rel_reddit"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/imageView_reddit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="0dp"
+            android:adjustViewBounds="false"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon_forward" />
+
+        <TextView
+            android:id="@+id/textView_reddit"
+            android:layout_width="296dp"
+            android:layout_height="36dp"
+            android:layout_above="@+id/textView_reddit_addr"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/imageView_reddit"
+            android:gravity="center_vertical"
+            android:text="@string/contact_reddit"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_reddit_addr"
+            android:layout_width="288dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="6dp"
+            android:layout_toStartOf="@+id/imageView_reddit"
+            android:gravity="center_vertical"
+            android:text="@string/reddit_address" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/rel_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/textView_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:paddingTop="@dimen/tab_10dp"
+            android:text="@string/contact_share"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>

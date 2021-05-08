@@ -19,3 +19,26 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-optimizationpasses 5
+
+# HMS
+-ignorewarnings
+-keepattributes *Annotation*
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-keep class com.huawei.hianalytics.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+
+# AGC
+-keep class com.huawei.agconnect.**{*;} 
+-dontwarn com.huawei.agconnect.** 
+-keep class com.hianalytics.android.**{*;} 
+-keep class com.huawei.updatesdk.**{*;} 
+-keep class com.huawei.hms.**{*;} 
+-keep interface com.huawei.hms.analytics.type.HAEventType{*;} 
+-keep interface com.huawei.hms.analytics.type.HAParamType{*;} 
+-keepattributes Exceptions, Signature, InnerClasses, LineNumberTable

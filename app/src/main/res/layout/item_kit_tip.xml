@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:padding="6dp"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <ImageView
+        android:id="@+id/iv_save"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/icon_saved"></ImageView>
+
     <ImageView
         android:id="@+id/iv_kit"
-        android:src="@mipmap/icon_ads"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </ImageView>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:src="@mipmap/icon_ads" />
+
     <TextView
         android:id="@+id/tv_kit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="4dp"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:textStyle="bold"></TextView>
 
-    </TextView>
+    <TextView
+        android:id="@+id/tv_function"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:maxEms="14"
+        android:padding="4dp"
+        android:singleLine="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/tv_kit_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:maxEms="14"
+        android:padding="10dp"
+        android:singleLine="false"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </LinearLayout>

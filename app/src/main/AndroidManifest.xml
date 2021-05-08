@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,15 +24,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Main_AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".page.PrivacyActivity" />
-        <activity android:name=".page.LogInActivity" />
-        <activity android:name=".page.PaymentSucceededActivity" />
-        <activity android:name=".page.BuyMemberActivity" />
-        <activity android:name=".page.OrderCenterActivity">
+        <activity android:name=".page.CameraSelectActivity" />
+        <activity android:name=".page.CollectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -37,32 +38,54 @@
 
                 <data
                     android:host="com.huawei.industrydemo.shopping"
-                    android:path="/deeplink"
+                    android:path="/collection"
                     android:scheme="pushscheme" />
             </intent-filter>
         </activity>
+        <activity android:name=".page.WebViewActivity" />
+        <activity android:name=".page.SearchResultActivity" />
+        <activity android:name=".page.BuyMemberActivity" />
+        <activity android:name=".page.MyAccountActivity" />
+        <activity android:name=".page.PointsActivity" />
+        <activity android:name=".page.FeedbackActivity" />
+        <activity android:name=".page.SettingActivity" />
+        <activity android:name=".page.ProductVisionSearchAnalyseActivity" />
+        <activity android:name=".page.EvaluationListActivity" />
+        <activity android:name=".page.OrderSubmitActivity" />
+        <activity
+            android:name=".page.BcrAnalyseActivity"
+            android:exported="true" />
+        <activity android:name=".page.PaymentSelectActivity" />
+        <activity android:name=".page.PaymentSucceededActivity" />
+        <activity android:name=".page.EvaluateActivity" />
+        <activity android:name=".page.ScanAndPayActivity" />
+        <activity android:name=".page.FaceViewActivity" />
+        <activity android:name=".page.SceneViewActivity" />
+        <activity
+            android:name=".page.ProductActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="https" />
+                <data
+                    android:host="developer.huawei.com"
+                    android:scheme="https" />
+
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".page.SearchActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".page.OrderSubmitActivity" />
-        <activity android:name=".page.ProductActivity" />
-        <activity android:name=".page.SearchResultActivity" />
-        <activity android:name=".page.SceneViewActivity" />
-        <activity android:name=".page.ProductVisionSearchAnalyseActivity" />
-        <activity android:name=".page.EvaluateActivity"/>
-        <activity android:name=".page.EvaluationListActivity"/>
-        <activity android:name=".page.PaymentSelectActivity"/>
-        <activity android:name=".page.BcrAnalyseActivity"/>
-        <activity android:name=".page.FaceViewActivity"
-            android:exported="false"
-            android:configChanges="screenSize|orientation|uiMode|density"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
-            android:theme="@style/Main_AppTheme"
-            tools:targetApi="n">
-        </activity>
+            android:launchMode="singleTask" />
+        <activity android:name=".page.InterestKitActivity" />
+        <activity android:name=".page.PrivacyActivity" />
         <activity
             android:name=".page.SplashActivity"
             android:theme="@style/Main_AppTheme.Splash">
@@ -75,39 +98,89 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.huawei.industrydemo.shopping"
+                    android:path="/newIn"
+                    android:scheme="pushscheme" />
+
+
+            </intent-filter>
+        </activity> <!-- android:launchMode="singleTask" /> -->
+        <activity android:name=".page.BagActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.huawei.industrydemo.shopping"
+                    android:path="/bag"
+                    android:scheme="pushscheme" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".page.ContactUsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".page.OrderCenterActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.huawei.industrydemo.shopping"
+                    android:path="/orderCenter"
+                    android:scheme="pushscheme" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".geofence.GeoDialogAct"
+            android:launchMode="singleTop"
+            android:theme="@style/dialog" />
+        <activity
+            android:name=".page.map.MapAct"
+            android:exported="true"
             android:launchMode="singleTask" />
 
-        <activity
-            android:name=".entity.geofence.GeoTestAct"
-            android:exported="true" />
-
-        <activity
-            android:name=".entity.geofence.GeoDialogAct"
-            android:theme="@style/dialog"
-            android:launchMode="singleTop"/>
-
         <service
-            android:name=".push.MyPushService"
+            android:name=".service.PushService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
-            android:name=".entity.geofence.GeoService"
-            android:exported="false">
-
-        </service>
+            android:name=".geofence.GeoService"
+            android:exported="false" />
 
         <receiver
-            android:name=".entity.geofence.GeoFenceBroadcastReceiver"
+            android:name=".geofence.GeoFenceBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.huawei.hmssample.geofence.GeoFenceBroadcastReceiver.ACTION_PROCESS_LOCATION" />
             </intent-filter>
         </receiver>
 
+        <service android:name=".service.LocationService" />
+
+        <meta-data
+                android:name="install_channel"
+                android:value="HMSCore" />
         <meta-data
                 android:name="com.huawei.hms.ml.DEPENDENCY"
                 android:value="bcr,imagesuperresolution" />

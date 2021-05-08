@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Huawei Technologies Co., Ltd. 2019-2020. All rights reserved.
+  -->
+
+<resources>
+    <dimen name="tab_corners">20dp</dimen>
+    <dimen name="tab_10dp">10dp</dimen>
+    <dimen name="tab_5dp">5dp</dimen>
+
+</resources>

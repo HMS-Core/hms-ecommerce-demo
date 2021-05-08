@@ -1,86 +1,153 @@
 <resources>
-    <string name="app_name">Shopping Demo</string>
-    <string name="title_home">首页</string>
-    <string name="title_catalogue">目录</string>
-    <string name="title_shop">&#160;&#160;购物车</string>
-    <string name="title_my">我的</string>
+    <string name="app_name">购物Demo</string>
+    <string name="robot_url">https://searchtest-drcn.dt.dbankcloud.com/assistant/#/?locale=zh</string>
+    <string name="product_file_path">products-zh</string>
 
+    <!-- Main Page-->
+    <string name="title_home">主页</string>
+    <string name="title_catalogue">分类</string>
+    <string name="title_new_in">即将发售</string>
+    <string name="sys_integrity_detecting">检查中...</string>
+    <string name="sys_integrity_detect_success">系统完整性检查通过</string>
+    <string name="welcome">欢迎</string>
+    <string name="first_press_back">再按一次返回键退出</string>
+    <string name="notice">test_zh</string>
+
+    <!-- kits tip-->
     <string name="no_kits">未使用Kit</string>
     <string name="used_kits">本页面使用了以下Kits:</string>
-    <string name="no_login">请登录/注册</string>
-    <string name="is_shop_tip">是否展示Kit实现信息</string>
-    <string name="is_geofence">是否开启地理围栏</string>
+    <string name="cancel_saved">收藏删除成功</string>
+    <string name="saved_success">加入收藏</string>
 
-    <string name="market_recommendation">商城推荐</string>
+    <!-- kits information-->
+    <string name="accountkit_name">华为帐号服务</string>
+    <string name="account_link">https://developer.huawei.com/consumer/cn/hms/huawei-accountkit?ha_source=hms7</string>
+    <string name="account_login">快捷登录</string>
 
+    <string name="map_location">定位服务+地图服务</string>
+    <string name="map_location_link">https://developer.huawei.com/consumer/cn/hms/huawei-MapKit?ha_source=hms7</string>
+    <string name="offline_store">查询线下门店</string>
 
-    <!-- ad -->
-    <string name="status_load_ad_success">广告加载状态：加载完成</string>
-    <string name="status_load_ad_fail">广告加载状态：加载失败，错误码：</string>
-    <string name="owner">HUAWEI Developer</string>
-    <string name="media_name">HUAWEI Ads</string>
-    <string name="copyright_info">Copyright 2020. Huawei Technologies Co., Ltd</string>
-    <string name="status_ad_dismissed">开屏广告获取失败</string>
+    <string name="mapkit_name">地图服务</string>
+    <string name="map_link">https://developer.huawei.com/consumer/cn/hms/huawei-MapKit?ha_source=hms7</string>
+    <string name="map_map">地图展示</string>
 
-    <string name="customer_service">客服</string>
-    <string name="customer_evaluation">评价</string>
-    <string name="add_shop_car">加入购物车</string>
-    <string name="buy_now">立即购买</string>
-    <string name="product_price">¥ %d</string>
-    <string name="product_price_2">实际支付:¥ %d</string>
-    <string name="product_3d">3D</string>
-    <string name="product_ar">AR</string>
-    <string name="product_color">颜色</string>
-    <string name="product_version">版本</string>
-    <string name="product_capacity">容量</string>
-    <string name="product_address">定位中</string>
-    <string name="product_count">数量</string>
-    <string name="product_send">送至</string>
-    <string name="check_order">确认订单</string>
-    <string name="submit_order">提交订单</string>
-    <string name="update_order">确认修改</string>
-    <string name="order_center">订单中心</string>
-    <string name="order_evaluate">评价订单</string>
-    <string name="order_evaluate_list">评价列表</string>
-    <string name="order_Automatic_translation">自动翻译</string>
-    <string name="order_more_translation">更多翻译</string>
-    <string name="my_order">我的订单</string>
-    <string name="add_address_tip">请添加地址</string>
-    <string name="product_detail">%s %s %s</string>
-    <string name="product_count_type_1">x%d</string>
-    <string name="product_stand_send">标准配送</string>
-    <string name="product_ticket">发票</string>
-    <string name="product_ticket_type">电子普通发票-个人</string>
-    <string name="product_sum_price">商品总价</string>
-    <string name="product_send_method">配送方式</string>
-    <string name="add_to_car_success">添加成功</string>
-    <string name="please_wait">敬请期待</string>
-    <string name="face_view">试戴</string>
-    <string name="member_discount">会员折扣(-10%)</string>
-    <string name="discount_price">折后价格</string>
-    <string name="bank_card_payment">银行卡支付</string>
-    <string name="other_payment_methods">其他支付方式</string>
-    <string name="select_payment_method">选择支付方式</string>
-    <string name="payment_prompt">提示</string>
-    <string name="payment_prompt_content">这里识别的银行卡数据不会进行保存，只是展示扫描结果</string>
+    <string name="identity_name">用户身份服务</string>
+    <string name="identity_link">https://developer.huawei.com/consumer/cn/hms/huawei-identitykit?ha_source=hms7</string>
+    <string name="identity_address">地址管理</string>
 
-    <string name="product_search_result">识别到的商品</string>
-    <string name="product_no_result">未识别到商品</string>
-    <string name="product_no_wifi">播放视频需要Wifi连接，请连接到Wifi并重新启动当前Demo。</string>
-    <string name="product_category">分类：</string>
+    <string name="mlkit_name">机器学习服务</string>
+    <string name="ml_link">https://developer.huawei.com/consumer/cn/hms/huawei-mlkit?ha_source=hms7</string>
+    <string name="ml_photo">拍照购</string>
+    <string name="ml_asr">语音识别</string>
+    <string name="ml_translate">翻译</string>
+    <string name="ml_bankcard">银行卡识别</string>
 
-    <string name="shopping_cart_title">购物车</string>
+    <string name="analytics_name">分析服务</string>
+    <string name="analytics_link">https://developer.huawei.com/consumer/cn/hms/huawei-analyticskit?ha_source=hms7</string>
+    <string name="analytics_report">电商行业应用</string>
+
+    <string name="arkit_name">AR Engine</string>
+    <string name="ar_link">https://developer.huawei.com/consumer/cn/hms/huawei-arengine?ha_source=hms7</string>
+    <string name="ar_reality">眼镜试戴</string>
+
+    <string name="location_name">定位服务</string>
+    <string name="location_link">https://developer.huawei.com/consumer/cn/hms/huawei-locationkit?ha_source=hms7</string>
+    <string name="location_geo">地理围栏</string>
+    <string name="location_lbs">基于定位的服务</string>
+
+    <string name="site_name">位置服务</string>
+    <string name="site_link">https://developer.huawei.com/consumer/cn/hms/huawei-sitekit?ha_source=hms7</string>
+    <string name="site_geo">地址自动填充</string>
+
+    <string name="push_name">推送服务</string>
+    <string name="push_link">https://developer.huawei.com/consumer/cn/hms/huawei-pushkit?ha_source=hms7</string>
+    <string name="push_message">消息推送</string>
+    <string name="subscribe_message">订购/收藏消息</string>
+    <string name="order_delivery">订单状态/物流消息</string>
+    <string name="bag_message">购物袋消息</string>
+    <string name="discount_message">折扣/新品推荐消息</string>
+    <string name="geo_message">地理围栏消息</string>
+
+    <string name="scan_name">统一扫码服务</string>
+    <string name="scan_link">https://developer.huawei.com/consumer/cn/hms/huawei-scankit?ha_source=hms7</string>
+    <string name="scan_pay">扫码支付</string>
+    <string name="scan_code">生成会员码</string>
+
+    <string name="video_name">视频服务</string>
+    <string name="video_link">https://developer.huawei.com/consmer/cn/hms/huawei-videokit?ha_source=hms7</string>
+    <string name="video_play">视频展示商品</string>
+
+    <string name="scene_name">图形引擎服务</string>
+    <string name="scene_link">https://developer.huawei.com/consumer/cn/hms/huawei-scenekit?ha_source=hms7</string>
+    <string name="display_3d">3D展示商品</string>
+
+    <string name="iap_name">应用内支付服务</string>
+    <string name="iap_link">https://developer.huawei.com/consumer/cn/hms/huawei-iap?ha_source=hms7</string>
+    <string name="member_purchase">会员购买</string>
+
+    <string name="safety_name">安全检测服务</string>
+    <string name="safety_link">https://developer.huawei.com/consumer/cn/hms/huawei-safetydetectkit?ha_source=hms7</string>
+    <string name="system_integrate">系统完整性检测</string>
+
+    <string name="caas_name">畅连能力</string>
+    <string name="caas_link">https://developer.huawei.com/consumer/cn/caas-kit?ha_source=hms7</string>
+    <string name="screen_share">共享屏幕</string>
+
+    <string name="search_name">搜索服务</string>
+    <string name="search_link">https://developer.huawei.com/consumer/cn/hms/huawei-searchkit?ha_source=hms7</string>
+    <string name="mobile_search">智慧助手服务</string>
+
+    <string name="network_name">Network Kit</string>
+    <string name="network_link">https://developer.huawei.com/consumer/cn/hms/huawei-networkkit?ha_source=hms7</string>
+    <string name="good_connection">高质量网络连接</string>
+
+    <string name="shopping_bag_title">购物袋</string>
     <string name="shopping_cart_edit">编辑</string>
     <string name="shopping_cart_finish">完成</string>
-    <string name="shopping_cart_price">%d</string>
     <string name="shopping_cart_reduce_notice">最少够买一件哦！</string>
     <string name="shopping_cart_select_all">全选</string>
     <string name="shopping_cart_pay">结算(%d)</string>
-    <string name="shopping_cart_total">合计：%d</string>
+    <string name="shopping_cart_total">总价：¥</string>
     <string name="shopping_cart_delete">删除</string>
-    <string name="shopping_cart_confirm_delete">确认删除商品吗？</string>
+    <string name="shopping_cart_confirm_delete">是否确认删除？</string>
+    <string name="shopping_cart_item_example_config">8GB+256GB，全5G 8GB+256GB，白色</string>
+    <string name="shopping_shipping">不含运费</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="tip_sign_in_first">请登录用户</string>
+
+    <string name="map_location_des">通过定位与地图服务的结合，精准获取用户位置，通过标点聚合功能等多元的交互呈现功能显示周边线下门店位置，方便用户快速抵达线下门店，实现线上到线下的引流。</string>
+    <string name="ml_translation_des">机器学习服务提供在线和离线的文本翻译，端侧支持12种语言、云测支持21种语言的翻译，低时延，BLEU值达32.44。为跨语言电商App解决商品详情、顾客评价、社群分享等内容翻译。</string>
+    <string name="location_geo_des">基于用户进入、驻留、离开某商圈/消费地点的状态进行消息推送，帮助O2O商户精准推送内容，引导消费，线上线下相互引流。</string>
+    <string name="location_lbs_des">通过定位与地图服务的结合，精准获取用户位置，通过标点聚合功能等多元的交互呈现功能显示周边线下门店位置，方便用户快速抵达线下门店，实现线上到线下的引流。</string>
+    <string name="account_login_des">通过一键快捷登录功能，用户不必输入帐号、密码，不必经过繁琐验证，即可通过华为帐号快速登录并使用线上购物App。</string>
+    <string name="iap_sub_des">应用内支付服务支持多语言、多商品、多支付方式等为一体的订阅、会员订购体验。</string>
+    <string name="ar_engine_reality_des">AR技术融合虚拟与现实，实现线上试穿试戴商品，打造身临其境的购物体验感，增强线上购物趣味性，提升转化率。</string>
+    <string name="video_play_des">视频服务支持低卡顿、高清晰度、无缝切换的视频播放，让用户畅享稳定高清的视频，在更具场景化和真实性的视频体验中全面了解商品。</string>
+    <string name="ml_photo_des">线上购物App集成拍照购服务即可提供定制化商品检测、识别、检索和推荐服务，帮助用户通过图片及拍照快速找到想要的商品，提升转化率。（支持Android/iOS）</string>
+    <string name="ads_des">通过流量变现服务在应用内广告中获得更多收益。</string>
+    <string name="scene_3d_des">图形引擎服务助力在app中展示商品的高品质3D模型，为用户带来精致酷炫的商品展示视觉体验。</string>
+    <string name="caas_share_des">畅联能力实现用户线上购物的同时进行与朋友屏幕共享，用户可以实时分享屏幕并讨论商品，在线上实现线下结伴购物的体验，实现“云逛街”。</string>
+    <string name="push_notify_des">及时精准的消息推送服务，助力应用精准触达用户，提升使用体验。</string>
+    <string name="push_sub_des">用户通过订购/收藏等动作即可触发的推送信息精准触达至用户，优化运营工作，提升购物转化。</string>
+    <string name="push_order_des">订单状态/物流消息的环节可自动触发信息通知用户商品运输状态，助于用户实时知悉所购商品的物流详情，提升售后服务。</string>
+    <string name="push_bag_des">用户将商品加入购物袋后可触发推送提示用户购物袋商品降价、购物袋商品库存紧张等消息，提升用户活跃度，提升购物转化率。</string>
+    <string name="push_discount_des">根据用户在线上购物App中已留的查看、消费记录，商家可针对性地推送折扣、新品等个性化推荐消息，以提高用户粘性和消费欲望。</string>
+    <string name="push_geo_des">基于用户进入、驻留、离开某商圈/消费地点的状态进行消息推送，帮助O2O商户精准推送内容，引导消费，线上线下相互引流。</string>
+    <string name="scan_pay_des">统一扫码服务能提供便捷的二维码与条形码扫描、解析、生成能力，支持自动对焦扫描识别商品二维码，带给用户极致扫码体验。（支持Android/iOS）</string>
+    <string name="scan_qr_des">统一扫码服务能提供便捷的二维码与条形码扫描、解析、生成能力，实现会员码生成、扫码积分等电商场景。（支持Android/iOS）</string>
+    <string name="ml_bankcard_des">机器学习服务提供包括银行卡识别在内的通用卡证识别纯端侧能力，覆盖全球5类主流银行卡识别，低时延，准确率达99&#37;，可广泛用于金融支付场景中。</string>
+    <string name="analytics_report_des">华为分析服务作为免费的跨平台、多设备数据分析产品，可帮您提供行业分析报告与行业基准数据对比，便于衡量自身优势与差距，同时进行用户分析、漏斗分析、帮您全面洞察不同用户的行为特征，寻找增长潜力，实现数据驱动的精细化运营。</string>
+    <string name="site_geo_des">通过用户输入的关键词，自动填充地点名称，帮助用户更加快速便捷地完成地址填写，优化购物体验。</string>
+    <string name="identity_address_des">用户身份服务为用户提供统一的地址管理与选择服务，实现用户一键授权、快速设置、重复选择地址，简化网购流程，提升购物体验。</string>
+    <string name="ml_asr_des">语音搜索方案在线上购物App中实现高精度的ASR（自动语音识别）功能，帮助用户快捷搜索商品。</string>
+    <string name="safety_detect_sys_des">提供系统完整性检测，虚假用户检测，恶意WiFi检测等服务，为用户打造安全的网购支付环境，助力开发者的App防范批量注册、撞库攻击等。</string>
+    <string name="search_robot_des">Petal Search开放应用方案层的智慧助手服务，为开发者提供智能客服前端、云端API、云端存储与处理等服务，节省人力成本的同时给C端用户更加的客服体验，热点问题、交互问答、语音助手等功能一应俱全。</string>
+    <string name="network_connect_des">网络Kit聚合远场网络通信最佳实践，为您提供简单易用、低时延、高吞吐和高安全的端云传输通道。未来将加入hQuic等更多功能提供更快的连接建立速度，更强的抗丢包能力以及更高的吞吐量。</string>
 
     <!-- Order Center -->
+    <string name="order_center_title">订单中心</string>
     <string name="order_center_all_order">&#8194;全部&#8194;</string>
     <string name="order_center_pending_payment">待付款</string>
     <string name="order_center_pending_receive">待收货</string>
@@ -88,90 +155,297 @@
     <string name="order_center_pending_payment_time">待支付</string>
     <string name="order_center_canceled">已取消</string>
     <string name="order_center_load_finish">已加载全部</string>
-    <string name="order_center_order_number">订单编号：%d</string>
-    <string name="order_center_total">共%d件商品，待付： %d</string>
-    <string name="order_center_total_paid">共%d件商品，实付： %d</string>
-    <string name="order_center_total_canceled">共%d件商品，未支付： %d</string>
+    <string name="order_center_order_number">订单编号： %d</string>
+    <string name="order_center_total">共%d件商品，待付：￥ %d</string>
+    <string name="order_center_total_paid">共%d件商品，实付：￥ %d</string>
+    <string name="order_center_total_canceled">共%d件商品，未支付：￥ %d</string>
     <string name="order_center_go_to_pay">去支付</string>
     <string name="order_center_modify_order">修改订单</string>
     <string name="order_center_cancel_order">取消订单</string>
     <string name="order_center_confirm_cancel_order">确认取消订单吗？</string>
+    <string name="order_center_confirm_complete_order">确认收到商品吗？</string>
     <string name="order_center_to_evaluate">去评价</string>
     <string name="order_center_commit_evaluate">提交评价</string>
+    <string name="order_center_confirm_order">确认收货</string>
+    <string name="order_evaluate">评价订单</string>
+    <string name="order_evaluate_success">评论成功</string>
+    <string name="order_evaluate_empty">评论不能为空</string>
 
-    <!-- Order Submit -->
-    <string name="country_not_supported_identity">Identity在当前国家不支持</string>
-    <string name="child_account_not_supported_identity">Identity不支持子帐号</string>
-
-    <!--  todo (for example, delete when release)  -->
-    <string name="shopping_cart_item_example_product_name">HUAWEI</string>
-    <string name="shopping_cart_item_example_quantity">1</string>
-    <string name="shopping_cart_item_example_config">8GB+256GB,5G全网通 8GB+256GB,白色</string>
-    <string name="shopping_cart_item_example_price">390</string>
-    <string name="ed_search_tip">请输入要搜索的内容</string>
-    <string name="search_no_tip">请输入搜索内容</string>
-    <string name="search_history">搜索历史</string>
-    <string name="search_hot">热门搜索</string>
-    <string name="delete_history">清除搜索记录</string>
-    <string name="check_delete_history">确定要清除历史记录吗?</string>
-    <string name="cancel">取消</string>
-    <string name="confirm">确定</string>
-    <string name="logo_out">退出登录</string>
-    <string name="confirm_log_out">您确定要退出当前账号吗?</string>
-    <string name="please_sign_first">请先登录</string>
-
-    <string name="payment_succeed">支付成功!</string>
-    <string name="payment_total">实付%d元</string>
-    <string name="payment_need_total">需付%d元</string>
-    <string name="back_to_home">返回首页</string>
-    <string name="view_order">查看订单</string>
-    <string name="no_product">暂无商品</string>
-    <string name="tip_sign_in_first">请先登录</string>
-
-    <!-- Login Page-->
-    <string name="welcome_to_shopping_demo">欢迎来到Shopping Demo</string>
-    <string name="current_position">%d/%d</string>
-    <string name="log_in_success">登录成功</string>
-    <string name="no_product_tip">暂无此商品</string>
-    <string name="empty_address">空</string>
-    <string name="my_member">我的会员</string>
-    <string name="member_benefits_content">购买商品9折优惠\n%s</string>
-    <string name="buy_check">确认支付</string>
-    <string name="buy_member_price">需支付:%s</string>
-    <string name="member_benefits">会员福利</string>
-    <string name="member_buy">购买会员</string>
-    <string name="member_des_1">%s 下次自动续费时间:%s</string>
-    <string name="member_des_2">%s %s后到期</string>
-    <string name="member_des_3">非会员</string>
-    <string name="price_member_type_1">%s/周</string>
-    <string name="price_member_type_2">%s/月</string>
-    <string name="buy_member_tip_1">请选择要购买的会员类型</string>
-    <string name="buy_member_tip_2">重复购买</string>
-    <string name="sub_manager">订阅管理</string>
-    <string name="buy_member_success">购买成功</string>
+    <string name="face_view">打开</string>
 
     <!-- Privacy Page-->
     <string name="privacyReject">拒绝</string>
     <string name="privacyaccept">同意</string>
-    <string name="privacyAnnounce">隐私声明</string>
-    <string name="textview_Privacy">隐私声明</string>
-    <string name="privacyread">隐私</string>
     <string name="exitMessage">即将退出Shopping Demo</string>
+    <string name="privacy_summary">点击“同意”，即表示您同意%s和%s。</string>
+    <string name="agreement_title">HMS Core 购物 Demo 用户协议</string>
+    <string name="statement_title">关于 HMS Core 购物 Demo 与隐私的声明</string>
+    <string name="agreement_url">file:///android_asset/documents-zh/agreement.html</string>
+    <string name="statement_url">file:///android_asset/documents-zh/privacy.html</string>
 
-    <!-- System Integrity Detect -->
-    <string name="sys_integrity_detecting">检查中...</string>
-    <string name="sys_integrity_detect_success">系统完整性检查通过</string>
-
+    <!-- Geo -->
     <string name="confirm_button">确定</string>
     <string name="radius_number">半径：</string>
     <string name="latitude_number">纬度：</string>
     <string name="longitude_number">经度：</string>
     <string name="geofence_enabled">打开地理围栏成功</string>
-    <string name="id">id:</string>
-
-
     <string name="geofence">地理围栏</string>
     <string name="geofence_in">欢迎光临</string>
     <string name="geofence_stay">感谢驻足</string>
     <string name="geofence_out">欢迎下次惠顾</string>
+
+    <!-- Drawer Left -->
+    <string name="sparkle_store">Sparkle线上商城</string>
+    <string name="drawer_des">发掘HMS电商领域更多灵感</string>
+    <string name="drawer_sign_in"><u><![CDATA[登录华为帐号 > ]]></u></string>
+    <string name="drawer_scan">扫码支付</string>
+    <string name="drawer_account">我的帐户</string>
+    <string name="drawer_bag">购物袋</string>
+    <string name="drawer_order">我的订单</string>
+    <string name="drawer_save">商品收藏夹</string>
+    <string name="drawer_model">夜间模式</string>
+    <string name="drawer_set">设置</string>
+    <string name="drawer_offline">线下门店</string>
+    <string name="drawer_contact">联系我们</string>
+    <string name="drawer_out">退出登录</string>
+    <string name="please_sign_first">请登录帐号</string>
+    <string name="confirm_log_out">是否确认退出登录</string>
+    <string name="no_log_tip">请登录帐号</string>
+
+    <!-- HomePage -->
+    <string name="show_kit">展示HMS Core Kit信息</string>
+    <string name="new_feature_lunch">加载新特性</string>
+    <string name="ar_try_on_makeup">AR试妆</string>
+    <string name="near_store">查看附近的线下门店：</string>
+    <string name="recently_viewed">近期查看</string>
+    <string name="home_uri_error_tip">敬请期待</string>
+    <string name="banner_url_1">https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_source=hms7</string>
+
+    <!-- InterestKit Activity -->
+    <string name="my_favorite_title1">我收藏的HMS Core Kits</string>
+    <string name="my_favorite_title2">电商应用使用场景</string>
+    <string name="no_interest_kits_tip">无内容</string>
+    <string name="kit_delete_tip">您确定要取消收藏该Kit吗？</string>
+
+    <!-- CatalogueFragment -->
+    <string name="no_product">无商品</string>
+
+    <!-- ProductActivity -->
+    <string name="product_no_wifi">没有Wifi链接不能进行视频播放，请连接Wifi并重启应用。</string>
+    <string name="product_color">颜色</string>
+    <string name="product_version">版本</string>
+    <string name="product_capacity">容量</string>
+    <string name="product_count">数量</string>
+    <string name="product_send">寄到</string>
+    <string name="product_address">正在定位</string>
+    <string name="customer_evaluation">评论</string>
+    <string name="add_shop_car">加入购物袋</string>
+    <string name="add_to_favorite">收藏</string>
+    <string name="buy_now">购买</string>
+    <string name="no_product_tip">无商品</string>
+    <string name="add_to_car_success">加入成功</string>
+    <string name="empty_address">地址为空</string>
+
+    <!-- ProductVisionSearchAnalyseActivity -->
+    <string name="product_search_result">拍照购结果</string>
+    <string name="product_no_result">No Offering Identified</string>
+    <string name="product_category">Categorization:%s</string>
+    <string name="installment_discount">享6期免息</string>
+
+    <!-- push -->
+    <string name="title_order">订单状态</string>
+    <string name="title_bag">购物袋状态</string>
+    <string name="title_subscription">订阅状态</string>
+    <string name="title_save">收藏状态</string>
+    <string name="body_order">您在%1$s订购了%2$s商品，感谢您的光顾。</string>
+    <string name="date_format">yyyy年MM月dd日</string>
+    <string name="body_logistics">您的%1$s订单已发货，请您关注查收。</string>
+    <string name="body_receipt">您的%1$s订单已确认收货，欢迎下次光临。</string>
+    <string name="body_cart">%1$s商品已经在您的购物袋中待了很久了。</string>
+    <string name="body_subscription">您订阅的新%1$s优惠将在%2$s分钟后结束，请尽快购买。</string>
+    <string name="body_save">您收藏的商品%1$s目前存货较低，请尽快下单购买。</string>
+    <string name="order_center">订单中心</string>
+
+    <!-- OrderSubmitActivity -->
+    <string name="add_address_tip">请配置地址</string>
+    <string name="submit_order">提交订单</string>
+    <string name="product_price">¥ %d</string>
+    <string name="product_price_2">实际支付:¥ %d</string>
+    <string name="check_order">确认订单</string>
+    <string name="product_sum_price">总计</string>
+    <string name="product_stand_send">标准配送</string>
+    <string name="product_send_method">快递方式</string>
+    <string name="product_ticket">发票</string>
+    <string name="product_ticket_type">个人普通电子发票</string>
+    <string name="member_discount">会员折扣(-10&#37;)</string>
+    <string name="country_not_supported_identity">用户身份服务在当前国家不支持</string>
+    <string name="child_account_not_supported_identity">用户身份服务不支持子帐户</string>
+    <string name="no_order_tip">订单创建失败，请重试</string>
+
+    <!-- PaymentSelectActivity -->
+    <string name="payment_need_total">￥ %d</string>
+    <string name="payment_method">支付方式</string>
+    <string name="payment_amount">付款金额</string>
+    <string name="payment_succeed">支付成功!</string>
+    <string name="payment_thanks">感谢您的购买</string>
+    <string name="payment_prompt">提示</string>
+    <string name="payment_prompt_content">这里识别的银行卡数据不会进行保存，只是展示扫描结果</string>
+    <string name="payment_total">￥%d</string>
+    <string name="view_order">查看订单</string>
+    <string name="back_to_home">返回首页</string>
+    <string name="select_payment_method">选择支付方式</string>
+    <string name="bank_card_payment">银行卡支付</string>
+    <string name="other_payment_methods">其他支付方式</string>
+    <string name="confirm_payment">确认支付</string>
+    <string name="order_succeed">下单成功即将发货</string>
+    <string name="order_number">订单编号：</string>
+    <string name="order_time">下单时间：</string>
+    <string name="payment_type">支付方式：</string>
+    <string name="order_status">订单状态：</string>
+    <string name="card_number">银行卡号 :</string>
+    <string name="card_issuer">发卡行 :</string>
+    <string name="card_expire">过期时间 :</string>
+    <string name="card_type">卡类型 :</string>
+    <string name="card_organization">发卡组织 :</string>
+
+    <!-- SettingActivity -->
+    <string name="setting_title">设置</string>
+    <string name="message_settings">消息设置</string>
+    <string name="privacy_statement">隐私声明</string>
+    <string name="help_and_feedback">帮助反馈</string>
+    <string name="version_update">版本更新</string>
+    <string name="set_sub">订购/收藏消息</string>
+    <string name="set_order">订单状态/物流消息</string>
+    <string name="set_bag">购物袋消息</string>
+    <string name="set_discount">折扣/新品消息</string>
+    <string name="set_geo">地理围栏消息</string>
+
+    <!-- Version update -->
+    <string name="version_checking">检查中...</string>
+    <string name="is_the_latest_version">当前已是最新版本</string>
+    <string name="found_new_version">已有新版本发布，点击确认更新版本</string>
+    <string name="no_found_new_version">检查更新失败，请稍候重试</string>
+
+    <!-- NewInFragment -->
+    <string name="product_discount">已折扣 ￥%d</string>
+    <string name="subscribe">+订阅</string>
+    <string name="countdown">前10件5折 | %1$s</string>
+    <string name="subscribed">已订阅</string>
+
+    <!-- FeedbackActivity -->
+    <string name="rating">综合评分</string>
+    <string name="submit">提交反馈</string>
+    <string name="feedback_content">请填写您的宝贵建议</string>
+    <string name="confirm_feedback">感谢您提出的建议，我们将分析并尽快改进。</string>
+
+    <!-- PointsActivity -->
+    <string name="member_points">会员积分</string>
+    <string name="sum">当前积分</string>
+    <string name="point">+%d</string>
+
+    <!-- ProductActivity -->
+    <string name="caas_fail">屏幕共享功能初始化失败%d</string>
+    <string name="no_contacts">您在畅连中没有可用的联系人。现在去增加吗？</string>
+    <string name="caas_now">现在</string>
+    <string name="caas_later">稍后再去</string>
+    <string name="caas_noapp">畅连打开失败</string>
+    <string name="caas_callfail">呼叫失败</string>
+    <string name="caas_title">屏幕共享</string>
+    <string name="caas_exist">您正在共享屏幕</string>
+    <string name="caas_no_active">畅连服务尚未激活</string>
+
+    <!-- MyAccountActivity -->
+    <string name="account_title">我的帐户</string>
+    <string name="account_address">地址列表</string>
+    <string name="account_reward">我的积分</string>
+    <string name="account_member">我的会员</string>
+    <string name="sparkle_store_vip_service">SPARKLE STORE VIP服务</string>
+    <string name="vip_week">/周</string>
+    <string name="vip_month">/月</string>
+    <string name="vip_year">/年</string>
+    <string name="get_vip_service_with">成为VIP你将获得：</string>
+    <string name="vip_offers_1">额外折扣√</string>
+    <string name="vip_offers_2">新品特权√</string>
+    <string name="vip_offers_3">双倍积分√</string>
+    <string name="member_des_1">%s\n%s 下次续费时间:%s</string>
+    <string name="member_des_2">%s\n%s 截止到 %s</string>
+    <string name="member_des_3">%s\n非会员</string>
+
+    <!-- Login Page-->
+    <string name="welcome_to_shopping_demo">欢迎来到购物Demo</string>
+    <string name="log_in_success">登录成功</string>
+
+    <!-- SearchActivity-->
+    <string name="ed_search_tip">请输入搜索内容</string>
+    <string name="search_no_tip">请输入搜索内容</string>
+    <string name="search_history">搜索历史</string>
+    <string name="search_hot">热门搜索</string>
+    <string name="delete_history">清理搜索历史</string>
+    <string name="check_delete_history">确认清空历史记录吗？</string>
+    <string name="address_permission">系统将获取您已配置的地址，是否确认</string>
+
+    <!-- BuyMemberActivity-->
+    <string name="buy_member_price">价格： %s</string>
+    <string name="member_benefits">会员福利</string>
+    <string name="member_buy">会员购买</string>
+    <string name="buy_member">购买会员</string>
+    <string name="buy_member_tip_1">请选择会员类型</string>
+    <string name="buy_member_tip_2">重复购买</string>
+    <string name="buy_member_success">购买成功</string>
+    <string name="buy_check">确认支付</string>
+    <string name="url_error">链接错误</string>
+    <!-- <string name="title_activity_contactus">ContactusActivity</string> -->
+
+    <!-- Strings used for fragments for navigation -->
+    <!-- <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string> -->
+
+    <!-- ContactUsActivity-->
+    <string name="contact_title">联系我们</string>
+    <string name="contact_version">版本 </string>
+    <string name="contact_developer">华为开发者联盟</string>
+    <string name="contact_mail">邮箱</string>
+    <string name="contact_sof">Stack Overflow</string>
+    <string name="contact_git">Github</string>
+    <string name="contact_reddit">Reddit</string>
+    <string name="contact_share">分享我们</string>
+    <string name="today_on_08_30_to_20_30">营业时间: 08:30至20:30</string>
+    <string name="share_text">https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_source=hms7</string>
+
+    <!-- Splash Activity-->
+    <string name="skip_in">跳过 %d</string>
+    <string name="splash_des1">试用Sparkle线上商城</string>
+    <string name="splash_des2">发掘HMS电商领域更多灵感！</string>
+    <string name="splash_des3">华为开发者</string>
+    <string name="splash_des4">HMS Core电商解决方案Demo</string>
+
+    <!-- Evaluation List -->
+    <string name="order_evaluate_list">评论列表</string>
+    <string name="order_Automatic_translation">自动翻译</string>
+    <string name="order_more_translation">更多翻译</string>
+
+    <!-- Scanpay List -->
+    <string name="serial_number">序列号</string>
+    <string name="pay_result">交易成功</string>
+    <string name="create_time">交易时间</string>
+    <string name="pay_success">支付成功</string>
+    <string name="product_name">产品名称</string>
+
+    <!-- ScanFragment -->
+    <string name="camera_scan_des">扫描</string>
+    <string name="camera_scan_tip">未扫描到内容，请重试</string>
+
+    <!-- qr_code -->
+    <string name="membership_code">会员码</string>
+    <string name="bank_information">银行卡信息</string>
+
+    <!-- scene-->
+    <string name="download_tip">是否要下载资源文件？</string>
+    <string name="downloading">下载中...</string>
+
 </resources>
