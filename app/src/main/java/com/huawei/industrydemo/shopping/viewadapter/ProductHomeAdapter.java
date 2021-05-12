@@ -33,6 +33,7 @@ import com.huawei.industrydemo.shopping.page.ProductActivity;
 
 import java.util.List;
 
+import static com.huawei.industrydemo.shopping.constants.Constants.RESOURCE_TYPE_MIPMAP;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KEY;
 
 /**
@@ -44,10 +45,12 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KE
  */
 public class ProductHomeAdapter extends RecyclerView.Adapter<ProductHomeAdapter.ViewHolder> {
     private Context context;
+
     private List<Product> list;
+
     private boolean isSearch;
 
-    public ProductHomeAdapter(List<Product> list,Context context,boolean isSearch) {
+    public ProductHomeAdapter(List<Product> list, Context context, boolean isSearch) {
         this.context = context;
         this.list = list;
         this.isSearch = isSearch;
@@ -55,20 +58,23 @@ public class ProductHomeAdapter extends RecyclerView.Adapter<ProductHomeAdapter.
 
     @NonNull
     @Override
-    public ProductHomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_home_product, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductHomeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(position);
         holder.textViewName.setText(product.getBasicInfo().getShortName());
-        holder.imageViewProduct.setImageResource(context.getResources().getIdentifier(product.getImages()[0],"mipmap",context.getPackageName()));
-        if (isSearch){
-            holder.textCategory.setVisibility(View.VISIBLE);
-            holder.textCategory.setText(context.getResources().getString(R.string.product_category)+product.getCategory());
-        }else {
+        holder.textViewName.setTextColor(context.getResources().getColor(R.color.black));
+        holder.imageViewProduct.setImageResource(context.getResources()
+            .getIdentifier(product.getImages()[0], RESOURCE_TYPE_MIPMAP, context.getPackageName()));
+        if (isSearch) {
+            holder.textCategory.setText(R.string.installment_discount);
+            holder.textPrice.setText(context.getString(R.string.payment_need_total, product.getBasicInfo().getPrice()));
+        } else {
             holder.textCategory.setVisibility(View.GONE);
+            holder.textPrice.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(v -> {
@@ -86,14 +92,19 @@ public class ProductHomeAdapter extends RecyclerView.Adapter<ProductHomeAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
+
         ImageView imageViewProduct;
+
         TextView textCategory;
+
+        TextView textPrice;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.text_name);
             imageViewProduct = itemView.findViewById(R.id.image_product);
             textCategory = itemView.findViewById(R.id.text_Possibility);
+            textPrice = itemView.findViewById(R.id.text_price);
         }
     }
 }

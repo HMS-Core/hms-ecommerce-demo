@@ -1,18 +1,18 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
+ *     Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 
 package com.huawei.industrydemo.shopping.fragment.ordercenter;
 
@@ -30,7 +30,8 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.inteface.OnOrderListRefresh;
-import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+import com.huawei.industrydemo.shopping.page.OrderCenterActivity;
+import com.huawei.industrydemo.shopping.repository.OrderRepository;
 import com.huawei.industrydemo.shopping.viewadapter.OrderCenterListAdapter;
 
 import java.util.ArrayList;
@@ -48,11 +49,18 @@ public class AllOrderFragment extends Fragment implements OnOrderListRefresh {
 
     private static final String TAG = AllOrderFragment.class.getSimpleName();
 
-    private RecyclerView recyclerOrderList;
-
     private OrderCenterListAdapter orderCenterListAdapter;
 
     private List<Order> orderList = new ArrayList<>();
+
+    private final User mUser;
+
+    private final OrderCenterActivity mActivity;
+
+    public AllOrderFragment(OrderCenterActivity activity, User user) {
+        this.mUser = user;
+        this.mActivity = activity;
+    }
 
     @Nullable
     @Override
@@ -66,24 +74,23 @@ public class AllOrderFragment extends Fragment implements OnOrderListRefresh {
 
     @Override
     public void onDataRefresh() {
-        User user = SharedPreferencesUtil.getInstance().getUser();
-        if (null == user) {
-            orderList = new ArrayList<>();
-        } else {
-            orderList = user.getOrderList();
+        orderList = new ArrayList<>();
+        if (mUser != null) {
+            orderList = new OrderRepository().queryByUser(mUser);
         }
         Collections.sort(orderList, (order1, order2) -> order2.getNumber() - order1.getNumber());
         orderList.add(new Order());
-        orderCenterListAdapter.setOrderList(orderList);
-        orderCenterListAdapter.notifyDataSetChanged();
+        if (null != orderCenterListAdapter) {
+            orderCenterListAdapter.setOrderList(orderList);
+        }
     }
 
     private void initView(View view) {
-        recyclerOrderList = view.findViewById(R.id.all_list_order);
+        RecyclerView recyclerOrderList = view.findViewById(R.id.all_list_order);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerOrderList.setLayoutManager(layoutManager);
 
-        orderCenterListAdapter = new OrderCenterListAdapter(getActivity(), true);
+        orderCenterListAdapter = new OrderCenterListAdapter(mActivity, true, mUser);
         orderCenterListAdapter.setOrderList(orderList);
         recyclerOrderList.setAdapter(orderCenterListAdapter);
     }

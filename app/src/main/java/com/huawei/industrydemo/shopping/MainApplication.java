@@ -19,27 +19,36 @@ package com.huawei.industrydemo.shopping;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
-import com.huawei.hms.network.NetworkKit;
+import com.huawei.agconnect.crash.AGConnectCrash;
+import com.huawei.hms.opendevice.OpenDevice;
 import com.huawei.hms.videokit.player.InitFactoryCallback;
 import com.huawei.hms.videokit.player.WisePlayerFactory;
 import com.huawei.hms.videokit.player.WisePlayerFactoryOptionsExt;
 import com.huawei.industrydemo.shopping.entity.Product;
+import com.huawei.industrydemo.shopping.repository.AppConfigRepository;
+import com.huawei.industrydemo.shopping.repository.ProductRepository;
+import com.huawei.industrydemo.shopping.utils.AgcUtil;
+import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 import com.huawei.industrydemo.shopping.utils.JsonUtil;
-import com.huawei.industrydemo.shopping.utils.ProductBase;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Objects;
 
+import static com.huawei.industrydemo.shopping.constants.Constants.LANGUAGE_EN;
+import static com.huawei.industrydemo.shopping.constants.Constants.LANGUAGE_ZH;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.LAST_LANGUAGE;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
+import static com.huawei.industrydemo.shopping.utils.SystemUtil.isWifiConnected;
 
 /**
  * Application
@@ -48,74 +57,83 @@ import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class MainApplication extends Application {
+    private static WisePlayerFactory wisePlayerFactory;
 
-    private static final String PRODUCT_FILE_PATH = "products";
+    private static MainApplication mApplication;
 
-    private static final String PRODUCT_FILE_PATH_ZH = "products-zh";
-
-    private static WisePlayerFactory wisePlayerFactory = null;
-
+    private volatile boolean hasAgreePrivacy = true;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initNetworkKit();
+        mApplication = this;
         SharedPreferencesUtil.setContext(this);
+        DatabaseUtil.init(this);
+        refreshLanguage(SystemUtil.getLanguage());
 
-        initializeProductInfo();
-        if (isWifiConnected(this)) {
-            initPlayer();
+        if (hasAgreePrivacy && isWifiConnected(this)) {
+            initWisePlayer();
+        }
+    }
+
+    private void refreshLanguage(String newLanguage) {
+        AppConfigRepository appConfigRepository = new AppConfigRepository();
+        String lastLan = appConfigRepository.getStringValue(LAST_LANGUAGE);
+        if (lastLan == null || !lastLan.equals(newLanguage)) {
+            Log.d(TAG, "on Language Changed");
+            initializeProductInfo();
+            appConfigRepository.setStringValue(LAST_LANGUAGE, newLanguage);
         }
     }
 
     /**
      * Read local resources and initialize preconfigured product information.
      */
-    public void initializeProductInfo() {
-        ProductBase productBase = ProductBase.getInstance();
+    private void initializeProductInfo() {
         AssetManager assetManager = this.getAssets();
-
-        String productFilePath = PRODUCT_FILE_PATH;
-        String locale = Locale.getDefault().getLanguage();
-        switch (locale) {
-            case "zh":
-                productFilePath = PRODUCT_FILE_PATH_ZH;
-                break;
-            default:
-        }
+        String productFilePath = getString(R.string.product_file_path);
+        ProductRepository productRepository = new ProductRepository();
         try {
             String[] productFiles = assetManager.list(productFilePath);
-            if (null != productFiles) {
-                for (String productFile : productFiles) {
-                    productBase.add(new Gson().fromJson(
-                        JsonUtil.getJson(this, productFilePath + File.separator + productFile), Product.class));
-                }
+            if (null == productFiles) {
+                return;
+            }
+            for (String productFile : productFiles) {
+                Product product = new Gson()
+                    .fromJson(JsonUtil.getJson(this, productFilePath + File.separator + productFile), Product.class);
+                productRepository.insert(product);
             }
         } catch (IOException e) {
             Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-            Toast.makeText(this, "Failed to initialize the offering information!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to initialize the product information!", Toast.LENGTH_SHORT).show();
+            AGConnectCrash.getInstance().recordException(e);
         }
     }
 
-    private void initPlayer() {
-        // DeviceId test is used in the demo, specific access to incoming deviceId after encryption
-        WisePlayerFactoryOptionsExt factoryOptions = new WisePlayerFactoryOptionsExt.Builder().setDeviceId("xxx").build();
-        WisePlayerFactory.initFactory(this, factoryOptions, INIT_FACTORY_CALLBACK);
+    public void initWisePlayer() {
+        Log.e(TAG, "initWisePlayer");
+        hasAgreePrivacy = true;
+        // Call the getOdid method to obtain the ODID.
+        OpenDevice.getOpenDeviceClient(this).getOdid().addOnSuccessListener(odidResult -> {
+            String odid = odidResult.getId();
+            Log.d(TAG, "getODID successfully, the ODID is " + odid);
+            // DeviceId test is used in the demo, specific access to incoming deviceId after encryption
+            WisePlayerFactoryOptionsExt factoryOptions =
+                new WisePlayerFactoryOptionsExt.Builder().setDeviceId(odid).build();
+            WisePlayerFactory.initFactory(this, factoryOptions, new InitFactoryCallback() {
+                @Override
+                public void onSuccess(WisePlayerFactory wisePlayerFactory) {
+                    Log.d(TAG, "onSuccess wisePlayerFactory:" + wisePlayerFactory);
+                    MainApplication.wisePlayerFactory = wisePlayerFactory;
+                }
+
+                @Override
+                public void onFailure(int errorCode, String reason) {
+                    AgcUtil.reportFailure(TAG, "onFailure errorcode:" + errorCode + " reason:" + reason);
+                }
+            });
+        }).addOnFailureListener(myException -> AgcUtil.reportException(TAG, myException));
     }
-
-    /**
-     * Player initialization callback
-     */
-    private static final InitFactoryCallback INIT_FACTORY_CALLBACK = new InitFactoryCallback() {
-        @Override
-        public void onSuccess(WisePlayerFactory wisePlayerFactory) {
-            setWisePlayerFactory(wisePlayerFactory);
-        }
-
-        @Override
-        public void onFailure(int errorCode, String reason) {
-        }
-    };
 
     /**
      * Get WisePlayer Factory
@@ -126,35 +144,17 @@ public class MainApplication extends Application {
         return wisePlayerFactory;
     }
 
-    private static void setWisePlayerFactory(WisePlayerFactory wisePlayerFactory) {
-        MainApplication.wisePlayerFactory = wisePlayerFactory;
+    public static Context getContext() {
+        return mApplication.getApplicationContext();
     }
 
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager =
-            (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetworkInfo == null) {
-            return false;
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        String newLanguage = newConfig.locale.getLanguage();
+        if (!newLanguage.equals(LANGUAGE_ZH)) {
+            newLanguage = LANGUAGE_EN;
         }
-
-        if (wifiNetworkInfo.isConnected()) {
-            return true;
-        }
-        return false;
-    }
-    
-    private void initNetworkKit() {
-        NetworkKit.init(this, new NetworkKit.Callback() {
-            @Override
-            public void onResult(boolean result) {
-                if (result) {
-                    Log.i(TAG, "Networkkit init success");
-                } else {
-                    Log.i(TAG, "Networkkit init failed");
-                }
-            }
-        });
+        refreshLanguage(newLanguage);
     }
 }

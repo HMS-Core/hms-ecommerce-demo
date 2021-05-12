@@ -9,7 +9,8 @@
       "version": "5G All",
       "color": "White"
     },
-    "price": 7988,
+    "price": 1,
+    "displayPrice": 7988,
     "link": "value"
   },
   "category": "Mobile Phone",

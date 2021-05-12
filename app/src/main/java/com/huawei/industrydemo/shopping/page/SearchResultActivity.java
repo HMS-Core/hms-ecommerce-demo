@@ -29,15 +29,15 @@ import com.huawei.hms.analytics.HiAnalytics;
 import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
-import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.entity.Product;
-import com.huawei.industrydemo.shopping.utils.ProductBase;
+import com.huawei.industrydemo.shopping.repository.ProductRepository;
 import com.huawei.industrydemo.shopping.viewadapter.SearchResAdapter;
 
 import java.util.List;
 
 import static com.huawei.hms.analytics.type.HAEventType.VIEWSEARCHRESULT;
 import static com.huawei.hms.analytics.type.HAParamType.SEARCHKEYWORDS;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.SEARCH_CONTENT;
 
 /**
  * Catalogue Specific Product Page
@@ -55,25 +55,28 @@ public class SearchResultActivity extends BaseActivity implements View.OnClickLi
 
     private LinearLayout lvNoProduct;
 
+    private ProductRepository mProductRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_res);
-
+        setContentView(R.layout.activity_search_result);
         addTipView(new String[] {});
+
+        mProductRepository = new ProductRepository();
         Intent intent = getIntent();
         if (intent != null) {
-            searchContent = intent.getStringExtra(KeyConstants.SEARCH_CONTENT);
+            searchContent = intent.getStringExtra(SEARCH_CONTENT);
             initData();
         }
         initView();
     }
 
     private void initData() {
-        productList = ProductBase.getInstance().queryByKeywords(searchContent);
         searchContent = "".equals(searchContent) ? "null" : searchContent;
+        productList = mProductRepository.queryByKeywords(searchContent);
 
-        /* Report Search result event*/
+        /* Report Search result event */
         HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
 
@@ -106,10 +109,8 @@ public class SearchResultActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                finish();
-                break;
             case R.id.lv_search:
-                startActivity(new Intent(this, SearchActivity.class));
+                finish();
                 break;
             default:
                 break;

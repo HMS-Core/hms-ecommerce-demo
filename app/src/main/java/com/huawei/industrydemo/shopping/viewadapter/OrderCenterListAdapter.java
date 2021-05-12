@@ -1,23 +1,21 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
+ *     Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 
 package com.huawei.industrydemo.shopping.viewadapter;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,25 +29,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.huawei.hms.analytics.HiAnalytics;
-import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.base.BaseDialog;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
+import com.huawei.industrydemo.shopping.constants.KitConstants;
 import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
+import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.User;
+import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
+import com.huawei.industrydemo.shopping.page.OrderCenterActivity;
 import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
 import com.huawei.industrydemo.shopping.page.PaymentSelectActivity;
+import com.huawei.industrydemo.shopping.repository.OrderRepository;
+import com.huawei.industrydemo.shopping.repository.ProductRepository;
+import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 import com.huawei.industrydemo.shopping.utils.MemberUtil;
-import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+import com.huawei.industrydemo.shopping.utils.MessagingUtil;
 
-import java.util.Iterator;
 import java.util.List;
 
 import static com.huawei.hms.analytics.type.HAEventType.CANCELORDER;
-import static com.huawei.hms.analytics.type.HAEventType.STARTCHECKOUT;
 import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
 import static com.huawei.hms.analytics.type.HAParamType.CURRNAME;
 import static com.huawei.hms.analytics.type.HAParamType.ORDERID;
@@ -59,8 +60,14 @@ import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
 import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
 import static com.huawei.hms.analytics.type.HAParamType.REASON;
 import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
-import static com.huawei.hms.analytics.type.HAParamType.TRANSACTIONID;
-
+import static com.huawei.industrydemo.shopping.base.BaseDialog.CANCEL_BUTTON;
+import static com.huawei.industrydemo.shopping.base.BaseDialog.CONFIRM_BUTTON;
+import static com.huawei.industrydemo.shopping.base.BaseDialog.CONTENT;
+import static com.huawei.industrydemo.shopping.constants.Constants.CNY;
+import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.ORDER_KEY;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOTAL_PRICE;
+import static com.huawei.industrydemo.shopping.page.OrderCenterActivity.REQUEST_PAYMENT_SELECT;
 
 /**
  * OrderCenterList Adapter
@@ -70,22 +77,34 @@ import static com.huawei.hms.analytics.type.HAParamType.TRANSACTIONID;
  * @see com.huawei.industrydemo.shopping.fragment.ordercenter.PendingPaymentFragment
  * @since [Ecommerce-Demo 1.0.0.300]
  */
-public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterListAdapter.ViewHolder> {
+public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterListAdapter.ViewHolder>
+    implements KitConstants {
 
     private static final String TAG = OrderCenterListAdapter.class.getSimpleName();
-    private static final int TYPE_NORMAL = 1000;
-    private static final int TYPE_FOOTER = 1002;
-    private List<Order> orderList;
-    private Activity mActivity;
-    private boolean isAllOrder;
 
-    public OrderCenterListAdapter(Activity activity, boolean isAllOrder) {
+    private static final int TYPE_NORMAL = 1000;
+
+    private static final int TYPE_FOOTER = 1002;
+
+    private List<Order> orderList;
+
+    private final OrderCenterActivity mActivity;
+
+    private final boolean isAllOrder;
+
+    private final User mUser;
+
+    private final OrderRepository mOrderRepository;
+
+    public OrderCenterListAdapter(OrderCenterActivity activity, boolean isAllOrder, User user) {
         this.mActivity = activity;
         this.isAllOrder = isAllOrder;
+        this.mUser = user;
+        this.mOrderRepository = new OrderRepository();
     }
 
-    public void setOrderList(List<Order> shoppingCartList) {
-        this.orderList = shoppingCartList;
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
         notifyDataSetChanged();
     }
 
@@ -94,17 +113,17 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
     public OrderCenterListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: " + viewType);
         if (viewType == TYPE_FOOTER) {
-            return new OrderCenterListAdapter.ViewHolder(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_bottom_list, parent, false),
-                    true);
+            return new ViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_bottom_list, parent, false),
+                true);
         } else {
-            return new OrderCenterListAdapter.ViewHolder(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_list, parent, false));
+            return new ViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ordercenter_list, parent, false));
         }
     }
 
     public int getItemViewType(int position) {
-        Log.d(TAG, "getItemViewType: " + position);
+        Log.v(TAG, "getItemViewType: " + position);
         if (position == getItemCount() - 1) {
             return TYPE_FOOTER;
         } else {
@@ -118,25 +137,29 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
             return;
         }
         Order order = orderList.get(position);
-        String pendingPaymentTime = "";
-        String productTotalInfo = "";
+        String pendingPaymentTime = EMPTY;
+        String productTotalInfo = EMPTY;
         int totalCount = 0;
-        if (order.getOrderItemList() == null) {
+        List<OrderItem> orderItemList = mOrderRepository.queryItemByOrder(order);
+        if (orderItemList == null) {
             return;
         }
 
-        for (OrderItem orderItem : order.getOrderItemList()) {
+        for (OrderItem orderItem : orderItemList) {
             totalCount += orderItem.getCount();
         }
 
         holder.orderOperation.setVisibility(View.GONE);
-        if (Constants.HAVE_PAID == order.getStatus()) {
+        holder.expressingOper.setVisibility(View.GONE);
+        if (Constants.COMPLETED == order.getStatus()) {
+            holder.expressingOper.setVisibility(View.GONE);
             pendingPaymentTime = mActivity.getString(R.string.order_center_finish);
-            productTotalInfo = mActivity.getString(R.string.order_center_total_paid, totalCount, order.getActualPrice());
+            productTotalInfo =
+                mActivity.getString(R.string.order_center_total_paid, totalCount, order.getActualPrice());
         } else if (Constants.NOT_PAID == order.getStatus()) {
             holder.orderOperation.setVisibility(View.VISIBLE);
             pendingPaymentTime = mActivity.getString(R.string.order_center_pending_payment_time);
-            if (MemberUtil.getInstance().isMember(SharedPreferencesUtil.getInstance().getUser())) {
+            if (MemberUtil.getInstance().isMember(mUser)) {
                 order.setActualPrice((int) (order.getTotalPrice() * Constants.DISCOUNTED));
             } else {
                 order.setActualPrice(order.getTotalPrice());
@@ -145,7 +168,12 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         } else if (Constants.CANCELED == order.getStatus()) {
             pendingPaymentTime = mActivity.getString(R.string.order_center_canceled);
             productTotalInfo =
-                    mActivity.getString(R.string.order_center_total_canceled, totalCount, order.getActualPrice());
+                mActivity.getString(R.string.order_center_total_canceled, totalCount, order.getActualPrice());
+        } else if (Constants.HAVE_PAID == order.getStatus()) {
+            holder.expressingOper.setVisibility(View.VISIBLE);
+            pendingPaymentTime = mActivity.getString(R.string.order_center_pending_receive);
+            productTotalInfo =
+                mActivity.getString(R.string.order_center_total_paid, totalCount, order.getActualPrice());
         } else {
             Log.e(TAG, "Status Invalid!");
         }
@@ -153,7 +181,8 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         holder.pendingPaymentTime.setText(pendingPaymentTime);
         holder.productTotalInfo.setText(productTotalInfo);
 
-        OrderSubmitAdapter orderCheckAdapter = new OrderSubmitAdapter(order.getOrderItemList(), mActivity, order.getStatus(), order.getNumber());
+        OrderSubmitAdapter orderCheckAdapter =
+            new OrderSubmitAdapter(orderItemList, mActivity, order.getStatus(), order.getNumber());
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity) {
             @Override
             public boolean canScrollVertically() {
@@ -163,103 +192,102 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         holder.orderItemList.setLayoutManager(layoutManager);
         holder.orderItemList.setAdapter(orderCheckAdapter);
         holder.cancelOrder.setOnClickListener(view -> cancelOrder(order));
-        holder.payOrder.setOnClickListener(view -> payOrder(order));
+        holder.payOrder.setOnClickListener(
+            view -> mActivity.addTipView(new String[] {PUSH_ORDER}, (ShowTipsCallback) () -> payOrder(order)));
         holder.modifyOrder.setOnClickListener(view -> modifyOrder(order));
+        holder.confirmOrder.setOnClickListener(
+            v -> mActivity.addTipView(new String[] {PUSH_ORDER}, (ShowTipsCallback) () -> confirmOrder(order)));
+    }
+
+    private void confirmOrder(Order order) {
+        Bundle data = new Bundle();
+
+        data.putString(CONFIRM_BUTTON, mActivity.getString(R.string.confirm));
+        data.putString(CONTENT, mActivity.getString(R.string.order_center_confirm_complete_order));
+        data.putString(CANCEL_BUTTON, mActivity.getString(R.string.cancel));
+
+        BaseDialog dialog = new BaseDialog(mActivity, data, true);
+        dialog.setConfirmListener(v -> {
+            order.setStatus(Constants.COMPLETED);
+            mOrderRepository.insert(order, null, mUser);
+            notifyDataSetChanged();
+            mActivity.onDataRefresh();
+            MessagingUtil.receiptNotificationMessage(mActivity, order.getStatus(), order.getNumber());
+            dialog.dismiss();
+        });
+        dialog.setCancelListener(v -> {
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     private void cancelOrder(Order order) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setPositiveButton(mActivity.getString(R.string.confirm), (dialog, which) -> {
-            /* Report Order Cancel Event Begin*/
-            HiAnalyticsInstance instance = HiAnalytics.getInstance(mActivity);
+        Bundle data = new Bundle();
+
+        data.putString(CONFIRM_BUTTON, mActivity.getString(R.string.confirm));
+        data.putString(CONTENT, mActivity.getString(R.string.order_center_confirm_cancel_order));
+        data.putString(CANCEL_BUTTON, mActivity.getString(R.string.cancel));
+
+        BaseDialog dialog = new BaseDialog(mActivity, data, true);
+        dialog.setConfirmListener(v -> {
+            /* Report Order Cancel Event Begin */
             Bundle bundle = new Bundle();
-            List<OrderItem> productList = order.getOrderItemList();
-            Iterator<OrderItem> iteratorProduct = productList.iterator();
+            List<OrderItem> productList = mOrderRepository.queryItemByOrder(order);
 
-            while (iteratorProduct.hasNext()) {
-                OrderItem productItem = iteratorProduct.next();
-
+            for (OrderItem productItem : productList) {
+                Product product = new ProductRepository().queryByOrderItem(productItem);
                 // Initiate Parameters
-                bundle.putString(PRODUCTID, Integer.toString(productItem.getProduct().getNumber()).trim());
-                bundle.putString(PRODUCTNAME, productItem.getProduct().getBasicInfo().getShortName().trim());
+                bundle.putString(PRODUCTID, Integer.toString(product.getNumber()).trim());
+                bundle.putString(PRODUCTNAME, product.getBasicInfo().getShortName().trim());
                 bundle.putLong(QUANTITY, productItem.getCount());
-                bundle.putDouble(PRICE, productItem.getProduct().getBasicInfo().getPrice());
+                bundle.putDouble(PRICE, product.getBasicInfo().getPrice());
                 bundle.putString(ORDERID, Integer.toString(order.getNumber()).trim());
-                bundle.putString(CATEGORY, productItem.getProduct().getCategory().trim());
+                bundle.putString(CATEGORY, product.getCategory().trim());
                 bundle.putString(REASON, "Don't Like it");
-                bundle.putDouble(REVENUE, (productItem.getProduct().getBasicInfo().getPrice()*productItem.getCount()));
-                bundle.putString(CURRNAME, "CNY");
+                bundle.putDouble(REVENUE, (product.getBasicInfo().getPrice() * productItem.getCount()));
+                bundle.putString(CURRNAME, CNY);
 
-                instance.onEvent(CANCELORDER, bundle);
+                AnalyticsUtil.getInstance(mActivity).onEvent(CANCELORDER, bundle);
             }
-            /* Report Order Cancel Event end*/
+            /* Report Order Cancel Event end */
 
-            User user = SharedPreferencesUtil.getInstance().getUser();
-            List<Order> orderorders = user.getOrderList();
-            for (Order tempOrder : orderorders) {
+            List<Order> orders = mOrderRepository.queryByUser(mUser);
+            for (Order tempOrder : orders) {
                 if (tempOrder.getNumber() == order.getNumber()) {
                     tempOrder.setStatus(Constants.CANCELED);
+                    mOrderRepository.insert(tempOrder, null, mUser);
                     break;
                 }
             }
-            user.setOrderList(orderorders);
-            SharedPreferencesUtil.getInstance().setUser(user);
             if (!isAllOrder) {
                 orderList.remove(order);
                 this.setOrderList(orderList);
             } else {
-                this.setOrderList(orderorders);
+                this.setOrderList(orders);
             }
             notifyDataSetChanged();
+            mActivity.onDataRefresh();
+            dialog.dismiss();
+        });
 
+        dialog.setCancelListener(v -> {
+            dialog.dismiss();
+        });
 
-        }).setNegativeButton(mActivity.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-        builder.setMessage(mActivity.getString(R.string.order_center_confirm_cancel_order));
-        builder.show();
+        dialog.show();
     }
 
     private void payOrder(Order order) {
-        User user = SharedPreferencesUtil.getInstance().getUser();
-        List<Order> orderorders = user.getOrderList();
-        for (Order tempOrder : orderorders) {
-            if (tempOrder.getNumber() == order.getNumber()) {
-                tempOrder.setStatus(Constants.HAVE_PAID);
-                break;
-            }
-        }
-        user.setOrderList(orderorders);
-        SharedPreferencesUtil.getInstance().setUser(user);
-
-        if (!isAllOrder) {
-            orderList.remove(order);
-            this.setOrderList(orderList);
-            notifyDataSetChanged();
-        }
-
-        /* Report the checkout Event Begin*/
-        HiAnalyticsInstance instance = HiAnalytics.getInstance(mActivity);
-        Bundle bundle = new Bundle();
-
-        // Initiate Parameters
-        bundle.putString(TRANSACTIONID, Integer.toString(order.getNumber()).trim());
-        bundle.putDouble(REVENUE, order.getActualPrice());
-        bundle.putString(CURRNAME, "CNY");
-
-        instance.onEvent(STARTCHECKOUT, bundle);
-        /* Report the checkout Event End*/
-
-
         Intent intent = new Intent(mActivity, PaymentSelectActivity.class);
-        intent.putExtra("total_price", order.getActualPrice());
-        intent.putExtra("order_number",order.getNumber());
-
-        mActivity.startActivity(intent);
+        intent.putExtra(TOTAL_PRICE, order.getActualPrice());
+        intent.putExtra(ORDER_KEY, order.getNumber());
+        mActivity.startActivityForResult(intent, REQUEST_PAYMENT_SELECT);
     }
 
     private void modifyOrder(Order order) {
         Intent intent = new Intent(mActivity, OrderSubmitActivity.class);
-        order.setModifyflag(true);
-        intent.putExtra(KeyConstants.ORDER_KEY, new Gson().toJson(order));
+        intent.putExtra(KeyConstants.ORDER_KEY, order.getNumber());
+        intent.putExtra(KeyConstants.MODIFY_FLAG, true);
         mActivity.startActivity(intent);
     }
 
@@ -268,16 +296,27 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         return orderList == null ? 0 : orderList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderNumber;
+
         TextView pendingPaymentTime;
+
         TextView productTotalInfo;
+
         TextView payOrder;
+
         TextView modifyOrder;
+
         TextView cancelOrder;
+
         RecyclerView orderItemList;
+
         RelativeLayout orderOperation;
+
+        RelativeLayout expressingOper;
+
+        TextView confirmOrder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -290,6 +329,8 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
             payOrder = itemView.findViewById(R.id.textView_pay_order);
             modifyOrder = itemView.findViewById(R.id.textView_modify_order);
             cancelOrder = itemView.findViewById(R.id.textView_cancel_order);
+            expressingOper = itemView.findViewById(R.id.order_to_be_received_oper);
+            confirmOrder = itemView.findViewById(R.id.tv_confirm_order);
         }
 
         public ViewHolder(@NonNull View itemView, boolean isFooter) {

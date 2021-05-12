@@ -9,7 +9,8 @@
       "version": "不涉及",
       "color": "橙色"
     },
-    "price": 88,
+    "price": 1,
+    "displayPrice": 88,
     "link": "value"
   },
   "category": "鞋包",

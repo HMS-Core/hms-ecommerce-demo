@@ -22,31 +22,71 @@ package com.huawei.industrydemo.shopping.constants;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public interface Constants {
-    String apiKey = "CgB6e3x9vaA2Pb6Wq5UJpp2xTYZ+JqpGYTsdvvYgy5o2pk5Ot6crEp5u9QGMiAteECHZ989QDOXCT6snTffudDr9";
-    int HAVE_PAID = 0;
+    int COMPLETED = 0;
+
     int NOT_PAID = 1;
+
     int CANCELED = 2;
+
+    int HAVE_PAID = 3;
+
     int LOGIN_REQUEST_CODE = 1000;
+
     int GET_ADDRESS_REQUEST_CODE = 1001;
+
     int REQUEST_PERMISSIONS_CODE = 1002;
+
+    int CAAS_REQUEST_CODE = 1003;
+
     int CAMERA_REQ_CODE = 1;
+
     int CAMERA_TAKE_PHOTO = 2;
+
     int REQUEST_CODE_SCAN_ONE = 0X01;
+
     int TAKE_PHOTO_WITH_DATA = 0X02;
-    String PHOTO_DATA = "photo_data";
+
     int MIN_CLICK_DELAY_TIME = 3500;
+
     int PLAYING = 1;
+
     int DELAY_MILLIS_500 = 500;
+
     float DISCOUNTED = 0.9f;
-    String THREEDIMENSIONAL_DATA = "threeDimensional_data";
-    String PRODUCT_DATA = "product_data";
-    String PRODUCT_ID = "product_id";
+
     int ML_ASR_CAPTURE_CODE = 3;
+
     int AUDIO_PERMISSION_CODE = 4;
-    String PRIVACY_FILE = "Privacy.txt";
+
     int DETECTING = 0;
+
     int IS_INTEGRITY = 1;
+
     int IS_NOT_INTEGRITY = 2;
-    String AD_ID_SPLASH = "testq6zq98hecj";
-    String AD_ID_BANNER = "testw6vs28auh3";
+
+    String LANGUAGE_EN = "en";
+
+    String LANGUAGE_ZH = "zh";
+
+    int ALL_ORDER_INDEX = 0;
+
+    int PENDING_PAYMENT_INDEX = 1;
+
+    int EXPRESSING_INDEX = 2;
+
+    int COMPLETED_ORDER_INDEX = 3;
+
+    double[][] ADDR_ADJUST_NUMBER = {{-0.001, -0.01}, {0.01, -0.001}, {0.01, 0.01}};
+
+    String RESOURCE_TYPE_MIPMAP = "mipmap";
+
+    String EMPTY = "";
+
+    String COMMA = ",";
+
+    String DOT = ".";
+
+    String CNY = "CNY";
+
+    String SOF_LINK = "https://stackoverflow.com/questions/tagged/huawei-mobile-services?tab=Newest&ha_source=hms7";
 }

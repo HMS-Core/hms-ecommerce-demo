@@ -16,20 +16,46 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Evaluation {
+
+    @PrimaryKey(autoGenerate = true)
+    private int index;
+
+    @ColumnInfo
+    private int productId;
+
+    @ColumnInfo
     private String name;
+
+    @ColumnInfo
     private String time;
+
+    @ColumnInfo
     private String content;
 
-    public String getImgUri() {
-        return imgUri;
-    }
-
-    public void setImgUri(String imgUri) {
-        this.imgUri = imgUri;
-    }
-
+    @ColumnInfo
     private String imgUri;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
     public String getName() {
         return name;
@@ -53,5 +79,13 @@ public class Evaluation {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getImgUri() {
+        return imgUri;
+    }
+
+    public void setImgUri(String imgUri) {
+        this.imgUri = imgUri;
     }
 }

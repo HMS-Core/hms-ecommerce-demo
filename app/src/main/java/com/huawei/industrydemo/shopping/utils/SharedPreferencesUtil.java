@@ -20,15 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.huawei.industrydemo.shopping.constants.SharedPreferencesParams;
-import com.huawei.industrydemo.shopping.entity.Evaluation;
-import com.huawei.industrydemo.shopping.entity.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -69,107 +61,5 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
 
     private SharedPreferences.Editor getSpWithEdit() {
         return sp.edit();
-    }
-
-    // -----------------------GET-------------------
-    public boolean isShowTip() {
-        return sp.getBoolean(isShowTip, false);
-    }
-
-    public User getUser() {
-        String res = sp.getString(userKey, "");
-        try {
-            return new Gson().fromJson(res, User.class);
-        } catch (JsonSyntaxException e) {
-            return null;
-        }
-    }
-
-    public List<String> getHistorySearchData() {
-        String res = sp.getString(searchData, null);
-        if (null == res) {
-            return new ArrayList<>();
-        }
-        return new Gson().fromJson(res, new TypeToken<List<String>>() {
-        }.getType());
-    }
-
-    public String getPushToken() {
-        String res = sp.getString(pushToken, null);
-        return res;
-    }
-
-    // -----------------------SET-------------------
-    public void setShowTip(boolean flag) {
-        SharedPreferences.Editor editor = getSpWithEdit().putBoolean(isShowTip, flag);
-        editor.apply();
-    }
-
-    public void setUser(User user) {
-        SharedPreferences.Editor editor;
-        if (user == null) {
-            editor = getSpWithEdit().putString(userKey, null);
-        } else {
-            String res = new Gson().toJson(user);
-            editor = getSpWithEdit().putString(userKey, res);
-        }
-        editor.commit();
-    }
-
-    public User getHistoryUser(String openId) {
-        String res = sp.getString(SharedPreferencesParams.openIdPrefix + openId, "");
-        try {
-            return new Gson().fromJson(res, User.class);
-        } catch (JsonSyntaxException e) {
-            return null;
-        }
-    }
-
-    public void setHistoryUser(String openId, User user) {
-        SharedPreferences.Editor editor;
-        String res = new Gson().toJson(user);
-        editor = getSpWithEdit().putString(SharedPreferencesParams.openIdPrefix + openId, res);
-        editor.apply();
-    }
-
-    public void setHistorySearchData(List<String> dataList) {
-        if (!(null == dataList || dataList.size() <= 0)) {
-            SharedPreferences.Editor editor = getSpWithEdit().putString(searchData, new Gson().toJson(dataList));
-            editor.apply();
-        } else {
-            SharedPreferences.Editor editor = getSpWithEdit().putString(searchData, null);
-            editor.apply();
-        }
-    }
-
-    public void setPushToken(String flag) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(pushToken, flag);
-        editor.apply();
-    }
-
-    public void setEvaluateData(Evaluation data, int productId) {
-        List<Evaluation> dataList = getEvaluateData(productId);
-        if (data == null){
-            return;
-        }
-        if (null == dataList) {
-            dataList = new ArrayList<>();
-            dataList.add(data);
-            SharedPreferences.Editor editor = getSpWithEdit().putString(evaluateList + productId, new Gson().toJson(dataList));
-            editor.apply();
-        } else {
-            dataList.add(data);
-            SharedPreferences.Editor editor = getSpWithEdit().putString(evaluateList + productId, new Gson().toJson(dataList));
-            editor.apply();
-        }
-    }
-
-    public List<Evaluation> getEvaluateData(int productId) {
-        String res = sp.getString(evaluateList+productId, null);
-        if (null == res) {
-            return new ArrayList<>();
-        }
-        return new Gson().fromJson(res, new TypeToken<List<Evaluation>>() {
-        }.getType());
     }
 }

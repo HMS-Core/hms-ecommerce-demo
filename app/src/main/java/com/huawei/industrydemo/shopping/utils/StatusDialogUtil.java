@@ -19,11 +19,10 @@ package com.huawei.industrydemo.shopping.utils;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,88 +30,92 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.huawei.agconnect.crash.AGConnectCrash;
 import com.huawei.industrydemo.shopping.R;
+
+import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
 public class StatusDialogUtil extends Dialog {
 
     private Handler mHandler;
+
     private Context mContext;
+
     private RelativeLayout dialog_window_background;
+
     private RelativeLayout dialog_view_bg;
+
     private ImageView imageStatus;
+
     private TextView tvShow;
+
     private ProgressBar progressBar;
 
     public StatusDialogUtil(Context context) {
-        this(context,R.style.MyStatusDialog);
+        this(context, R.style.MyStatusDialog);
         mContext = context;
         mHandler = new Handler(Looper.getMainLooper());
-        //初始化
         initDialog();
     }
 
     public StatusDialogUtil(Context context, int themeResId) {
-        super(context,themeResId);
+        super(context, themeResId);
     }
 
     private void initDialog() {
         try {
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            View mProgressDialogView = inflater.inflate(R.layout.layout_status_dialog, null);
+            View mProgressDialogView = inflater.inflate(R.layout.dialog_layout_status, null);
             setContentView(mProgressDialogView);
-            //获取布局
+
             dialog_window_background = mProgressDialogView.findViewById(R.id.dialog_window_background);
             dialog_view_bg = mProgressDialogView.findViewById(R.id.dialog_view_bg);
             progressBar = mProgressDialogView.findViewById(R.id.progress_wheel);
             imageStatus = mProgressDialogView.findViewById(R.id.image_status);
             tvShow = mProgressDialogView.findViewById(R.id.tv_show);
 
-            //默认配置
+            // Default configuration
             configView();
         } catch (Exception e) {
-            e.printStackTrace();
+            AgcUtil.reportException(TAG, e);
         }
     }
 
     private void configView() {
-        //window背景
+        // window Background
         dialog_window_background.setBackgroundColor(Color.TRANSPARENT);
 
-        //文字设置
         tvShow.setTextColor(Color.WHITE);
 
-        //弹框背景
+        // Popup windown background
         GradientDrawable myGrad = new GradientDrawable();
         myGrad.setColor(Color.parseColor("#b2000000"));
         myGrad.setStroke(dp2px(mContext, 0), Color.TRANSPARENT);
         myGrad.setCornerRadius(dp2px(mContext, 5));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            dialog_view_bg.setBackground(myGrad);
-        } else {
-            dialog_view_bg.setBackgroundDrawable(myGrad);
-        }
+        dialog_view_bg.setBackground(myGrad);
 
         int padding = dp2px(mContext, 10);
-        dialog_view_bg.setPadding(padding,padding,padding,padding);
+        dialog_view_bg.setPadding(padding, padding, padding, padding);
 
-        //图片宽高
+        // Picture size
         ViewGroup.LayoutParams layoutParams = imageStatus.getLayoutParams();
         layoutParams.width = dp2px(mContext, 50);
         layoutParams.height = dp2px(mContext, 50);
         imageStatus.setLayoutParams(layoutParams);
     }
 
-    public void show(String msg){
+    public void show(String msg) {
         tvShow.setText(msg);
         show();
     }
 
-    public void show(String msg, boolean isSuc, long delayMillis,int textColor){
+    public void show(String msg, boolean isSuc, long delayMillis, int textColor) {
         try {
             if (isShowing()) {
-                hide();
+                dismiss();
             }
 
             progressBar.setVisibility(View.INVISIBLE);
@@ -133,14 +136,16 @@ public class StatusDialogUtil extends Dialog {
                 }
             }, delayMillis);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
+            AGConnectCrash.getInstance().recordException(e);
         }
     }
+
     /**
-     * dp转px
+     * dp to px
      *
-     * @param dpValue dp值
-     * @return px值
+     * @param dpValue dpValue
+     * @return px
      */
     private int dp2px(Context context, final float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

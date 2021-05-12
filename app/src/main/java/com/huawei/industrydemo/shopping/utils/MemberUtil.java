@@ -20,14 +20,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.huawei.hms.analytics.HiAnalytics;
-import com.huawei.hms.analytics.HiAnalyticsInstance;
+import com.huawei.agconnect.crash.AGConnectCrash;
 import com.huawei.hms.iap.Iap;
 import com.huawei.hms.iap.IapApiException;
 import com.huawei.hms.iap.entity.InAppPurchaseData;
 import com.huawei.hms.iap.entity.OwnedPurchasesReq;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.inteface.MemberCheckCallback;
+import com.huawei.industrydemo.shopping.repository.UserRepository;
 
 import org.json.JSONException;
 
@@ -40,15 +40,15 @@ import static com.huawei.hms.analytics.type.HAParamType.CURRVLEVEL;
 import static com.huawei.hms.analytics.type.HAParamType.PREVLEVEL;
 import static com.huawei.hms.analytics.type.HAParamType.REASON;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
-import static com.huawei.industrydemo.shopping.page.BuyMemberActivity.TYPE_SUBSCRIBED_PRODUCT;
 
 /**
  * @version [Ecommerce-Demo 1.0.0.300, 2020/11/04]
- * @see com.huawei.industrydemo.shopping.fragment.MyFragment
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class MemberUtil {
     private static volatile MemberUtil instance;
+
+    public static final int TYPE_SUBSCRIBED_PRODUCT = 2;
 
     private MemberUtil() {
     }
@@ -64,83 +64,87 @@ public class MemberUtil {
         return instance;
     }
 
-
-    public void isMember(Activity activity, MemberCheckCallback memberCheckCallback) {
+    public void isMember(Activity activity, User user, MemberCheckCallback memberCheckCallback) {
         OwnedPurchasesReq getPurchaseReq = new OwnedPurchasesReq();
         getPurchaseReq.setPriceType(TYPE_SUBSCRIBED_PRODUCT);
         getPurchaseReq.setContinuationToken("");
-        Iap.getIapClient(activity).obtainOwnedPurchaseRecord(getPurchaseReq)
-                .addOnSuccessListener(result -> {
-                    List<String> list = result.getPlacedInappPurchaseDataList();
-                    if (list == null || list.size() == 0) {
-                        list = result.getInAppPurchaseDataList();
-                    }
-                    if (list == null || list.size() == 0) {
+        UserRepository userRepository = new UserRepository();
+        Iap.getIapClient(activity).obtainOwnedPurchaseRecord(getPurchaseReq).addOnSuccessListener(result -> {
+            List<String> list = result.getPlacedInappPurchaseDataList();
+            if (list == null || list.size() == 0) {
+                list = result.getInAppPurchaseDataList();
+            }
+            if (list == null || list.size() == 0) {
+                if (memberCheckCallback != null) {
+                    setUserMemberInfo(user, false, false, 0);
+                    userRepository.setCurrentUser(user);
+                    memberCheckCallback.onResult(false, false, "", "");
+                }
+                return;
+            }
+            for (String item : list) {
+                try {
+                    InAppPurchaseData inAppPurchaseData = new InAppPurchaseData(item);
+                    boolean subIsvalid = inAppPurchaseData.isSubValid();
+
+                    if (subIsvalid) {
+                        String productName = inAppPurchaseData.getProductName();
+                        long expirationDate = inAppPurchaseData.getExpirationDate();
+                        boolean isAutoRenewing = inAppPurchaseData.isAutoRenewing();
+                        String time =
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(expirationDate);
                         if (memberCheckCallback != null) {
-                            memberCheckCallback.onResult(false, false, "", "");
+                            memberCheckCallback.onResult(subIsvalid, isAutoRenewing, productName, time);
                         }
+                        setUserMemberInfo(user, isAutoRenewing, true, expirationDate);
+                        userRepository.setCurrentUser(user);
                         return;
                     }
-                    User user = SharedPreferencesUtil.getInstance().getUser();
-                    for (String item : list) {
-                        try {
-                            InAppPurchaseData inAppPurchaseData = new InAppPurchaseData(item);
-                            String productName = inAppPurchaseData.getProductName();
-                            boolean isAutoRenewing = inAppPurchaseData.isAutoRenewing();
-                            boolean subIsvalid = inAppPurchaseData.isSubValid();
-                            long expirationDate = inAppPurchaseData.getExpirationDate();
-                            if (subIsvalid) {
-                                String time = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(expirationDate);
-                                if (memberCheckCallback != null) {
-                                    memberCheckCallback.onResult(subIsvalid, isAutoRenewing, productName, time);
-                                }
-                                user.setAutoRenewing(isAutoRenewing);
-                                user.setExpirationDate(expirationDate);
-                                user.setMember(true);
-                                SharedPreferencesUtil.getInstance().setUser(user);
-                                return;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                } catch (JSONException e) {
+                    AgcUtil.reportException(TAG, e);
+                }
+            }
 
-                    /*If member relation expired, it needs to be reported*/
-                    if(true == user.isMember()) {
-                        HiAnalyticsInstance eventInstance = HiAnalytics.getInstance(activity);
-                        Bundle bundle = new Bundle();
+            /* If member relation expired, it needs to be reported */
+            if (isMember(user)) {
+                Bundle bundle = new Bundle();
 
-                        bundle.putString(PREVLEVEL, "Member");
-                        bundle.putString(CURRVLEVEL, "Non-Member");
-                        bundle.putString(REASON, "Member Purchase");
-                        eventInstance.onEvent(UPDATEMEMBERSHIPLEVEL, bundle);
-                    }
+                bundle.putString(PREVLEVEL, "Member");
+                bundle.putString(CURRVLEVEL, "Non-Member");
+                bundle.putString(REASON, "Member Purchase");
+                AnalyticsUtil.getInstance(activity).onEvent(UPDATEMEMBERSHIPLEVEL, bundle);
+            }
 
-                    user.setAutoRenewing(false);
-                    user.setExpirationDate(0);
-                    user.setMember(false);
-                    SharedPreferencesUtil.getInstance().setUser(user);
-                    if (memberCheckCallback != null) {
-                        memberCheckCallback.onResult(false, false, "", "");
-                    }
+            setUserMemberInfo(user, false, false, 0);
+            userRepository.setCurrentUser(user);
+            if (memberCheckCallback != null) {
+                memberCheckCallback.onResult(false, false, "", "");
+            }
 
-                })
-                .addOnFailureListener(e -> {
-                    if (e instanceof IapApiException) {
-                        IapApiException apiException = (IapApiException) e;
-                        Log.d(TAG, "Status:" + apiException.getStatus());
-                        Log.d(TAG, "returnCode:" + apiException.getStatusCode());
-                    } else {
-                        Log.d(TAG, "failure:" + e.toString());
-                    }
-                    if (memberCheckCallback != null) {
-                        memberCheckCallback.onResult(false, false, "", "");
-                    }
-                });
+        }).addOnFailureListener(e -> {
+            if (e instanceof IapApiException) {
+                IapApiException apiException = (IapApiException) e;
+                Log.d(TAG, "Status:" + apiException.getStatus());
+                Log.d(TAG, "returnCode:" + apiException.getStatusCode());
+            } else {
+                Log.d(TAG, "failure:" + e.toString());
+                AGConnectCrash.getInstance().recordException(e);
+            }
+            if (memberCheckCallback != null) {
+                memberCheckCallback.onResult(false, false, "", "");
+            }
+        });
     }
 
-    public boolean isMember(User user){
-        if(user != null && user.isMember() && (user.isAutoRenewing() || (!user.isAutoRenewing() && user.getExpirationDate() > System.currentTimeMillis()))){
+    private void setUserMemberInfo(User user, boolean isAutoRenewing, boolean isMember, long expirationDate) {
+        user.setAutoRenewing(isAutoRenewing);
+        user.setExpirationDate(expirationDate);
+        user.setMember(isMember);
+    }
+
+    public boolean isMember(User user) {
+        if (user != null && user.isMember() && (user.isAutoRenewing()
+            || (!user.isAutoRenewing() && user.getExpirationDate() > System.currentTimeMillis()))) {
             return true;
         }
         return false;

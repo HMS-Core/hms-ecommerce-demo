@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,26 +16,33 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
+import androidx.room.Embedded;
+import androidx.room.Entity;
+
 /**
  * Product Basic Information Entity
  * 
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/21]
- * @see com.huawei.industrydemo.shopping.entity.Product
+ * @see Product
  * @since [Ecommerce-Demo 1.0.0.300]
  */
+@Entity
 public class BasicInfo {
     private String shortName;
-    
+
     private String name;
 
     private String thumbnail;
 
+    @Embedded
     private Configuration configuration;
 
     private int price;
 
+    private int displayPrice;
+
     private String link;
-    
+
     public String getShortName() {
         return shortName;
     }
@@ -43,7 +50,7 @@ public class BasicInfo {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -74,6 +81,14 @@ public class BasicInfo {
 
     public int getPrice() {
         return this.price;
+    }
+
+    public int getDisplayPrice() {
+        return displayPrice;
+    }
+
+    public void setDisplayPrice(int displayPrice) {
+        this.displayPrice = displayPrice;
     }
 
     public void setLink(String link) {

@@ -23,5 +23,5 @@ package com.huawei.industrydemo.shopping.constants;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public interface LogConfig {
-    String TAG = "myMsg";
+    String TAG = "Shopping_Demo_Log_Msg";
 }

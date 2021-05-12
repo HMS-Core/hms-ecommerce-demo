@@ -24,9 +24,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCapture;
@@ -36,6 +38,15 @@ import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureResult;
 import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
+import com.huawei.industrydemo.shopping.base.BaseDialog;
+
+import static com.huawei.industrydemo.shopping.base.BaseDialog.CANCEL_BUTTON;
+import static com.huawei.industrydemo.shopping.base.BaseDialog.CONFIRM_BUTTON;
+import static com.huawei.industrydemo.shopping.base.BaseDialog.CONTENT;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.ORDER_KEY;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.PAYMENT_TYPE;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.RESULT_DATA;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOTAL_PRICE;
 
 /**
  * Payment Succeeded Activity
@@ -47,12 +58,19 @@ import com.huawei.industrydemo.shopping.base.BaseActivity;
 public class PaymentSelectActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = PaymentSelectActivity.class.getSimpleName();
 
-    private TextView btnOhterPay;
-    private TextView btnBcrPay;
+    private static final int REQUEST_BCR = 6667;
+
+    private final int CAMERA_PERMISSION_CODE = 1;
+
+    private final int READ_EXTERNAL_STORAGE_CODE = 2;
+
+    private RadioGroup paymentGroup;
+
+    private TextView confirmButton;
+
     private int totalPrice;
+
     private int orderNumber;
-    private int CAMERA_PERMISSION_CODE = 1;
-    private int READ_EXTERNAL_STORAGE_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,74 +78,77 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_payment_select);
         initView();
         initAction();
-        totalPrice = getIntent().getIntExtra("total_price", 0);
-        orderNumber = getIntent().getIntExtra("order_number",0);
+        totalPrice = getIntent().getIntExtra(TOTAL_PRICE, 0);
+        orderNumber = getIntent().getIntExtra(ORDER_KEY, 0);
 
         ((TextView) findViewById(R.id.payment_total)).setText(getString(R.string.payment_need_total, totalPrice));
 
-        if (!(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
+        if (!(ActivityCompat.checkSelfPermission(this,
+            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
             this.requestCameraPermission();
         }
-        if (!(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+        if (!(ActivityCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
             this.requestCameraPermission();
         }
     }
 
     private void initAction() {
-        btnOhterPay.setOnClickListener(this);
-        btnBcrPay.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
+        confirmButton.setOnClickListener(this);
     }
 
     private void initView() {
         TextView textTitle = findViewById(R.id.tv_title);
-        textTitle.setText(R.string.payment_succeed);
-        btnOhterPay = findViewById(R.id.other_payment);
-        btnBcrPay = findViewById(R.id.bcr_payment);
+        textTitle.setText(R.string.payment_method);
+        paymentGroup = findViewById(R.id.payment_radio_group);
+        confirmButton = findViewById(R.id.confirm_button);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bcr_payment:
-                initDialog();
-                break;
-            case R.id.other_payment:
-                startActivity(new Intent(this, PaymentSucceededActivity.class)
-                        .putExtra("total_price", totalPrice).putExtra("order_number", orderNumber));
-                break;
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.confirm_button:
+                int radioButtonId = paymentGroup.getCheckedRadioButtonId();
+                if (radioButtonId == R.id.bcr_payment_button) {
+                    addTipView(new String[] {ML_BANKCARD}, () -> initDialog());
+                } else if (radioButtonId == R.id.other_payment_button) {
+                    startActivity(new Intent(this, PaymentSucceededActivity.class).putExtra(TOTAL_PRICE, totalPrice)
+                        .putExtra(ORDER_KEY, orderNumber)
+                        .putExtra(PAYMENT_TYPE, getResources().getString(R.string.other_payment_methods)));
+                    setResult(RESULT_OK);
+                    finish();
+                }
                 break;
             default:
                 break;
         }
     }
 
-    private void initDialog(){
-        AlertDialog.Builder builder=new AlertDialog.Builder(PaymentSelectActivity.this);
-        builder.setTitle(getApplicationContext().getResources().getString(R.string.payment_prompt));
-        builder.setMessage(getApplicationContext().getResources().getString(R.string.payment_prompt_content));
-        builder.setPositiveButton(getApplicationContext().getResources().getString(R.string.privacyaccept), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startCaptureActivity(banCallback);
-            }
+    private void initDialog() {
+        Bundle data = new Bundle();
+
+        data.putString(CONFIRM_BUTTON, getString(R.string.privacyaccept));
+        data.putString(CONTENT, getString(R.string.payment_prompt_content));
+        data.putString(CANCEL_BUTTON, getString(R.string.privacyReject));
+
+        BaseDialog dialog = new BaseDialog(this, data, true);
+        dialog.setConfirmListener(v -> {
+            startCaptureActivity(banCallback);
+            dialog.dismiss();
         });
-        builder.setNegativeButton(getApplicationContext().getResources().getString(R.string.privacyReject), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
+        dialog.setCancelListener(v -> dialog.dismiss());
+        dialog.show();
     }
 
     /**
      * Use the bank card pre-processing plug-in to identify video stream bank cards.
      * Create a recognition result callback function to process the identification result of the card.
      */
-    private MLBcrCapture.Callback banCallback = new MLBcrCapture.Callback() {
+    private final MLBcrCapture.Callback banCallback = new MLBcrCapture.Callback() {
         // Identify successful processing.
         @Override
         public void onSuccess(MLBcrCaptureResult bankCardResult) {
@@ -136,8 +157,11 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
                 Log.i(TAG, "CallBack onRecSuccess idCardResult is null");
                 return;
             }
-            startActivity(new Intent(PaymentSelectActivity.this, BcrAnalyseActivity.class)
-                    .putExtra("total_price", totalPrice).putExtra("order_number", orderNumber).putExtra("resultData",formatIdCardResult(bankCardResult)));
+            startActivityForResult(
+                new Intent(PaymentSelectActivity.this, BcrAnalyseActivity.class).putExtra(TOTAL_PRICE, totalPrice)
+                    .putExtra(ORDER_KEY, orderNumber)
+                    .putExtra(RESULT_DATA, formatIdCardResult(bankCardResult)),
+                REQUEST_BCR);
         }
 
         // User cancellation processing.
@@ -149,7 +173,7 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
         // Identify failure processing.
         @Override
         public void onFailure(int retCode, Bitmap bitmap) {
-            Log.i(TAG, "CallBack onFailure retCode is "+retCode);
+            Log.i(TAG, "CallBack onFailure retCode is " + retCode);
         }
 
         @Override
@@ -166,16 +190,18 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
      */
     private void startCaptureActivity(MLBcrCapture.Callback Callback) {
         MLBcrCaptureConfig config = new MLBcrCaptureConfig.Factory()
-                // Set the expected result type of bank card recognition.
-                // MLBcrCaptureConfig.SIMPLE_RESULT: Recognize only the card number and effective date.
-                // MLBcrCaptureConfig.ALL_RESULT: Recognize information such as the card number, effective date, card issuing bank, card organization, and card type.
-                .setResultType(MLBcrCaptureConfig.RESULT_ALL)
-                // Set the screen orientation of the plugin page.
-                // MLBcrCaptureConfig.ORIENTATION_AUTO: Adaptive mode, the display direction is determined by the physical sensor.
-                // MLBcrCaptureConfig.ORIENTATION_LANDSCAPE: Horizontal screen.
-                // MLBcrCaptureConfig.ORIENTATION_PORTRAIT: Vertical screen.
-                .setOrientation(MLBcrCaptureConfig.ORIENTATION_AUTO)
-                .create();
+            // Set the expected result type of bank card recognition.
+            // MLBcrCaptureConfig.SIMPLE_RESULT: Recognize only the card number and effective date.
+            // MLBcrCaptureConfig.ALL_RESULT: Recognize information such as the card number, effective date, card
+            // issuing bank, card organization, and card type.
+            .setResultType(MLBcrCaptureConfig.RESULT_ALL)
+            // Set the screen orientation of the plugin page.
+            // MLBcrCaptureConfig.ORIENTATION_AUTO: Adaptive mode, the display direction is determined by the physical
+            // sensor.
+            // MLBcrCaptureConfig.ORIENTATION_LANDSCAPE: Horizontal screen.
+            // MLBcrCaptureConfig.ORIENTATION_PORTRAIT: Vertical screen.
+            .setOrientation(MLBcrCaptureConfig.ORIENTATION_AUTO)
+            .create();
         MLBcrCapture bcrCapture = MLBcrCaptureFactory.getInstance().getBcrCapture(config);
         bcrCapture.captureFrame(this, Callback);
     }
@@ -183,23 +209,23 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
     private String formatIdCardResult(MLBcrCaptureResult bankCardResult) {
         StringBuilder resultBuilder = new StringBuilder();
 
-        resultBuilder.append("Number：");
+        resultBuilder.append(getString(R.string.card_number));
         resultBuilder.append(bankCardResult.getNumber());
         resultBuilder.append(System.lineSeparator());
 
-        resultBuilder.append("Issuer：");
+        resultBuilder.append(getString(R.string.card_issuer));
         resultBuilder.append(bankCardResult.getIssuer());
         resultBuilder.append(System.lineSeparator());
 
-        resultBuilder.append("Expire: ");
+        resultBuilder.append(getString(R.string.card_expire));
         resultBuilder.append(bankCardResult.getExpire());
         resultBuilder.append(System.lineSeparator());
 
-        resultBuilder.append("Type: ");
+        resultBuilder.append(getString(R.string.card_type));
         resultBuilder.append(bankCardResult.getType());
         resultBuilder.append(System.lineSeparator());
 
-        resultBuilder.append("Organization: ");
+        resultBuilder.append(getString(R.string.card_organization));
         resultBuilder.append(bankCardResult.getOrganization());
         resultBuilder.append(System.lineSeparator());
 
@@ -207,13 +233,24 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
     }
 
     private void requestCameraPermission() {
-        final String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+        final String[] permissions =
+            new String[] {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             ActivityCompat.requestPermissions(this, permissions, this.CAMERA_PERMISSION_CODE);
         }
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             ActivityCompat.requestPermissions(this, permissions, this.READ_EXTERNAL_STORAGE_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_BCR && resultCode == RESULT_OK) {
+            // Processing payment result
+            setResult(RESULT_OK);
+            finish();
         }
     }
 }

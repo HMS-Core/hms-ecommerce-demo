@@ -9,7 +9,8 @@
       "version": "NA",
       "color": "Orange"
     },
-    "price": 88,
+    "price": 1,
+    "displayPrice": 88,
     "link": "value"
   },
   "category": "ShoesBags",

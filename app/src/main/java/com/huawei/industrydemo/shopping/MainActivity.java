@@ -1,70 +1,45 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
+ *     Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 
 package com.huawei.industrydemo.shopping;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 
-import com.huawei.agconnect.config.AGConnectServicesConfig;
-import com.huawei.hmf.tasks.OnFailureListener;
-import com.huawei.hmf.tasks.OnSuccessListener;
-import com.huawei.hms.analytics.HiAnalytics;
-import com.huawei.hms.analytics.HiAnalyticsInstance;
-import com.huawei.hms.analytics.HiAnalyticsTools;
-import com.huawei.hms.common.ApiException;
-import com.huawei.hms.hmsscankit.ScanUtil;
-import com.huawei.hms.ml.scan.HmsScan;
-import com.huawei.hms.push.HmsMessaging;
-import com.huawei.hms.support.api.entity.safetydetect.SysIntegrityResp;
-import com.huawei.hms.support.api.safetydetect.SafetyDetect;
-import com.huawei.hms.support.api.safetydetect.SafetyDetectStatusCodes;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
-import com.huawei.industrydemo.shopping.base.BaseFragment;
 import com.huawei.industrydemo.shopping.constants.Constants;
-import com.huawei.industrydemo.shopping.constants.KeyConstants;
-import com.huawei.industrydemo.shopping.fragment.CatalogueFragment;
-import com.huawei.industrydemo.shopping.fragment.HomeFragment;
-import com.huawei.industrydemo.shopping.fragment.MyFragment;
-import com.huawei.industrydemo.shopping.fragment.ShopCarFragment;
-import com.huawei.industrydemo.shopping.page.ProductActivity;
-import com.huawei.industrydemo.shopping.page.ProductVisionSearchAnalyseActivity;
-import com.huawei.industrydemo.shopping.utils.StatusDialogUtil;
+import com.huawei.industrydemo.shopping.page.viewmodel.MainActivityLeftDrawerViewModel;
+import com.huawei.industrydemo.shopping.page.viewmodel.MainActivityViewModel;
+import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.huawei.hms.analytics.type.HAEventType.STARTAPP;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.CHECKED_ID;
 
 /**
  * Main Page
@@ -72,281 +47,142 @@ import static com.huawei.hms.analytics.type.HAEventType.STARTAPP;
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/21]
  * @since [Ecommerce-Demo 1.0.0.300]
  */
-public class MainActivity extends BaseActivity {
-    public static final String RESULT = "SCAN_RESULT";
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+    private MainActivityViewModel mViewModel;
 
-    public static final int HOME_INDEX = 0;
-    public static final int CATALOGUE_INDEX = 1;
-    public static final int SHOP_CAR_INDEX = 2;
-    public static final int MY_INDEX = 3;
+    private MainActivityLeftDrawerViewModel mDrawerViewModel;
 
-    public static final int REQUEST_CODE_SCAN_ONE = 0X01;
-    private HiAnalyticsInstance instance;
+    private long firstTime = 0;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private boolean isInit = false;
 
-    // Home
-    private HomeFragment homeFragment;
-
-    // catalogue
-    private CatalogueFragment catalogueFragment;
-
-    // shopCar
-    private ShopCarFragment shopCarFragment;
-
-    // Mine
-    private MyFragment myFragment;
-
-    // Records created fragments.
-    private List<Fragment> fragmentList = new ArrayList<>();
-
-    private RadioGroup mTabRadioGroup;
-
-    private Map<Integer, Integer> pageIndex = new HashMap<>();
-
-    private String appId;
-
-    private StatusDialogUtil statusDialog;
+    private static final String[] APP_PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION,};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
-        initFragment();
-        initAnalytics();
-        setPushAutoInit(true);
-        invokeSysIntegrity();
+        requestPermission(APP_PERMISSIONS);
+        mViewModel = new MainActivityViewModel(this);
+        mDrawerViewModel = new MainActivityLeftDrawerViewModel(this);
+        AnalyticsUtil.getInstance(this).onEvent(getString(R.string.notice), new Bundle());
     }
 
-    private void initView() {
-        mTabRadioGroup = findViewById(R.id.tabs_rg);
-        mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
-        pageIndex.put(R.id.tab_home, HOME_INDEX);
-        pageIndex.put(R.id.tab_catalogue, CATALOGUE_INDEX);
-        pageIndex.put(R.id.tab_shop, SHOP_CAR_INDEX);
-        pageIndex.put(R.id.tab_my, MY_INDEX);
-
-    }
-
-    private void initFragment() {
-        homeFragment = new HomeFragment();
-        addFragment(homeFragment);
-        showFragment(homeFragment);
-    }
-
-    private void addFragment(BaseFragment fragment) {
-        if (!fragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction().add(R.id.frame_main, fragment).commit();
-            fragmentList.add(fragment);
+    /**
+     * requestPermission
+     */
+    public void requestPermission(String[] permission) {
+        if (!hasPermissions(this, permission)) {
+            ActivityCompat.requestPermissions(this, permission, Constants.REQUEST_PERMISSIONS_CODE);
         }
     }
 
-    private void showFragment(BaseFragment fragment) {
-        for (Fragment frag : fragmentList) {
-            if (frag != fragment) {
-                getSupportFragmentManager().beginTransaction().hide(frag).commit();
+    private boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
         }
-        getSupportFragmentManager().beginTransaction().show(fragment).commit();
-
+        return true;
     }
 
-    public void showCatalogueFragment(int showPosition) {
-        boolean isInit = catalogueFragment != null;
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (!isInit) {
-            catalogueFragment = new CatalogueFragment(showPosition);
-        }else {
-            catalogueFragment.initCatalogueType(showPosition);
+            mViewModel.initView();
+            mViewModel.initFragment();
+            mViewModel.initHmsKits();
+            mDrawerViewModel.initView();
+            isInit = true;
         }
-        ((RadioButton) mTabRadioGroup.findViewById(R.id.tab_catalogue)).setChecked(true);
 
+        mDrawerViewModel.checkSignIn();
+        mViewModel.hideLoadView();
     }
 
-    private void initAnalytics() {
-        // 打开SDK日志开关
-        HiAnalyticsTools.enableLog();
-        instance = HiAnalytics.getInstance(this);
-        instance.setAnalyticsEnabled(true);
-
-        Bundle bundle = new Bundle();
-        instance.onEvent(STARTAPP,bundle);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onClick(View v) {
+        mViewModel.onClickEvent(v.getId());
+        mDrawerViewModel.onClickEvent(v.getId());
     }
 
-    private void setPushAutoInit(boolean isEnabled) {
-        HmsMessaging.getInstance(this).setAutoInitEnabled(isEnabled);
+    @Override
+    public void recreate() {
+        mViewModel.removeAllFragment();
+        super.recreate();
     }
-
-    private RadioGroup.OnCheckedChangeListener mOnCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            Log.d(TAG, "onCheckedChanged");
-            switch (checkedId) {
-                case R.id.tab_home: // Home
-                    if (homeFragment == null) {
-                        homeFragment = new HomeFragment();
-                    }
-                    addFragment(homeFragment);
-                    showFragment(homeFragment);
-                    break;
-                case R.id.tab_catalogue: // Catalogue
-                    if (catalogueFragment == null) {
-                        catalogueFragment = new CatalogueFragment(0);
-                    }
-                    addFragment(catalogueFragment);
-                    showFragment(catalogueFragment);
-                    break;
-                case R.id.tab_shop: // Shop Car
-                    if (shopCarFragment == null) {
-                        shopCarFragment = new ShopCarFragment();
-                    }
-                    addFragment(shopCarFragment);
-                    showFragment(shopCarFragment);
-                    break;
-                case R.id.tab_my: // Mine
-                    if (myFragment == null) {
-                        myFragment = new MyFragment();
-                    }
-                    addFragment(myFragment);
-                    showFragment(myFragment);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int checkedId = intent.getIntExtra("checkedId", R.id.tab_home);
-        ((RadioButton) mTabRadioGroup.getChildAt(pageIndex.get(checkedId))).setChecked(true);
+        int checkedId = intent.getIntExtra(CHECKED_ID, R.id.tab_home);
+        ((RadioButton) mViewModel.getTabRadioGroup().getChildAt(mViewModel.getPageIndex().get(checkedId)))
+            .setChecked(true);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK || data == null) {
-            return;
-        }
-
-        if (requestCode == REQUEST_CODE_SCAN_ONE) {
-            HmsScan obj = data.getParcelableExtra(ScanUtil.RESULT);
-            if (obj != null) {
-                Intent intent = new Intent(this, ProductActivity.class);
-                // todo scan PRODUCT_KEY
-                intent.putExtra(KeyConstants.PRODUCT_KEY, 1);
-                intent.putExtra(RESULT, obj);
-                startActivity(intent);
-            }
-        } else if (requestCode == Constants.CAMERA_TAKE_PHOTO) {
-            Bitmap photo = data.getParcelableExtra("data");
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.PHOTO_DATA, photo);
-            Intent intent = new Intent(MainActivity.this, ProductVisionSearchAnalyseActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
+        mViewModel.onActivityResult(requestCode, resultCode, data);
+        mDrawerViewModel.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void showStatusDialog(int status,String msg){
-        if(statusDialog == null){
-            statusDialog = new StatusDialogUtil(this);
-        }
-
-        switch(status){
-            case Constants.DETECTING:
-                statusDialog.show(msg);
-                break;
-            case Constants.IS_INTEGRITY:
-                statusDialog.show(msg,true,3000,R.color.light_green_1);
-                break;
-            case Constants.IS_NOT_INTEGRITY:
-                statusDialog.show(msg,false,3000,R.color.light_red_1);
-                break;
-            default:
-                break;
-        }
-
-        statusDialog.setCanceledOnTouchOutside(true);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+        @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mViewModel.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
-     * invoke System Integrity test by safety detect kit
+     * getLeftDrawerViewModel
+     *
+     * @return MainActivityLeftDrawerViewModel
      */
-    private void invokeSysIntegrity() {
-        showStatusDialog(Constants.DETECTING,getResources().getString(R.string.sys_integrity_detecting));
-        byte[] nonce = new byte[24];
-        try {
-            SecureRandom random;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                random = SecureRandom.getInstanceStrong();
-            } else {
-                random = SecureRandom.getInstance("SHA1PRNG");
-            }
-            random.nextBytes(nonce);
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, e.getMessage());
-        }
+    public MainActivityLeftDrawerViewModel getLeftDrawerViewModel() {
+        return mDrawerViewModel == null ? new MainActivityLeftDrawerViewModel(this) : mDrawerViewModel;
+    }
 
-        appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
-        SafetyDetect.getClient(this)
-                .sysIntegrity(nonce, appId)
-                .addOnSuccessListener(new OnSuccessListener<SysIntegrityResp>() {
-                    @Override
-                    public void onSuccess(SysIntegrityResp response) {
-                        // Indicates communication with the service was successful.
-                        // Use response.getResult() to get the result data.
-                        String jwsStr = response.getResult();
-                        // Process the result data here
-                        String[] jwsSplit = jwsStr.split("\\.");
-                        String jwsPayloadStr = jwsSplit[1];
-                        String payloadDetail = new String(Base64.decode(jwsPayloadStr.getBytes(StandardCharsets.UTF_8), Base64.URL_SAFE), StandardCharsets.UTF_8);
-                        try {
-                            final JSONObject jsonObject = new JSONObject(payloadDetail);
-                            final boolean basicIntegrity = jsonObject.getBoolean("basicIntegrity");
-                            if (!basicIntegrity) {
-                                String advice = "Advice: " + jsonObject.getString("advice");
-                                showStatusDialog(Constants.IS_NOT_INTEGRITY,advice);
-                            }else{
-                                showStatusDialog(Constants.IS_INTEGRITY,getResources().getString(R.string.sys_integrity_detect_success));
-                            }
-                        } catch (JSONException e) {
-                            String errorMsg = e.getMessage();
-                            Log.e(TAG, errorMsg != null ? errorMsg : "unknown error");
-                            if(statusDialog.isShowing()){
-                                statusDialog.hide();
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        if(statusDialog.isShowing()){
-                            statusDialog.hide();
-                        }
-                        String errorMsg;
-                        if (e instanceof ApiException) {
-                            // An error with the HMS API contains some additional details.
-                            ApiException apiException = (ApiException) e;
-                            errorMsg = SafetyDetectStatusCodes.getStatusCodeString(apiException.getStatusCode()) +
-                                    ": " + apiException.getMessage();
-                        } else {
-                            // unknown type of error has occurred.
-                            errorMsg = e.getMessage();
-                        }
-                        Log.e(TAG, errorMsg);
-                        Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+    /**
+     * getMainActivityViewModel
+     *
+     * @return MainActivityViewModel
+     */
+    public MainActivityViewModel getMainActivityViewModel() {
+        return mViewModel;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(statusDialog != null){
+        mViewModel.onDestroy();
+        Dialog statusDialog = mViewModel.getStatusDialog();
+        if (statusDialog != null) {
             statusDialog.dismiss();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        long secondTime = System.currentTimeMillis();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mViewModel.backToHomeFragment()) {
+                return true;
+            }
+
+            if (secondTime - firstTime < 2000) {
+                finish();
+            } else {
+                Toast.makeText(MainActivity.this, R.string.first_press_back, Toast.LENGTH_SHORT).show();
+                firstTime = System.currentTimeMillis();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

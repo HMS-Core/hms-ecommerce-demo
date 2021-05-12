@@ -9,7 +9,8 @@
       "version": "Sport",
       "color": "Black"
     },
-    "price": 1488,
+    "price": 1,
+    "displayPrice": 1488,
     "link": "value"
   },
   "category": "Electronics",

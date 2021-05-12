@@ -21,22 +21,27 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.huawei.hms.analytics.HiAnalytics;
 import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
+import com.huawei.industrydemo.shopping.constants.Constants;
+import com.huawei.industrydemo.shopping.dao.MemberPointDao;
+import com.huawei.industrydemo.shopping.entity.BasicInfo;
+import com.huawei.industrydemo.shopping.entity.MemberPoint;
 import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
-import com.huawei.industrydemo.shopping.entity.User;
-import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+import com.huawei.industrydemo.shopping.entity.Product;
+import com.huawei.industrydemo.shopping.repository.OrderRepository;
+import com.huawei.industrydemo.shopping.repository.ProductRepository;
+import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
+import com.huawei.industrydemo.shopping.utils.MessagingUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import static com.huawei.hms.analytics.type.HAEventType.COMPLETEPURCHASE;
 import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
@@ -48,19 +53,34 @@ import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
 import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
 import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
 import static com.huawei.hms.analytics.type.HAParamType.TRANSACTIONID;
+import static com.huawei.industrydemo.shopping.constants.Constants.CNY;
+import static com.huawei.industrydemo.shopping.constants.Constants.EXPRESSING_INDEX;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.CHECKED_ID;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.ORDER_KEY;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.PAGE_INDEX;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.PAYMENT_TYPE;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOTAL_PRICE;
 
 /**
  * Payment Succeeded Activity
  *
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/28]
- * @see com.huawei.industrydemo.shopping.MainActivity
+ * @see MainActivity
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class PaymentSucceededActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView textTotalPay;
+
     private TextView btnBackToHome;
+
     private TextView btnViewOrder;
+
+    private TextView orderNumber;
+
+    private TextView orderTime;
+
+    private TextView orderType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,48 +88,72 @@ public class PaymentSucceededActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.activity_payment_succeeded);
         initView();
         initAction();
-        int totalPrice = getIntent().getIntExtra("total_price", 0);
-        textTotalPay.setText(getString(R.string.payment_total, totalPrice));
-        int orderNumber = getIntent().getIntExtra("order_number",0);
-        reportPaymentEvent(orderNumber);
+        int totalPrice = getIntent().getIntExtra(TOTAL_PRICE, 0);
+        textTotalPay.setText(getString(R.string.payment_need_total, totalPrice));
+        int orderNum = getIntent().getIntExtra(ORDER_KEY, 0);
+        orderNumber.setText(String.valueOf(orderNum));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String purchaseTime = simpleDateFormat.format(new Date());
+        orderTime.setText(purchaseTime);
+        orderType.setText(getIntent().getStringExtra(PAYMENT_TYPE));
+        modifyOrder(orderNum);
+        reportPaymentEvent(orderNum);
+    }
+
+    private void modifyOrder(int orderNumber) {
+        OrderRepository orderRepository = new OrderRepository();
+        Order order = orderRepository.queryByNumber(orderNumber);
+        if (null == order) {
+            return;
+        }
+        order.setStatus(Constants.HAVE_PAID);
+        orderRepository.update(order);
+
+        List<OrderItem> orderItemList = orderRepository.queryItemByOrder(order);
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.ROOT);
+        MemberPointDao memberPointDao = DatabaseUtil.getDatabase().memberPointsDao();
+        for (OrderItem orderItem : orderItemList) {
+            BasicInfo basicInfo = new ProductRepository().queryByNumber(orderItem.getProductNum()).getBasicInfo();
+            memberPointDao.addMemberPoint(new MemberPoint(order.getOpenId(), format.format(date),
+                orderItem.getProductNum(), basicInfo.getDisplayPrice() * orderItem.getCount()));
+        }
+
+        MessagingUtil.logisticsNotificationMessage(this, Constants.HAVE_PAID, order.getNumber());
     }
 
     private void reportPaymentEvent(int orderNumber) {
         /* Find the order and Report the event */
-        User user = SharedPreferencesUtil.getInstance().getUser();
-        List<Order> orderorders = user.getOrderList();
-
-        for (Order tempOrder : orderorders) {
-            if (tempOrder.getNumber() == orderNumber) {
-                HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
-
-                Bundle bundle = new Bundle();
-                List<OrderItem> productList = tempOrder.getOrderItemList();
-                Iterator<OrderItem> iteratorProduct = productList.iterator();
-                java.text.SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                String purchaseTime = simpleDateFormat.format(new Date());
-
-                while (iteratorProduct.hasNext()) {
-                    OrderItem productItem = iteratorProduct.next();
-
-                    // Initiate Parameters
-                    bundle.putString(PRODUCTID, Integer.toString(productItem.getProduct().getNumber()).trim());
-                    bundle.putString(PRODUCTNAME, productItem.getProduct().getBasicInfo().getShortName().trim());
-                    bundle.putLong(QUANTITY, productItem.getCount());
-                    bundle.putString(ORDERID, Integer.toString(tempOrder.getNumber()).trim());
-                    bundle.putString(TRANSACTIONID, Integer.toString(tempOrder.getNumber()).trim());
-                    bundle.putString(CATEGORY, productItem.getProduct().getCategory().trim());
-                    bundle.putString(OCCURREDTIME, purchaseTime.trim());
-                    bundle.putDouble(REVENUE, (productItem.getProduct().getBasicInfo().getPrice()*productItem.getCount()));
-                    bundle.putString(CURRNAME, "CNY");
-
-                    instance.onEvent(COMPLETEPURCHASE, bundle);
-                }
-                break;
-            }
+        Order order = new OrderRepository().queryByNumber(orderNumber);
+        if (null == order) {
+            return;
         }
+        List<OrderItem> orderItemList = new OrderRepository().queryItemByOrder(order);
 
+        HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+
+        for (OrderItem tempOrderItem : orderItemList) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+            String purchaseTime = simpleDateFormat.format(new Date());
+
+            Product product = new ProductRepository().queryByNumber(tempOrderItem.getProductNum());
+            // Initiate Parameters
+            bundle.putString(PRODUCTID, Integer.toString(tempOrderItem.getProductNum()).trim());
+
+            bundle.putString(PRODUCTNAME, product.getBasicInfo().getShortName().trim());
+            bundle.putLong(QUANTITY, tempOrderItem.getCount());
+            bundle.putString(ORDERID, Integer.toString(tempOrderItem.getOrderNum()).trim());
+            bundle.putString(TRANSACTIONID, Integer.toString(tempOrderItem.getOrderNum()).trim());
+            bundle.putString(CATEGORY, product.getCategory().trim());
+            bundle.putString(OCCURREDTIME, purchaseTime.trim());
+            bundle.putDouble(REVENUE, (product.getBasicInfo().getPrice() * tempOrderItem.getCount()));
+            bundle.putString(CURRNAME, CNY);
+
+            instance.onEvent(COMPLETEPURCHASE, bundle);
+        }
     }
+
     private void initAction() {
         btnBackToHome.setOnClickListener(this);
         btnViewOrder.setOnClickListener(this);
@@ -118,10 +162,14 @@ public class PaymentSucceededActivity extends BaseActivity implements View.OnCli
 
     private void initView() {
         TextView textTitle = findViewById(R.id.tv_title);
-        textTitle.setText(R.string.payment_succeed);
+        textTitle.setVisibility(View.GONE);
         textTotalPay = findViewById(R.id.payment_total);
         btnBackToHome = findViewById(R.id.back_to_home);
         btnViewOrder = findViewById(R.id.view_order);
+        orderNumber = findViewById(R.id.order_number);
+        orderTime = findViewById(R.id.order_time);
+        orderType = findViewById(R.id.payment_type);
+        findViewById(R.id.rt_layout).setBackgroundColor(0x0000000);
     }
 
     @Override
@@ -129,12 +177,13 @@ public class PaymentSucceededActivity extends BaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.back_to_home:
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("checkedId", R.id.tab_home);
+                intent.putExtra(CHECKED_ID, R.id.tab_home);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.view_order:
-                startActivity(new Intent(this, OrderCenterActivity.class).putExtra("page_index",
-                    OrderCenterActivity.ALL_ORDER_INDEX));
+                startActivity(new Intent(this, OrderCenterActivity.class).putExtra(PAGE_INDEX, EXPRESSING_INDEX));
+                finish();
                 break;
             case R.id.iv_back:
                 finish();

@@ -20,7 +20,6 @@ public interface OnLogoutSuccess {
 
     /**
      * Inform the log out is successful
-     *
      */
     void logoutSuccess();
 }

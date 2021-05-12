@@ -17,10 +17,12 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,8 +34,9 @@ import com.huawei.industrydemo.shopping.inteface.OnItemClickListener;
 
 import java.util.List;
 
-import static com.huawei.industrydemo.shopping.page.BuyMemberActivity.SUBSCRIBED_PRODUCT_1;
-import static com.huawei.industrydemo.shopping.page.BuyMemberActivity.SUBSCRIBED_PRODUCT_2;
+import static com.huawei.industrydemo.shopping.page.viewmodel.BuyMemberActivityViewModel.SUBSCRIBED_PRODUCT_1;
+import static com.huawei.industrydemo.shopping.page.viewmodel.BuyMemberActivityViewModel.SUBSCRIBED_PRODUCT_2;
+import static com.huawei.industrydemo.shopping.page.viewmodel.BuyMemberActivityViewModel.SUBSCRIBED_PRODUCT_3;
 
 /**
  * @version [Ecommerce-Demo 1.0.0.300, 2020/11/03]
@@ -43,43 +46,61 @@ import static com.huawei.industrydemo.shopping.page.BuyMemberActivity.SUBSCRIBED
 public class MemberBuyAdapter extends RecyclerView.Adapter<MemberBuyAdapter.ViewHolder> {
 
     private List<ProductInfo> productList;
+
     private Context context;
-    private LinearLayout tempSelectView;
+
     private OnItemClickListener onItemClickListener;
+
+    private float[] radii;
 
     public MemberBuyAdapter(List<ProductInfo> productList, Context context) {
         this.productList = productList;
         this.context = context;
+        this.radii = new float[]{0, 0, 0, 0, 48, 48, 0, 0};
     }
 
     @NonNull
     @Override
-    public MemberBuyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_buy_member, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MemberBuyAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ProductInfo productInfo = productList.get(position);
+        holder.tvName.setText(productInfo.getProductName());
+        holder.tvBuy.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(position);
+            }
+        });
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(position);
             }
-            if (tempSelectView != null) {
-                tempSelectView.setBackgroundResource(R.drawable.no_selected_item_member);
-            }
-            tempSelectView = holder.lvItem;
-            tempSelectView.setBackgroundResource(R.drawable.selected_item_member);
         });
-        ProductInfo productInfo = productList.get(position);
-        holder.tvName.setText(productInfo.getProductName());
-        if(SUBSCRIBED_PRODUCT_1.equals(productInfo.getProductId())){
-            holder.tvPrice.setText(context.getResources().getString(R.string.price_member_type_1,productInfo.getPrice()));
-        }else if(SUBSCRIBED_PRODUCT_2.equals(productInfo.getProductId())){
-            holder.tvPrice.setText(context.getResources().getString(R.string.price_member_type_2,productInfo.getPrice()));
-        }else {
-            holder.tvPrice.setVisibility(View.GONE);
+        if (SUBSCRIBED_PRODUCT_1.equals(productInfo.getProductId())) {
+            initItem(holder.itemView, R.string.vip_week, R.mipmap.member_vip_week, R.color.item_member_week, productInfo.getPrice());
+        } else if (SUBSCRIBED_PRODUCT_2.equals(productInfo.getProductId())) {
+            initItem(holder.itemView, R.string.vip_month, R.mipmap.member_vip_month, R.color.item_member_month, productInfo.getPrice());
+        } else if (SUBSCRIBED_PRODUCT_3.equals(productInfo.getProductId())) {
+            initItem(holder.itemView, R.string.vip_year, R.mipmap.member_vip_year, R.color.item_member_year, productInfo.getPrice());
+        } else {
+            holder.itemView.setVisibility(View.GONE);
         }
 
+    }
+
+    private void initItem(View view, int nameId, int ImageId, int color, String price) {
+        ((TextView) view.findViewById(R.id.tv_date)).setText(nameId);
+        ((ImageView) view.findViewById(R.id.iv_item)).setImageResource(ImageId);
+
+        TextView tvPrice = view.findViewById(R.id.tv_price);
+        GradientDrawable colorDrawable = new GradientDrawable();
+        colorDrawable.setColor(context.getResources().getColor(color));
+        colorDrawable.setCornerRadii(radii);
+        tvPrice.setBackgroundDrawable(colorDrawable);
+        tvPrice.setText(price);
     }
 
     @Override
@@ -87,16 +108,15 @@ public class MemberBuyAdapter extends RecyclerView.Adapter<MemberBuyAdapter.View
         return productList == null ? 0 : productList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout lvItem;
-        private TextView tvName;
-        private TextView tvPrice;
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvName;
+        TextView tvBuy;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            lvItem = itemView.findViewById(R.id.lv_item);
-            tvName = itemView.findViewById(R.id.tv_member_name);
-            tvPrice = itemView.findViewById(R.id.tv_member_price);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvBuy = itemView.findViewById(R.id.tv_buy);
         }
     }
 

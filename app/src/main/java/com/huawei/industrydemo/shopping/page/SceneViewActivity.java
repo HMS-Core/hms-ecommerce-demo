@@ -25,16 +25,17 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
-import com.huawei.industrydemo.shopping.constants.Constants;
+import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.wight.MySceneView;
 
 public class SceneViewActivity extends BaseActivity {
     public static final int SCENE_VIEW_REQUEST_CODE = 1;
+
     private View view;
+
     private boolean allowReturn = false;
 
     public Handler mHandler = new Handler(new Handler.Callback() {
@@ -84,7 +85,7 @@ public class SceneViewActivity extends BaseActivity {
         Intent intent = getIntent();
         String sceneModel = null;
         if (intent != null) {
-            sceneModel = intent.getStringExtra(Constants.THREEDIMENSIONAL_DATA);
+            sceneModel = intent.getStringExtra(KeyConstants.THREE_DIMENSIONAL_DATA);
         }
         return sceneModel;
     }

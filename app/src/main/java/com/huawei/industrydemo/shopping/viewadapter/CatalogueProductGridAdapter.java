@@ -33,6 +33,7 @@ import com.huawei.industrydemo.shopping.page.ProductActivity;
 
 import java.util.List;
 
+import static com.huawei.industrydemo.shopping.constants.Constants.RESOURCE_TYPE_MIPMAP;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KEY;
 
 /**
@@ -42,6 +43,7 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KE
  */
 public class CatalogueProductGridAdapter extends RecyclerView.Adapter<CatalogueProductGridAdapter.ViewHolder> {
     private List<Product> list;
+
     private Context context;
 
     public CatalogueProductGridAdapter(List<Product> list, Context context) {
@@ -51,16 +53,23 @@ public class CatalogueProductGridAdapter extends RecyclerView.Adapter<CatalogueP
 
     @NonNull
     @Override
-    public CatalogueProductGridAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_catalogue_product, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CatalogueProductGridAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(position);
         holder.textViewName.setText(product.getBasicInfo().getShortName());
-        holder.textViewPrice.setText(context.getString(R.string.product_price,product.getBasicInfo().getPrice()));
-        holder.imageViewProduct.setImageResource(context.getResources().getIdentifier(product.getImages()[1],"mipmap",context.getPackageName()));
+        holder.textViewPrice.setText(context.getString(R.string.product_price, product.getBasicInfo().getPrice()));
+        if (product.getImages().length > 1) {
+            holder.imageViewProduct.setImageResource(context.getResources()
+                .getIdentifier(product.getImages()[1], RESOURCE_TYPE_MIPMAP, context.getPackageName()));
+        } else {
+            holder.imageViewProduct.setImageResource(context.getResources()
+                .getIdentifier(product.getImages()[0], RESOURCE_TYPE_MIPMAP, context.getPackageName()));
+        }
+
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductActivity.class);
             intent.putExtra(PRODUCT_KEY, product.getNumber());
@@ -76,8 +85,11 @@ public class CatalogueProductGridAdapter extends RecyclerView.Adapter<CatalogueP
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
+
         ImageView imageViewProduct;
+
         TextView textViewPrice;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.text_name);

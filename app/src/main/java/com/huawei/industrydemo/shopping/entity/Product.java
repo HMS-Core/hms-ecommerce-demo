@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,6 +16,13 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.huawei.industrydemo.shopping.entity.converter.StringsConverter;
 
 /**
  * Product Entity
@@ -24,13 +31,18 @@ package com.huawei.industrydemo.shopping.entity;
  * @see [Related Classes/Methods]
  * @since [Ecommerce-Demo 1.0.0.300]
  */
+@Entity
+@TypeConverters(StringsConverter.class)
 public class Product {
+    @PrimaryKey
     private int number;
-    
+
+    @Embedded
     private BasicInfo basicInfo;
 
     private String category;
 
+    @ColumnInfo
     private String ar;
 
     private String[] images;
@@ -48,7 +60,7 @@ public class Product {
     public void setNumber(int number) {
         this.number = number;
     }
-    
+
     public void setBasicInfo(BasicInfo basicInfo) {
         this.basicInfo = basicInfo;
     }

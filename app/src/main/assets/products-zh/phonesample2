@@ -9,7 +9,8 @@
       "version": "5G全网通",
       "color": "黑色"
     },
-    "price": 2499,
+    "price": 1,
+    "displayPrice": 2499,
     "link": "value"
   },
   "category": "手机",

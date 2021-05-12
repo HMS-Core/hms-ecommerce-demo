@@ -23,43 +23,63 @@ import android.widget.TextView;
 
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
+import com.huawei.industrydemo.shopping.inteface.OnNonDoubleClickListener;
+
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.ORDER_KEY;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.PAYMENT_TYPE;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.RESULT_DATA;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOTAL_PRICE;
 
 /**
  * It provides the identification function of the bank card,
  * and recognizes formatted text information from the images with bank card information.
  * Bank Card identification provides on-device API.
+ * 
  * @version [Ecommerce-Demo 1.0.1.300, 2020/10/31]
  * @see com.huawei.industrydemo.shopping.page
  * @since [Ecommerce-Demo 1.0.1.300]
  */
-public class BcrAnalyseActivity extends BaseActivity implements View.OnClickListener {
-    private TextView mTextView;
+public class BcrAnalyseActivity extends BaseActivity {
+
     private int totalPrice;
+
     private int orderNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_image_bcr_analyse);
+        ((TextView) findViewById(R.id.tv_title)).setText(R.string.bank_information);
 
-        totalPrice = getIntent().getIntExtra("total_price", 0);
-        orderNumber = getIntent().getIntExtra("order_number", 0);
+        totalPrice = getIntent().getIntExtra(TOTAL_PRICE, 0);
+        orderNumber = getIntent().getIntExtra(ORDER_KEY, 0);
 
-        String cardResult = getIntent().getStringExtra("resultData");
-        ((TextView)findViewById(R.id.text_result)).setText(cardResult);
-        this.findViewById(R.id.complete_payment).setOnClickListener(this);
-
+        String cardResult = getIntent().getStringExtra(RESULT_DATA);
+        ((TextView) findViewById(R.id.text_result)).setText(cardResult);
+        findViewById(R.id.complete_payment).setOnClickListener(onNonDoubleClickListener);
+        findViewById(R.id.iv_back).setOnClickListener(onNonDoubleClickListener);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.complete_payment:
-                startActivity(new Intent(this, PaymentSucceededActivity.class)
-                        .putExtra("total_price", totalPrice).putExtra("order_number", orderNumber));
-                break;
+    private final OnNonDoubleClickListener onNonDoubleClickListener = new OnNonDoubleClickListener() {
+        @Override
+        public void run(View v) {
+            switch (v.getId()) {
+                case R.id.complete_payment:
+                    startActivity(new Intent(BcrAnalyseActivity.this, PaymentSucceededActivity.class)
+                        .putExtra(TOTAL_PRICE, totalPrice)
+                        .putExtra(ORDER_KEY, orderNumber)
+                        .putExtra(PAYMENT_TYPE, getResources().getString(R.string.bank_card_payment)));
+                    setResult(RESULT_OK);
+                    finish();
+                    break;
+                case R.id.iv_back:
+                    finish();
+                    break;
+                default:
+                    break;
+            }
         }
-    }
+    };
 
     @Override
     protected void onDestroy() {

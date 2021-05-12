@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,30 +16,39 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import com.huawei.hms.identity.entity.UserAddress;
+import com.huawei.industrydemo.shopping.entity.converter.UserAddressConverter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 
 /**
  * User Order Entity
  * 
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/21]
- * @see com.huawei.industrydemo.shopping.entity.User
+ * @see User
  * @since [Ecommerce-Demo 1.0.0.300]
  */
+@Entity
+@TypeConverters(UserAddressConverter.class)
 public class Order {
+    @PrimaryKey
     private int number;
-
-    private List<OrderItem> orderItemList;
 
     private UserAddress address;
 
     private int totalPrice;
 
     private int actualPrice;
+
     private boolean modifyFlag = false;
+
+    private String openId;
 
     /**
      * 0:paid
@@ -48,19 +57,10 @@ public class Order {
     private int status;
 
     public Order() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddHHmmss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddHHmmss", Locale.ROOT);
         String date = simpleDateFormat.format(new Date().getTime());
         this.number = Integer.parseInt(date);
         this.address = null;
-    }
-
-    public boolean getModifyflag() {
-        return modifyFlag;
-    }
-
-
-    public void setModifyflag(boolean modifyFlag) {
-        this.modifyFlag = modifyFlag;
     }
 
     public int getNumber() {
@@ -71,14 +71,6 @@ public class Order {
         this.number = number;
     }
 
-    public List<OrderItem> getOrderItemList() {
-        return orderItemList;
-    }
-
-    public void setOrderItemList(List<OrderItem> orderItemList) {
-        this.orderItemList = orderItemList;
-    }
-
     public UserAddress getAddress() {
         return address;
     }
@@ -87,7 +79,6 @@ public class Order {
         if (address != null) {
             this.address = address;
         }
-        return;
     }
 
     public int getTotalPrice() {
@@ -98,6 +89,22 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public int getActualPrice() {
+        return actualPrice;
+    }
+
+    public void setActualPrice(int actualPrice) {
+        this.actualPrice = actualPrice;
+    }
+
+    public boolean isModifyFlag() {
+        return modifyFlag;
+    }
+
+    public void setModifyFlag(boolean modifyFlag) {
+        this.modifyFlag = modifyFlag;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -106,11 +113,11 @@ public class Order {
         this.status = status;
     }
 
-    public int getActualPrice() {
-        return actualPrice;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setActualPrice(int actualPrice) {
-        this.actualPrice = actualPrice;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

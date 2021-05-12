@@ -28,7 +28,6 @@ import com.huawei.industrydemo.shopping.page.SceneViewActivity;
 
 import static com.huawei.industrydemo.shopping.page.SceneViewActivity.SCENE_VIEW_REQUEST_CODE;
 
-
 /**
  * SampleView
  *
@@ -37,17 +36,19 @@ import static com.huawei.industrydemo.shopping.page.SceneViewActivity.SCENE_VIEW
  */
 public class MySceneView extends SceneView {
     private Context context;
+
     private Handler mHandler;
 
     /**
      * Constructor - used in new mode.
+     *
      * @param context Context of activity.
      * @param mHandler The current handler.
      */
     public MySceneView(Context context, Handler mHandler) {
         super(context);
         this.context = context;
-        this.mHandler =mHandler;
+        this.mHandler = mHandler;
     }
 
     /**
@@ -64,7 +65,7 @@ public class MySceneView extends SceneView {
      * surfaceCreated
      * - You need to override this method, and call the APIs of SceneView to load and initialize materials.
      * - The super method contains the initialization logic.
-     *   To override the surfaceCreated method, call the super method in the first line.
+     * To override the surfaceCreated method, call the super method in the first line.
      *
      * @param holder SurfaceHolder.
      */
@@ -104,4 +105,3 @@ public class MySceneView extends SceneView {
         }
     }
 }
-

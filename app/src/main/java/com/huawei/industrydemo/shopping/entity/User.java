@@ -16,10 +16,22 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
-import com.huawei.hms.support.account.result.AuthAccount;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-import java.util.ArrayList;
+import com.huawei.hms.support.account.result.AuthAccount;
+import com.huawei.industrydemo.shopping.entity.converter.AuthAccountConverter;
+import com.huawei.industrydemo.shopping.entity.converter.StringListConverter;
+import com.huawei.industrydemo.shopping.entity.converter.StringSetConverter;
+import com.huawei.industrydemo.shopping.entity.converter.StringsConverter;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
 
 /**
  * User Entity
@@ -28,10 +40,17 @@ import java.util.List;
  * @see [Related Classes/Methods]
  * @since [Ecommerce-Demo 1.0.0.300]
  */
+@Entity
+@TypeConverters({AuthAccountConverter.class, StringListConverter.class, StringSetConverter.class})
 public class User {
+    @PrimaryKey
+    @NonNull
+    private String openId = EMPTY;
+
     private AuthAccount huaweiAccount;
 
-    private List<String> recentSearchList;
+    @TypeConverters(StringsConverter.class)
+    private String[] recentSearchList;
 
     private boolean isMember;
 
@@ -39,42 +58,34 @@ public class User {
 
     private long expirationDate;
 
-    private List<Order> orderList = new ArrayList<>();
-
-    private List<ShoppingCart> shoppingCartList = new ArrayList<>();
-
     private boolean privacyFlag = false;
+
+    private Set<String> favoriteProducts = new HashSet<>();
+
+    @NonNull
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(@NonNull String openId) {
+        this.openId = openId;
+    }
 
     public AuthAccount getHuaweiAccount() {
         return huaweiAccount;
     }
 
     public void setHuaweiAccount(AuthAccount huaweiAccount) {
+        this.openId = huaweiAccount.openId;
         this.huaweiAccount = huaweiAccount;
     }
 
-    public List<String> getRecentSearchList() {
+    public String[] getRecentSearchList() {
         return recentSearchList;
     }
 
-    public void setRecentSearchList(List<String> recentSearchList) {
+    public void setRecentSearchList(String[] recentSearchList) {
         this.recentSearchList = recentSearchList;
-    }
-
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
-    }
-
-    public List<ShoppingCart> getShoppingCartList() {
-        return shoppingCartList;
-    }
-
-    public void setShoppingCartList(List<ShoppingCart> shoppingCartList) {
-        this.shoppingCartList = shoppingCartList;
     }
 
     public boolean isPrivacyFlag() {
@@ -107,5 +118,13 @@ public class User {
 
     public void setExpirationDate(long expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public Set<String> getFavoriteProducts() {
+        return favoriteProducts;
+    }
+
+    public void setFavoriteProducts(Set<String> favoriteProducts) {
+        this.favoriteProducts = favoriteProducts;
     }
 }

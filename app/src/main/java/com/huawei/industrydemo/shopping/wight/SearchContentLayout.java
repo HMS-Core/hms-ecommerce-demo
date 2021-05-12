@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Catalogue page
  *
@@ -68,13 +67,10 @@ public class SearchContentLayout extends ViewGroup {
             View child = getChildAt(i);
 
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            MarginLayoutParams lp = (MarginLayoutParams) child
-                    .getLayoutParams();
+            MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
-            int childWidth = child.getMeasuredWidth() + lp.leftMargin
-                    + lp.rightMargin;
-            int childHeight = child.getMeasuredHeight() + lp.topMargin
-                    + lp.bottomMargin;
+            int childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
 
             if (lineWidth + childWidth > sizeWidth - getPaddingLeft() - getPaddingRight()) {
 
@@ -94,15 +90,15 @@ public class SearchContentLayout extends ViewGroup {
             }
         }
         setMeasuredDimension(
-                modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width + getPaddingLeft() + getPaddingRight(),
-                modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height + getPaddingTop() + getPaddingBottom()//
+            modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width + getPaddingLeft() + getPaddingRight(),
+            modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height + getPaddingTop() + getPaddingBottom()//
         );
 
     }
 
-    private List<List<View>> mAllViews   = new ArrayList<>();
+    private final List<List<View>> mAllViews = new ArrayList<>();
 
-    private List<Integer> mLineHeight = new ArrayList<>();
+    private final List<Integer> mLineHeight = new ArrayList<>();
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -114,19 +110,20 @@ public class SearchContentLayout extends ViewGroup {
         int lineWidth = 0;
         int lineHeight = 0;
 
-        @SuppressLint("DrawAllocation") List<View> lineViews = new ArrayList<>();
+        @SuppressLint("DrawAllocation")
+        List<View> lineViews = new ArrayList<>();
 
         int cCount = getChildCount();
 
         for (int i = 0; i < cCount; i++) {
             View child = getChildAt(i);
-            MarginLayoutParams lp = (MarginLayoutParams) child
-                    .getLayoutParams();
+            MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
 
-            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin > width - getPaddingLeft() - getPaddingRight()) {
+            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin > width - getPaddingLeft()
+                - getPaddingRight()) {
 
                 mLineHeight.add(lineHeight);
 
@@ -137,8 +134,7 @@ public class SearchContentLayout extends ViewGroup {
                 lineViews = new ArrayList<>();
             }
             lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
-            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin
-                    + lp.bottomMargin);
+            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin + lp.bottomMargin);
             lineViews.add(child);
 
         }
@@ -162,8 +158,7 @@ public class SearchContentLayout extends ViewGroup {
                     continue;
                 }
 
-                MarginLayoutParams lp = (MarginLayoutParams) child
-                        .getLayoutParams();
+                MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
                 int lc = left + lp.leftMargin;
                 int tc = top + lp.topMargin;
@@ -172,8 +167,7 @@ public class SearchContentLayout extends ViewGroup {
 
                 child.layout(lc, tc, rc, bc);
 
-                left += child.getMeasuredWidth() + lp.leftMargin
-                        + lp.rightMargin;
+                left += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
             }
             left = getPaddingLeft();
             top += lineHeight;
@@ -181,12 +175,9 @@ public class SearchContentLayout extends ViewGroup {
 
     }
 
-
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
-
 }
-

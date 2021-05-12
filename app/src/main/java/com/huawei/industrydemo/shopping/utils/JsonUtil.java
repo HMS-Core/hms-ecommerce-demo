@@ -21,11 +21,15 @@ import android.content.res.AssetManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
+import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
+
 /**
  * JSON processing
+ * 
  * @version [Ecommerce-Demo 1.0.0.300, 2020/11/05]
  * @since [Ecommerce-Demo 1.0.0.300]
  */
@@ -41,7 +45,21 @@ public class JsonUtil {
                 jsonString.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            AgcUtil.reportException(TAG, e);
+        }
+        return jsonString.toString();
+    }
+
+    public static String getJson(InputStream inputStream) {
+        StringBuilder jsonString = new StringBuilder();
+        try (BufferedReader bufferedReader =
+            new BufferedReader(new InputStreamReader(inputStream, Charset.defaultCharset()))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                jsonString.append(line);
+            }
+        } catch (IOException e) {
+            AgcUtil.reportException(TAG, e);
         }
         return jsonString.toString();
     }

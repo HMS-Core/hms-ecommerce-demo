@@ -34,8 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.huawei.hmf.tasks.OnFailureListener;
@@ -51,16 +49,21 @@ import com.huawei.hms.videokit.player.common.PlayerConstants;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.page.ProductActivity;
+import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 import com.huawei.industrydemo.shopping.utils.TimeUtil;
+
+import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
+import static com.huawei.industrydemo.shopping.constants.Constants.RESOURCE_TYPE_MIPMAP;
 
 /**
  * ProductViewPagerAdapter
  *
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/22]
- * @see com.huawei.industrydemo.shopping.page.ProductActivity
+ * @see ProductActivity
  * @since [Ecommerce-Demo 1.0.0.300]
  */
-public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHolder.Callback, SeekBar.OnSeekBarChangeListener {
+public class ProductViewPagerAdapter extends PagerAdapter
+    implements SurfaceHolder.Callback, SeekBar.OnSeekBarChangeListener {
     private String[] imgs;
 
     private String videoUrl;
@@ -72,21 +75,36 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
     private InitVideoInterface initVideoInterface;
 
     private int videoPosition;
+
     private WisePlayer wisePlayer;
+
     private SurfaceView surfaceView;
+
     private SeekBar seekBar;
+
     private TextView currentTimeTv;
+
     private TextView totalTimeTv;
+
     private boolean isUserTrackingTouch = false;
+
     private ImageView playImg;
+
     private boolean isPlaying = false;
+
     private boolean isSuspend = false;
+
+    private int startTime = -1;
+
+    private int playbackTimeWhenTrackingTouch = 0;
+
+    private boolean hasReported = false;
 
     public ProductViewPagerAdapter(String[] imgs, String videoUrl, Context context, WisePlayer wisePlayer) {
         this.imgs = imgs;
         this.videoUrl = videoUrl;
         this.context = context;
-        isHasVideo = !(videoUrl == null || "".equals(videoUrl));
+        isHasVideo = !(videoUrl == null || EMPTY.equals(videoUrl));
         videoPosition = isHasVideo ? imgs.length : -1;
         this.wisePlayer = wisePlayer;
     }
@@ -112,9 +130,9 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
             rlVideo.setVisibility(View.GONE);
             productRl.setVisibility(View.VISIBLE);
             imageView.setImageResource(
-                    context.getResources().getIdentifier(imgs[position], "mipmap", context.getPackageName()));
+                context.getResources().getIdentifier(imgs[position], RESOURCE_TYPE_MIPMAP, context.getPackageName()));
             if (imgs.length >= 1) {
-                //imageView.setOnClickListener(v -> initImgSuper(imageView));
+                // imageView.setOnClickListener(v -> initImgSuper(imageView));
             }
         } else { // video
             if (wisePlayer != null) {
@@ -127,7 +145,7 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
                 if (initVideoInterface != null) {
                     initVideoInterface.initVideo(videoUrl, surfaceView);
                 }
-            }else {
+            } else {
                 notice.setVisibility(View.VISIBLE);
             }
         }
@@ -168,7 +186,7 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
         /**
          * This function is used to initial the video kit.
          *
-         * @param videoUrl    The video link url.
+         * @param videoUrl The video link url.
          * @param surfaceView The interface which is used to play the video.
          */
         void initVideo(String videoUrl, SurfaceView surfaceView);
@@ -222,10 +240,16 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         isUserTrackingTouch = true;
+        if (!hasReported) {
+            playbackTimeWhenTrackingTouch += wisePlayer.getCurrentTime() - startTime;
+        }
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+        if (!hasReported) {
+            startTime = seekBar.getProgress();
+        }
         isUserTrackingTouch = false;
         wisePlayer.seek(seekBar.getProgress());
         updateViewHandler.sendEmptyMessage(Constants.PLAYING);
@@ -238,6 +262,13 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
                 if (!isUserTrackingTouch) {
                     updatePlayProgressView(wisePlayer.getCurrentTime(), wisePlayer.getBufferTime());
                     updateViewHandler.sendEmptyMessageDelayed(Constants.PLAYING, Constants.DELAY_MILLIS_500);
+                    if (startTime == -1) {
+                        startTime = wisePlayer.getCurrentTime();
+                    } else if (!hasReported
+                        && (wisePlayer.getCurrentTime() - startTime + playbackTimeWhenTrackingTouch >= 4000)) {
+                        AnalyticsUtil.videoPlaybackReport();
+                        hasReported = true;
+                    }
                 }
             }
             return false;
@@ -287,6 +318,9 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
     }
 
     public void removeUpdateViewHandler() {
+        startTime = -1;
+        playbackTimeWhenTrackingTouch = 0;
+        hasReported = false;
         if (updateViewHandler != null) {
             updateViewHandler.removeCallbacksAndMessages(null);
             updateViewHandler = null;
@@ -300,10 +334,10 @@ public class ProductViewPagerAdapter extends PagerAdapter implements SurfaceHold
         Bitmap srcBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         if (srcBitmap != null) {
             MLImageSuperResolutionAnalyzerSetting setting = new MLImageSuperResolutionAnalyzerSetting.Factory()
-                    .setScale(MLImageSuperResolutionAnalyzerSetting.ISR_SCALE_3X)
-                    .create();
-            MLImageSuperResolutionAnalyzer analyzer = MLImageSuperResolutionAnalyzerFactory.getInstance()
-                    .getImageSuperResolutionAnalyzer(setting);
+                .setScale(MLImageSuperResolutionAnalyzerSetting.ISR_SCALE_3X)
+                .create();
+            MLImageSuperResolutionAnalyzer analyzer =
+                MLImageSuperResolutionAnalyzerFactory.getInstance().getImageSuperResolutionAnalyzer(setting);
 
             MLFrame frame = MLFrame.fromBitmap(srcBitmap);
             Task<MLImageSuperResolutionResult> task = analyzer.asyncAnalyseFrame(frame);

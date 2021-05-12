@@ -17,17 +17,22 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.huawei.industrydemo.shopping.R;
+import com.huawei.industrydemo.shopping.constants.LogConfig;
+import com.huawei.industrydemo.shopping.inteface.OnItemClickListener;
 
 
 /**
@@ -43,10 +48,12 @@ public class HomeViewPagerAdapter extends PagerAdapter {
      */
     private Integer[] urls;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
-    public HomeViewPagerAdapter(Integer[] urls, Context context) {
+    public HomeViewPagerAdapter(Integer[] urls, Context context, OnItemClickListener onItemClickListener) {
         this.urls = urls;
         this.context = context;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -69,7 +76,12 @@ public class HomeViewPagerAdapter extends PagerAdapter {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_home_view_page, container, false);
         ImageView imageView = itemView.findViewById(R.id.item_image);
         imageView.setImageResource(urls[position]);
-
+        int finalPosition = position;
+        itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(finalPosition);
+            }
+        });
         container.addView(itemView);
         return itemView;
     }
@@ -81,6 +93,5 @@ public class HomeViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-
     }
 }

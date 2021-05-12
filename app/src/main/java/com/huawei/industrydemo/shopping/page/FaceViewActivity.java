@@ -16,19 +16,16 @@
 
 package com.huawei.industrydemo.shopping.page;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.huawei.hms.scene.sdk.FaceView;
 import com.huawei.hms.scene.sdk.common.LandmarkType;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
-import com.huawei.industrydemo.shopping.constants.Constants;
-
+import com.huawei.industrydemo.shopping.constants.KeyConstants;
 
 public class FaceViewActivity extends BaseActivity {
     private FaceView mFaceView;
@@ -39,22 +36,19 @@ public class FaceViewActivity extends BaseActivity {
         setContentView(R.layout.activity_face_view);
         mFaceView = findViewById(R.id.face_view);
         Switch mSwitch = findViewById(R.id.switch_view);
-        Log.e("FaceView","onCreate");
+        Log.e("FaceView", "onCreate");
         String modelData = getmodelData();
         final float[] position = {0.0f, 0.0f, -0.15f};
         final float[] rotation = {0.0f, 0.0f, 0.0f, 0.0f};
         final float[] scale = {2.0f, 2.0f, 0.3f};
 
-        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mFaceView.clearResource();
-                if (isChecked) {
-                    // Load materials.
-                    int index = mFaceView.loadAsset(modelData, LandmarkType.TIP_OF_NOSE);
-                    // (Optional) Set the initial status.
-                    mFaceView.setInitialPose(index, position, scale, rotation);
-                }
+        mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mFaceView.clearResource();
+            if (isChecked) {
+                // Load materials.
+                int index = mFaceView.loadAsset(modelData, LandmarkType.TIP_OF_NOSE);
+                // (Optional) Set the initial status.
+                mFaceView.setInitialPose(index, position, scale, rotation);
             }
         });
     }
@@ -63,7 +57,7 @@ public class FaceViewActivity extends BaseActivity {
         Intent intent = getIntent();
         String faceModel = null;
         if (intent != null) {
-            faceModel = intent.getStringExtra(Constants.THREEDIMENSIONAL_DATA);
+            faceModel = intent.getStringExtra(KeyConstants.THREE_DIMENSIONAL_DATA);
         }
         return faceModel;
     }
@@ -75,8 +69,7 @@ public class FaceViewActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mFaceView.onResume();
-        Log.e("FaceView","onResume");
-
+        Log.e("FaceView", "onResume");
     }
 
     /**
@@ -86,8 +79,7 @@ public class FaceViewActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         mFaceView.onPause();
-        Log.e("FaceView","onPause");
-
+        Log.e("FaceView", "onPause");
     }
 
     /**
@@ -97,7 +89,7 @@ public class FaceViewActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mFaceView.destroy();
-        Log.e("FaceView","destroy");
+        Log.e("FaceView", "destroy");
 
     }
 }

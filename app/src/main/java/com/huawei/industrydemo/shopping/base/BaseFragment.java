@@ -22,7 +22,6 @@ import com.huawei.industrydemo.shopping.constants.KitConstants;
 import com.huawei.industrydemo.shopping.constants.LogConfig;
 import com.huawei.industrydemo.shopping.utils.KitTipUtil;
 
-
 /**
  * Base Fragment
  *
@@ -30,16 +29,12 @@ import com.huawei.industrydemo.shopping.utils.KitTipUtil;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class BaseFragment extends Fragment implements LogConfig, KitConstants {
-    //Used Kit
+
+    // Used Kit
     private String[] kits = null;
 
     public void addTipView() {
-        KitTipUtil.addTipView(getActivity(), kits);
-    }
-
-    protected void addTipView(String[] kits) {
-        this.kits = kits;
-        KitTipUtil.addTipView(getActivity(), this.kits);
+        KitTipUtil.addTipView(getActivity(), KitTipUtil.getKitMap(kits));
     }
 
     protected void setKits(String[] kits) {
@@ -49,9 +44,8 @@ public class BaseFragment extends Fragment implements LogConfig, KitConstants {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {//show current fragment
+        if (!hidden && kits != null) {// show current fragment
             addTipView();
         }
     }
-
 }

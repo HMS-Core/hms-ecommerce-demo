@@ -27,20 +27,11 @@ public interface SharedPreferencesParams {
     // Name of the SP storage file
     String spFileName = "userConfig";
 
-    // Display Kits or not
-    String isShowTip = "m_tip";
-
     // key of getting account information.
     String accountKey = "m_account_key";
 
-    // key of getting user information.
-    String userKey = "m_user_key";
-
     // key of getting history search
     String searchData = "m_search_data";
-
-    // key of getting push token
-    String pushToken = "m_push_token";
 
     // key of getting push token
     String openIdPrefix = "m_openid_";
@@ -50,4 +41,5 @@ public interface SharedPreferencesParams {
 
     // key of evaluate
     String evaluateData = "m_evaluate_data_";
+
 }

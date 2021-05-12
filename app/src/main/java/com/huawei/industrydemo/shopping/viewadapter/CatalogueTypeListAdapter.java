@@ -37,10 +37,15 @@ import com.huawei.industrydemo.shopping.inteface.OnItemClickListener;
  */
 public class CatalogueTypeListAdapter extends RecyclerView.Adapter<CatalogueTypeListAdapter.ViewHolder> {
     private String[] types;
+
     private Context context;
+
     private OnItemClickListener onItemClickListener;
+
     private TextView currentType;
+
     private View currentBar;
+
     private int showPosition;
 
     public CatalogueTypeListAdapter(String[] types, Context context, int showPosition) {
@@ -58,8 +63,8 @@ public class CatalogueTypeListAdapter extends RecyclerView.Adapter<CatalogueType
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.textType.setText(types[position]);
-        holder.textType.setTextColor(context.getResources().getColor(R.color.black));
-        holder.bar.setVisibility(View.INVISIBLE);
+        holder.textType.setTextColor(context.getResources().getColor(R.color.item_catalogue_no_select));
+        holder.bar.setVisibility(View.GONE);
         holder.itemView.setOnClickListener(v -> {
             changeStatus(holder, position);
             if (onItemClickListener != null) {
@@ -73,17 +78,20 @@ public class CatalogueTypeListAdapter extends RecyclerView.Adapter<CatalogueType
 
     private void changeStatus(ViewHolder holder, int position) {
         if (currentType != null) {
-            currentType.setTextColor(context.getResources().getColor(R.color.black));
-            currentBar.setVisibility(View.INVISIBLE);
+            currentType.setTextColor(context.getResources().getColor(R.color.item_catalogue_no_select));
+            currentBar.setVisibility(View.GONE);
+            currentType.setBackgroundColor(context.getResources().getColor(R.color.transparent));
+
         }
 
         currentType = holder.textType;
         currentBar = holder.bar;
 
         currentType.setText(types[position]);
-        currentType.setTextColor(context.getResources().getColor(R.color.red));
-        currentBar.setVisibility(View.VISIBLE);
-
+//        currentType.setTextColor(context.getResources().getColor(R.color.item_catalogue_selected));
+        currentBar.setVisibility(View.GONE);
+        currentType.setBackgroundColor(context.getResources().getColor(R.color.red_type_1));
+        currentType.setTextColor(context.getResources().getColor(R.color.white));
     }
 
     @Override
@@ -93,6 +101,7 @@ public class CatalogueTypeListAdapter extends RecyclerView.Adapter<CatalogueType
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textType;
+
         private View bar;
 
         ViewHolder(@NonNull View itemView) {

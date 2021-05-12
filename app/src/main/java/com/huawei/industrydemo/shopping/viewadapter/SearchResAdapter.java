@@ -1,18 +1,18 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
+ *     Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 
 package com.huawei.industrydemo.shopping.viewadapter;
 
@@ -42,6 +42,7 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KE
  */
 public class SearchResAdapter extends RecyclerView.Adapter<SearchResAdapter.ViewHolder> {
     private List<Product> list;
+
     private Context context;
 
     public SearchResAdapter(List<Product> list, Context context) {
@@ -51,15 +52,15 @@ public class SearchResAdapter extends RecyclerView.Adapter<SearchResAdapter.View
 
     @NonNull
     @Override
-    public SearchResAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_product_search_res, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchResAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(position);
         holder.tvTitle.setText(product.getBasicInfo().getName());
-        holder.tvPrice.setText(context.getString(R.string.product_price,product.getBasicInfo().getPrice()));
+        holder.tvPrice.setText(context.getString(R.string.product_price, product.getBasicInfo().getPrice()));
         holder.ivProduct.setImageResource(
             context.getResources().getIdentifier(product.getImages()[0], "mipmap", context.getPackageName()));
         holder.itemView.setOnClickListener(v -> {
@@ -77,7 +78,9 @@ public class SearchResAdapter extends RecyclerView.Adapter<SearchResAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivProduct;
+
         TextView tvTitle;
+
         TextView tvPrice;
 
         public ViewHolder(@NonNull View itemView) {

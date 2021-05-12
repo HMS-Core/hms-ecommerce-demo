@@ -18,9 +18,7 @@ package com.huawei.industrydemo.shopping.page;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,19 +26,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
-import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.entity.Evaluation;
-import com.huawei.industrydemo.shopping.entity.Product;
-import com.huawei.industrydemo.shopping.utils.ProductBase;
-import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+import com.huawei.industrydemo.shopping.utils.AgcUtil;
+import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 import com.huawei.industrydemo.shopping.viewadapter.EvaluationListAdapter;
-import com.huawei.industrydemo.shopping.viewadapter.SearchResAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -52,18 +46,19 @@ import java.util.List;
  */
 public class EvaluationListActivity extends BaseActivity implements View.OnClickListener {
 
-    private RecyclerView recyclerView;
     private int productId;
+
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluation_list);
 
-        addTipView(new String[]{});
+        // addTipView(new String[]{});
         Intent intent = getIntent();
         if (intent != null) {
-            productId = intent.getIntExtra(Constants.PRODUCT_ID, -1);
+            productId = intent.getIntExtra(KeyConstants.PRODUCT_KEY, -1);
         }
         initView();
     }
@@ -73,7 +68,7 @@ public class EvaluationListActivity extends BaseActivity implements View.OnClick
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.order_evaluate_list);
         recyclerView = findViewById(R.id.recycler_evaluation);
         TextView tvEmpty = findViewById(R.id.tv_empty);
-        List<Evaluation> dataList = SharedPreferencesUtil.getInstance().getEvaluateData(productId);
+        List<Evaluation> dataList = DatabaseUtil.getDatabase().evaluationDao().getEvaluationListByProductId(productId);
         if (null == dataList || dataList.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             tvEmpty.setVisibility(View.VISIBLE);
@@ -100,23 +95,20 @@ public class EvaluationListActivity extends BaseActivity implements View.OnClick
     }
 
     private static void listSort(List<Evaluation> list) {
-        Collections.sort(list, new Comparator<Evaluation>() {
-            @Override
-            public int compare(Evaluation e1, Evaluation e2) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date date1 = format.parse(e1.getTime());
-                    Date date2 = format.parse(e2.getTime());
-                    if (date1 == null || date2 == null) {
-                        return 0;
-                    }
-
-                    return Long.compare(date2.getTime(), date1.getTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        Collections.sort(list, (e1, e2) -> {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date date1 = format.parse(e1.getTime());
+                Date date2 = format.parse(e2.getTime());
+                if (date1 == null || date2 == null) {
+                    return 0;
                 }
-                return 0;
+
+                return Long.compare(date2.getTime(), date1.getTime());
+            } catch (ParseException e) {
+                AgcUtil.reportException(TAG, e);
             }
+            return 0;
         });
     }
 }

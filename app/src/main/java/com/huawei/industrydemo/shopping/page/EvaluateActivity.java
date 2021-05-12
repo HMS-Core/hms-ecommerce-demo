@@ -28,17 +28,17 @@ import com.huawei.hms.analytics.HiAnalytics;
 import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
-import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.entity.Evaluation;
 import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.User;
-import com.huawei.industrydemo.shopping.utils.ProductBase;
-import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
+import com.huawei.industrydemo.shopping.repository.ProductRepository;
+import com.huawei.industrydemo.shopping.repository.UserRepository;
+import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
+import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import static com.huawei.hms.analytics.type.HAEventType.RATE;
 import static com.huawei.hms.analytics.type.HAParamType.CATEGORY;
@@ -50,47 +50,65 @@ import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
 import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
 import static com.huawei.hms.analytics.type.HAParamType.QUANTITY;
 import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
+import static com.huawei.industrydemo.shopping.constants.Constants.RESOURCE_TYPE_MIPMAP;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KEY;
 
 public class EvaluateActivity extends BaseActivity implements View.OnClickListener {
     private EditText ed_evaluate;
-    private String orderNumber;
+
+    // private String orderNumber;
     private int productId;
+
     private int productAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluate);
-        initView();
+        Intent intent = getIntent();
+        initView(intent);
     }
 
-    private void initView() {
-        String[] data = getProductData();
-
+    private void initView(Intent intent) {
+        Product product = getProductData(intent);
         findViewById(R.id.tv_evaluate).setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         ed_evaluate = findViewById(R.id.ed_evaluate);
         ImageView ivProduct = findViewById(R.id.iv_product);
+
+        TextView tvTitle = findViewById(R.id.tv_title);
         TextView tvName = findViewById(R.id.tv_product_name);
         TextView tvDetail = findViewById(R.id.tv_product_detail);
         TextView tvPrice = findViewById(R.id.tv_product_price);
-        ivProduct.setImageResource(Integer.parseInt(data[0]));
-        tvName.setText(data[1]);
-        tvDetail.setText(data[2]);
-        tvPrice.setText(data[3]);
-        orderNumber = data[4];
-        productId = Integer.parseInt(data[5]);
-        productAmount = Integer.parseInt(data[6]);
+        ivProduct.setImageResource(
+                this.getResources().getIdentifier(product.getImages()[0], RESOURCE_TYPE_MIPMAP, this.getPackageName()));
+
+        tvTitle.setText(R.string.order_evaluate);
+        tvName.setText(product.getBasicInfo().getShortName());
+        tvDetail.setText(product.getBasicInfo().getName());
+        tvPrice.setText(getString(R.string.product_price, product.getBasicInfo().getPrice()));
+
+        // orderNumber = data[4];
+        productId = product.getNumber();
+        productAmount = getProductAmount();
     }
 
-
-    public String[] getProductData() {
-        Intent intent = getIntent();
-        String[] product = null;
+    public Product getProductData(Intent intent) {
+        Product product = null;
         if (intent != null) {
-            product = intent.getStringArrayExtra(Constants.PRODUCT_DATA);
+            int innerProductId = intent.getIntExtra("PRODUCT_ID", 0);
+            product = new ProductRepository().queryByNumber(innerProductId);
         }
         return product;
+    }
+
+    public int getProductAmount() {
+        Intent intent = getIntent();
+        int innerProductAmount = 0;
+        if (intent != null) {
+            innerProductAmount = intent.getIntExtra("PRODUCT_AMOUNT", 1);
+        }
+        return innerProductAmount;
     }
 
     @Override
@@ -101,31 +119,30 @@ public class EvaluateActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 finish();
                 break;
-
             case R.id.tv_evaluate:
                 String data = ed_evaluate.getText().toString();
                 if (!(data.length() <= 0)) {
-                    addTolist(data);
+                    addTolist(data, productId);
                     Intent intent1 = new Intent(EvaluateActivity.this, EvaluationListActivity.class);
-                    intent1.putExtra(Constants.PRODUCT_ID, productId);
+                    intent1.putExtra(PRODUCT_KEY, productId);
                     startActivity(intent1);
-                    reporteReviewEvent(data);
-                    Toast.makeText(getApplicationContext(), "评论成功", Toast.LENGTH_SHORT).show();
+                    reporteReviewEvent(productId);
+                    Toast.makeText(getApplicationContext(), getString(R.string.order_evaluate_success), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "评论不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.order_evaluate_empty), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
 
-    private void reporteReviewEvent(String data) {
-        Product product = ProductBase.getInstance().queryByNumber(productId);
-        if(product == null) {
+    private void reporteReviewEvent(int productId) {
+        Product product = new ProductRepository().queryByNumber(productId);
+        if (product == null) {
             return;
         }
 
-        /* Report log out event*/
+        /* Report log out event */
         HiAnalyticsInstance instance = HiAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
 
@@ -133,21 +150,21 @@ public class EvaluateActivity extends BaseActivity implements View.OnClickListen
         bundle.putString(PRODUCTNAME, product.getBasicInfo().getShortName().trim());
         bundle.putString(CATEGORY, product.getCategory().trim());
         bundle.putDouble(PRICE, product.getBasicInfo().getPrice());
-        bundle.putDouble(REVENUE, (product.getBasicInfo().getPrice()*productAmount));
+        bundle.putDouble(REVENUE, (product.getBasicInfo().getPrice() * productAmount));
         bundle.putString(CURRNAME, "CNY");
         bundle.putInt(QUANTITY, productAmount);
 
-
         bundle.putString(COMMENTTYPE, "End User");
-        bundle.putString(DETAILS, data.trim());
+        bundle.putString(DETAILS, "");
 
         instance.onEvent(RATE, bundle);
     }
 
-    private void addTolist(String data) {
+    private void addTolist(String data, int productId) {
         Evaluation evaluation = new Evaluation();
         evaluation.setContent(data);
-        User user = SharedPreferencesUtil.getInstance().getUser();
+        // User user = SharedPreferencesUtil.getInstance().getUser();
+        User user = new UserRepository().getCurrentUser();
         if (user == null || user.getHuaweiAccount() == null) {
             evaluation.setName("");
             evaluation.setImgUri("");
@@ -157,7 +174,8 @@ public class EvaluateActivity extends BaseActivity implements View.OnClickListen
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         evaluation.setTime(df.format(new Date()));
-        SharedPreferencesUtil.getInstance().setEvaluateData(evaluation, productId);
+        evaluation.setProductId(productId);
+        DatabaseUtil.getDatabase().evaluationDao().addEvaluate(evaluation);
     }
 
 }

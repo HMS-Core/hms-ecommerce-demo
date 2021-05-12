@@ -9,7 +9,8 @@
       "version": "运动版",
       "color": "黑色"
     },
-    "price": 1488,
+    "price": 1,
+    "displayPrice": 1488,
     "link": "value"
   },
   "category": "电子产品",

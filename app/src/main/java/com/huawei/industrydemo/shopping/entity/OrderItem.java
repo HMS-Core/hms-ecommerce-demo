@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,30 +16,57 @@
 
 package com.huawei.industrydemo.shopping.entity;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 /**
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/24]
- * @see com.huawei.industrydemo.shopping.entity.Order
+ * @see Order
  * @since [Ecommerce-Demo 1.0.0.300]
  */
+@Entity
 public class OrderItem {
-    private Product product;
+    @PrimaryKey(autoGenerate = true)
+    private int index;
+
+    private int orderNum;
+
+    private int productNum;
 
     private int count;
 
     public OrderItem() {
     }
 
-    public OrderItem(Product product, int count) {
-        this.product = product;
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    @Ignore
+    public OrderItem(int productNum, int count) {
+        this.productNum = productNum;
         this.count = count;
     }
 
-    public Product getProduct() {
-        return product;
+    public int getProductNum() {
+        return productNum;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductNum(int productNum) {
+        this.productNum = productNum;
     }
 
     public int getCount() {

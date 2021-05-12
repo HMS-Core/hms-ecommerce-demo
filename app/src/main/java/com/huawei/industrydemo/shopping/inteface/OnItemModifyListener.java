@@ -18,11 +18,13 @@ package com.huawei.industrydemo.shopping.inteface;
 
 import android.view.View;
 
+import com.huawei.industrydemo.shopping.viewadapter.BagAdapter;
+
 /**
  * ItemModifyListener
  * 
  * @version [Ecommerce-Demo 1.0.0.300, 2020/10/15]
- * @see com.huawei.industrydemo.shopping.viewadapter.ShoppingCartAdapter
+ * @see BagAdapter
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public interface OnItemModifyListener {
