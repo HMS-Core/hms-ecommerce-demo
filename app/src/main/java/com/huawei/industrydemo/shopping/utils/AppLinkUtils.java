@@ -48,6 +48,8 @@ public class AppLinkUtils {
     private String mDeepLink = "https://developer.huawei.com/consumer/en/solution/hms/ecommerce?";
 
     /**
+     * Create an app linking to outside
+     *
      * @param linkingOnSuccessListener linkingOnSuccessListener
      * @return string
      */
@@ -72,6 +74,8 @@ public class AppLinkUtils {
     }
 
     /**
+     * Create a app link to share
+     *
      * @return string deep link
      */
     public String createAppLinkingAndShare() {
@@ -83,6 +87,8 @@ public class AppLinkUtils {
     }
 
     /**
+     * Create app link with suffix
+     *
      * @param suffix like num=1
      * @return deep link
      */
@@ -92,6 +98,8 @@ public class AppLinkUtils {
     }
 
     /**
+     * Share the link
+     *
      * @param agcLink link
      */
     public void shareLink(String agcLink) {
@@ -108,6 +116,8 @@ public class AppLinkUtils {
     }
 
     /**
+     * Append the deeplink
+     *
      * @param suffix like num=4
      */
     public void appendDeepLink(String suffix) {

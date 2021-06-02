@@ -27,7 +27,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +57,6 @@ import com.huawei.industrydemo.shopping.base.BaseActivityViewModel;
 import com.huawei.industrydemo.shopping.base.BaseDialog;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.entity.User;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.BagActivity;
 import com.huawei.industrydemo.shopping.page.CollectionActivity;
 import com.huawei.industrydemo.shopping.page.ContactUsActivity;
@@ -96,8 +94,6 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
     private DrawerLayout mDrawerLayout;
 
     private UserRepository mUserRepository;
-
-    private LinearLayout mLvUser;
 
     private ImageView mIvQRCode;
 
@@ -155,7 +151,6 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
             new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setAccessToken().createParams();
         mAuthService = AccountAuthManager.getService(mActivity, mAuthParam);
 
-        mLvUser = mActivity.findViewById(R.id.lv_user);
         mIvQRCode = mActivity.findViewById(R.id.iv_qr_code);
         mTvSign = mActivity.findViewById(R.id.tv_sign_in);
         mTvUserName = mActivity.findViewById(R.id.tv_user_name);
@@ -165,7 +160,7 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
 
     public void checkSignIn() {
         mUser = mUserRepository.getCurrentUser();
-        if (mUser == null) {// no sign
+        if (mUser == null) { // no sign
             mTvUserName.setVisibility(View.GONE);
             mIvUserHead.setVisibility(View.GONE);
             mTvSign.setVisibility(View.VISIBLE);
@@ -196,51 +191,51 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
     @Override
     public void onClickEvent(int viewId) {
         switch (viewId) {
-            case R.id.iv_qr_code:// QR Code
+            case R.id.iv_qr_code: // QR Code
                 if (mUserRepository.getCurrentUser() == null) {
                     Toast.makeText(mActivity, R.string.no_log_tip, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mActivity.addTipView(new String[] {SCAN_QR},
-                    (ShowTipsCallback) () -> initQrCodeDialog(mUser.getHuaweiAccount().getDisplayName()));
+                    () -> initQrCodeDialog(mUser.getHuaweiAccount().getDisplayName()));
                 break;
-            case R.id.tv_sign_in:// Sign in
+            case R.id.tv_sign_in: // Sign in
                 mActivity.addTipView(new String[] {ACCOUNT_LOGIN}, () -> mActivity.signIn());
                 break;
-            case R.id.lv_scan:// Scan to pay
+            case R.id.lv_scan: // Scan to pay
                 mActivity.requestPermissions(
                     new String[] {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
                     Constants.CAMERA_REQ_CODE);
                 break;
-            case R.id.lv_account:// My Account
+            case R.id.lv_account: // My Account
                 if (mUserRepository.getCurrentUser() == null) {
                     Toast.makeText(mActivity, R.string.no_log_tip, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mActivity.startActivity(new Intent(mActivity, MyAccountActivity.class));
                 break;
-            case R.id.lv_bag:// Bag
+            case R.id.lv_bag: // Bag
                 mActivity.startActivity(new Intent(mActivity, BagActivity.class));
                 break;
-            case R.id.lv_order:// Order Center
+            case R.id.lv_order: // Order Center
                 mActivity.startActivity(new Intent(mActivity, OrderCenterActivity.class));
                 break;
-            case R.id.lv_save:// Favourite
+            case R.id.lv_save: // Favourite
                 mActivity.startActivity(new Intent(mActivity, CollectionActivity.class));
                 break;
-            case R.id.lv_set:// Setting
+            case R.id.lv_set: // Setting
                 mActivity.startActivity(new Intent(mActivity, SettingActivity.class));
                 break;
-            case R.id.lv_offline:// Offline Shop
+            case R.id.lv_offline: // Offline Shop
                 mActivity.addTipView(new String[] {OFFLINE_STORE}, () -> MapAct.start(mActivity));
                 break;
-            case R.id.lv_contact:// Contact Us
+            case R.id.lv_contact: // Contact Us
                 mActivity.startActivity(new Intent(mActivity, ContactUsActivity.class));
                 break;
-            case R.id.lv_out:// Log out
+            case R.id.lv_out: // Log out
                 checkSignOut();
                 break;
-            case R.id.lv_left:// Default
+            case R.id.lv_left: // Default
                 break;
             default:
                 break;

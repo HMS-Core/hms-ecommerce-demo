@@ -20,7 +20,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import com.huawei.hiar.AREnginesApk;
 import com.huawei.hms.scene.sdk.FaceView;
 import com.huawei.hms.scene.sdk.common.LandmarkType;
 import com.huawei.industrydemo.shopping.R;
@@ -34,6 +36,11 @@ public class FaceViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_face_view);
+        boolean isInstallArEngineApk = AREnginesApk.isAREngineApkReady(this);
+        if (!isInstallArEngineApk) {
+            Toast.makeText(this, getString(R.string.not_support_ar), Toast.LENGTH_SHORT).show();
+            finish();
+        }
         mFaceView = findViewById(R.id.face_view);
         Switch mSwitch = findViewById(R.id.switch_view);
         Log.e("FaceView", "onCreate");

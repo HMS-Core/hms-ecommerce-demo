@@ -38,7 +38,8 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.SEARCH_CON
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.USER_KEY;
 
 /**
- * @author l00447576
+ * User Repository
+ * 
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/22]
  * @see [Related Classes/Methods]
  * @since [Ecommerce-Demo 1.0.2.300]

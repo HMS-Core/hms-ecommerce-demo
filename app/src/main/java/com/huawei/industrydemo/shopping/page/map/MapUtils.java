@@ -23,7 +23,6 @@ import android.util.Log;
 import com.huawei.agconnect.crash.AGConnectCrash;
 import com.huawei.hms.site.api.model.LocationType;
 import com.huawei.industrydemo.shopping.utils.AgcUtil;
-import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -81,14 +80,9 @@ public class MapUtils {
         return locationType;
     }
 
-    /**
-     * It is recommended to save the apiKey to the server to avoid being obtained by hackers.
-     * Please get the api_key from the app you created in appgallery
-     * Need to encode api_key before use
-     */
     public static String getApiKey(Context mActivity) {
         // get apiKey from AppGallery Connect
-        String apiKey = SystemUtil.getApiKey(mActivity);
+        String apiKey = AgcUtil.getApiKey(mActivity);
         // need encodeURI the apiKey
         try {
             return URLEncoder.encode(apiKey, "utf-8");

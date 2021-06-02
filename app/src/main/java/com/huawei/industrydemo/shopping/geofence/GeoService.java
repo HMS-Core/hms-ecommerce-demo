@@ -28,7 +28,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.huawei.hmf.tasks.Task;
-import com.huawei.hms.common.ApiException;
 import com.huawei.hms.location.FusedLocationProviderClient;
 import com.huawei.hms.location.Geofence;
 import com.huawei.hms.location.GeofenceRequest;
@@ -40,7 +39,6 @@ import com.huawei.hms.location.LocationResult;
 import com.huawei.hms.location.LocationServices;
 import com.huawei.hms.location.LocationSettingsRequest;
 import com.huawei.hms.location.LocationSettingsResponse;
-import com.huawei.hms.location.LocationSettingsStatusCodes;
 import com.huawei.hms.location.SettingsClient;
 
 import java.util.ArrayList;
@@ -120,7 +118,7 @@ public class GeoService extends Service {
             buf.append("no GeoFence Data!");
         }
         for (int i = 0; i < geofences.size(); i++) {
-            buf.append("Unique ID is ").append(geofences.get(i).getUniqueId()).append("\n");
+            buf.append("Unique ID is ").append(geofences.get(i).getUniqueId()).append(System.lineSeparator());
         }
         s = buf.toString();
         Log.w(TAG, "getData:s " + s);
@@ -135,7 +133,6 @@ public class GeoService extends Service {
 
     public void requestGeoFenceWithNewIntent() {
         if (GeoFenceData.returnList().isEmpty()) {
-            // geoRequestData.setText("no new request to add!");
             Log.e(TAG, "requestGeoFenceWithNewIntent: no new request to add! ");
             return;
         }
@@ -155,7 +152,6 @@ public class GeoService extends Service {
             if (task.isSuccessful()) {
                 Log.i(TAG, "add geofence success！dataTemp " + dataTemp);
                 if (dataTemp != null) {
-                    // showDialog(dataTemp);
                     GeoDialogAct.start(GeoService.this, dataTemp);
                 }
             } else {
@@ -175,8 +171,7 @@ public class GeoService extends Service {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         mSettingsClient = LocationServices.getSettingsClient(this);
         mLocationRequest = new LocationRequest();
-        // Sets the interval for location update (unit: Millisecond)
-        // mLocationRequest.setInterval(5000);//
+
         // Sets the priority
         mLocationRequest.setNumUpdates(1);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

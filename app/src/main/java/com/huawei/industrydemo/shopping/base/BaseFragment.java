@@ -44,7 +44,7 @@ public class BaseFragment extends Fragment implements LogConfig, KitConstants {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden && kits != null) {// show current fragment
+        if (!hidden && kits != null) { // show current fragment
             addTipView();
         }
     }

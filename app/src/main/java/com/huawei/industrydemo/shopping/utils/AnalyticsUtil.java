@@ -23,6 +23,11 @@ import com.huawei.hms.analytics.HiAnalytics;
 import com.huawei.hms.analytics.HiAnalyticsInstance;
 import com.huawei.hms.analytics.type.HAEventType;
 import com.huawei.hms.analytics.type.HAParamType;
+import com.huawei.industrydemo.shopping.entity.Product;
+
+import static com.huawei.hms.analytics.type.HAEventType.VIEWCONTENT;
+import static com.huawei.hms.analytics.type.HAParamType.CONTENTTYPE;
+import static com.huawei.hms.analytics.type.HAParamType.PRODUCTID;
 
 public class AnalyticsUtil {
     private static final String TAG = "AnalyticsUtil";
@@ -163,6 +168,21 @@ public class AnalyticsUtil {
         Bundle bundle = new Bundle();
         bundle.putString(FUNCTION_NAME, functionName);
         instance.onEvent(FUNCTION_PRESENTATION, bundle);
+    }
+
+    /**
+     * report Product View Event
+     * 
+     * @param contentType String
+     * @param product Product
+     */
+    public static void reportProductViewEvent(String contentType, Product product) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString(PRODUCTID, Integer.toString(product.getNumber()).trim());
+        bundle.putString(CONTENTTYPE, contentType.trim());
+
+        instance.onEvent(VIEWCONTENT, bundle);
     }
 
     public static void kitFavoritesReport(String kitName, String functionName, boolean isFavorite) {

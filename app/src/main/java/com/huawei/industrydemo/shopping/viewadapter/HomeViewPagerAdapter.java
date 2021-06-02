@@ -17,21 +17,15 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.huawei.industrydemo.shopping.R;
-import com.huawei.industrydemo.shopping.constants.LogConfig;
 import com.huawei.industrydemo.shopping.inteface.OnItemClickListener;
 
 
@@ -46,12 +40,12 @@ public class HomeViewPagerAdapter extends PagerAdapter {
     /**
      * Image required for NVOD
      */
-    private Integer[] urls;
-    private Context context;
-    private OnItemClickListener onItemClickListener;
+    private final Integer[] urls;
+    private final Context context;
+    private final OnItemClickListener onItemClickListener;
 
     public HomeViewPagerAdapter(Integer[] urls, Context context, OnItemClickListener onItemClickListener) {
-        this.urls = urls;
+        this.urls = urls.clone();
         this.context = context;
         this.onItemClickListener = onItemClickListener;
     }

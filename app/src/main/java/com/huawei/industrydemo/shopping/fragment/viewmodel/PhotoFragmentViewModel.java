@@ -16,6 +16,7 @@
 
 package com.huawei.industrydemo.shopping.fragment.viewmodel;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
@@ -41,8 +42,11 @@ import com.huawei.industrydemo.shopping.page.ProductVisionSearchAnalyseActivity;
  */
 public class PhotoFragmentViewModel extends BaseFragmentViewModel<PhotoFragment> {
     private SurfaceView mSurfaceView;
+
     private SurfaceHolder mSurfaceHolder;
+
     private boolean hasSurface = false;
+
     private Camera mCamera;
 
     /**
@@ -87,25 +91,27 @@ public class PhotoFragmentViewModel extends BaseFragmentViewModel<PhotoFragment>
      * take photo
      */
     public void takePhoto() {
-        mCamera.takePicture(
-                null,
-                null,
-                (data, camera) -> {
-                    /* The first parameter in return data is the size of the photo which unit is byte */
-                    if (data != null) {
-                        Intent intent = new Intent(mFragment.getActivity(), ProductVisionSearchAnalyseActivity.class);
-                        intent.putExtra(KeyConstants.PHOTO_DATA, data);
-                        intent.putExtra(KeyConstants.PHOTO_DATA_TYPE, PhotoFragment.DATA_TYPE_BYTES);
-                        mFragment.startActivity(intent);
-                        mFragment.getActivity().finish();
-                    } else {
-                        Toast.makeText(
-                                        mFragment.getActivity(),
-                                        mFragment.getResources().getString(R.string.camera_scan_tip),
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+        if (mCamera == null) {
+            return;
+        }
+        mCamera.takePicture(null, null, (data, camera) -> {
+            /* The first parameter in return data is the size of the photo which unit is byte */
+            if (data != null) {
+                Intent intent = new Intent(mFragment.getActivity(), ProductVisionSearchAnalyseActivity.class);
+                intent.putExtra(KeyConstants.PHOTO_DATA, data);
+                intent.putExtra(KeyConstants.PHOTO_DATA_TYPE, PhotoFragment.DATA_TYPE_BYTES);
+                mFragment.startActivity(intent);
+                Activity activity = mFragment.getActivity();
+                if (activity != null) {
+                    activity.finish();
+                }
+            } else {
+                Toast
+                    .makeText(mFragment.getActivity(), mFragment.getResources().getString(R.string.camera_scan_tip),
+                        Toast.LENGTH_SHORT)
+                    .show();
+            }
+        });
     }
 
     /**
@@ -116,21 +122,27 @@ public class PhotoFragmentViewModel extends BaseFragmentViewModel<PhotoFragment>
         // Pick an item fromthe data
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
-        mFragment.getActivity().startActivityForResult(intent, Constants.TAKE_PHOTO_WITH_DATA);
+        Activity activity = mFragment.getActivity();
+        if (activity != null) {
+            activity.startActivityForResult(intent, Constants.TAKE_PHOTO_WITH_DATA);
+        }
     }
 
     @Override
-    public void onClickEvent(int viewId) {}
+    public void onClickEvent(int viewId) {
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {}
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {}
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+        @NonNull int[] grantResults) {
+    }
 
     /**
-     *  get SurfaceHolder
+     * get SurfaceHolder
      *
      * @return SurfaceHolder
      */

@@ -35,10 +35,10 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.WEB_URL;
 /**
  * WebView Activity<br/>
  * Intent parameters to be transferred:<br/>
+ * "isShowFloat"(Optional, Default value: true)<br/>
  * WEB_URL(Required)<br/>
  * URL_TYPE(Optional, Default value: Others)<br/>
  * "useBrowser"(Optional, Default value: false)<br/>
- * "isShowFloat"(Optional, Default value: true)<br/>
  *
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/30]
  * @since [Ecommerce-Demo 1.0.2.300]
@@ -82,31 +82,34 @@ public class WebViewActivity extends BaseActivity {
         }
     }
 
+    static class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    }
+
+    static class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView(String url, boolean useBrowser) {
         mWebView = findViewById(R.id.web_view);
         mWebView.loadUrl(url);
         if (!useBrowser) {
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return true;
-                }
-            });
+            mWebView.setWebViewClient(new MyWebViewClient());
         }
 
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);// DOM Storage
+        settings.setDomStorageEnabled(true); // DOM Storage
 
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-            }
-
-        });
+        mWebView.setWebChromeClient(new MyWebChromeClient());
     }
 
     @Override

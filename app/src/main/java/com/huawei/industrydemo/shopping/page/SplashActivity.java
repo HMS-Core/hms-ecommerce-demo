@@ -46,7 +46,7 @@ public class SplashActivity extends BaseActivity {
         mViewModel = new SplashActivityViewModel(this);
         mViewModel.initView();
         mViewModel.startCountDown();
-}
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

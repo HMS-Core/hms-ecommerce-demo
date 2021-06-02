@@ -103,7 +103,6 @@
     <string name="good_connection">High Quality Connection</string>
 
     <string name="shopping_bag_title">Bag</string>
-    <string name="product_price">¥ %d</string>
     <string name="product_detail">%s %s %s</string>
     <string name="product_count_type_1">X%d</string>
     <string name="shopping_cart_edit">Edit</string>
@@ -182,10 +181,18 @@
     <!-- Privacy Page-->
     <string name="privacyReject">Decline</string>
     <string name="privacyaccept">Accept</string>
+    <string name="privacycontinue">Continue</string>
     <string name="exitMessage">Exit from Shopping Demo App</string>
-    <string name="privacy_summary">By touching ACCEPT, you indicate that you agree to the %s and %s.</string>
-    <string name="agreement_title">HMS Core Shopping Demo User Agreement</string>
-    <string name="statement_title">HMS Core Shopping Demo Privacy Statement</string>
+    <string name="privacy_state">This is a demo app that helps you understand how to use HMS Core capability in a shopping app, and learn how to integrate the HMS Core SDKs or Kits in your app. This app demonstrates the whole shopping process except payment.\n\nHMS Core offers an innovative solution that assists e-commerce apps with quick customer acquisition and improved conversion rates, for sustainable business growth.\n\nLearn more</string>
+    <string name="privacy_summary1">This service requires “Location” permission to provide offline shop service, “Microphone” permission to provide voice search, “Storage and Camera” permission to provide scanning and image search functions. If you are using this app without being logged in to a HUAWEI ID, you hereby confirm that you are aged 18 years or over. By enabling the service, you grant the above permissions, acknowledge the Privacy Statement below, and accept the terms of the </string>
+    <string name="privacy_title">Permissions and User Agreement</string>
+    <string name="privacy_title2">Privacy</string>
+
+
+    <string name="readme_title">here.</string>
+    <string name="agreement_title">Shopping Demo User Agreement.</string>
+    <string name="statement_title">Statement about Shopping Demo and Privacy.</string>
+    <string name="readme_url">https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/README.md#hms-e-commerce-demo</string>
     <string name="agreement_url">file:///android_asset/documents/agreement.html</string>
     <string name="statement_url">file:///android_asset/documents/privacy.html</string>
 
@@ -281,6 +288,7 @@
     <!-- OrderSubmitActivity -->
     <string name="add_address_tip">Please Add Address</string>
     <string name="submit_order">Submit Order</string>
+    <string name="product_price">¥ %d</string>
     <string name="product_price_2">Actual Payment:¥ %d</string>
     <string name="check_order">Confirm Order</string>
     <string name="product_sum_price">Total</string>
@@ -469,7 +477,10 @@
     <string name="bank_information">Bank Information</string>
 
     <!-- scene-->
-    <string name="download_tip">Do you want to download the resource file?</string>
-    <string name="downloading">Downloading...</string>
-
+    <string name="download_tip">Do you want to load the resource file in a non-Wi-Fi environment?</string>
+    <string name="preparing">Preparing for service...</string>
+    <string name="downloading">Loading resources...</string>
+    <string name="downloaded">Loading Completed</string>
+    <string name="download_failed">Loading failed, please try again later.</string>
+    <string name="not_support_ar">Your device does not support AR Engine.</string>
 </resources>

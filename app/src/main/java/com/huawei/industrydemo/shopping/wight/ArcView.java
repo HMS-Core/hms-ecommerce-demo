@@ -45,7 +45,7 @@ public class ArcView extends View {
 
     private Paint mPaint;  // Painter
 
-    private Path path = new Path();// Used to draw curve
+    private Path path = new Path(); // Used to draw curve
 
     public ArcView(Context context) {
         this(context, null);

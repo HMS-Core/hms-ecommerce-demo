@@ -49,9 +49,9 @@ public class ContactusActivityViewModel extends BaseActivityViewModel<ContactUsA
         TextView title = mActivity.findViewById(R.id.tv_title);
         title.setText(R.string.contact_title);
 
-        TextView version = mActivity.findViewById(R.id.versionView2);
-        // version.setText(mActivity.getString(R.string.contact_version, BuildConfig.VERSION_NAME));
-        version.setText(BuildConfig.VERSION_NAME);
+        TextView version = mActivity.findViewById(R.id.versionView2); 
+        String versionName = BuildConfig.VERSION_NAME.split("-")[0];
+        version.setText(versionName);
         mActivity.findViewById(R.id.iv_back).setOnClickListener(mActivity);
         mActivity.findViewById(R.id.rel_dev).setOnClickListener(mActivity);
         mActivity.findViewById(R.id.rel_mail).setOnClickListener(mActivity);

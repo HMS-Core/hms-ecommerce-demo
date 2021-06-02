@@ -73,29 +73,4 @@ public abstract class BaseActivityViewModel<T extends BaseActivity> {
      */
     public abstract void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
         @NonNull int[] grantResults);
-
-    /**
-     * showDialogForResult
-     *
-     * @param context context
-     * @param data data
-     * @param requestCode requestCode
-     */
-//    public void showDialogForResult(Activity context, Bundle data, int requestCode) {
-//        Intent starter = new Intent(context, BaseDialog.class);
-//        starter.putExtra("Builder", data);
-//        context.startActivityForResult(starter, requestCode);
-//    }
-
-    /**
-     * showDialog
-     *
-     * @param context context
-     * @param data context
-     */
-//    public void showDialog(Activity context, Bundle data) {
-//        Intent starter = new Intent(context, BaseDialog.class);
-//        starter.putExtra("Builder", data);
-//        context.startActivity(starter);
-//    }
 }

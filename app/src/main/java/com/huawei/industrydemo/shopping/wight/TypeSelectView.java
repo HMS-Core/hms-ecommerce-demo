@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,16 +46,21 @@ public class TypeSelectView extends RecyclerView {
     private int initPos = 0;
 
     private int deltaX;
+
     private WrapperAdapter wrapAdapter;
+
     private Adapter adapter;
+
     private LinearLayoutManager linearLayoutManager;
+
     private boolean isInit;
+
     private OnSelectedPositionChangedListener listener;
 
     /**
      * Indicates whether to trigger position change monitoring upon initial initialization.
      */
-    private boolean isFirstPosChanged = true;
+    private static final boolean IS_FIRST_POS_CHANGED = true;
 
     /**
      * Record last selected location
@@ -90,21 +96,18 @@ public class TypeSelectView extends RecyclerView {
 
     private void init() {
         mScroller = new Scroller(getContext());
-        getViewTreeObserver()
-                .addOnGlobalLayoutListener(
-                        () -> {
-                            if (isInit) {
-                                if (initPos >= adapter.getItemCount()) {
-                                    initPos = adapter.getItemCount() - 1;
-                                }
-                                if (isFirstPosChanged && listener != null) {
-                                    listener.selectedPositionChanged(initPos);
-                                }
-                                linearLayoutManager.scrollToPositionWithOffset(
-                                        0, -initPos * (wrapAdapter.getItemWidth()));
-                                isInit = false;
-                            }
-                        });
+        getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            if (isInit) {
+                if (initPos >= adapter.getItemCount()) {
+                    initPos = adapter.getItemCount() - 1;
+                }
+                if (IS_FIRST_POS_CHANGED && listener != null) {
+                    listener.selectedPositionChanged(initPos);
+                }
+                linearLayoutManager.scrollToPositionWithOffset(0, -initPos * (wrapAdapter.getItemWidth()));
+                isInit = false;
+            }
+        });
     }
 
     /**
@@ -189,29 +192,31 @@ public class TypeSelectView extends RecyclerView {
 
     @Override
     public void setAdapter(final Adapter adapter) {
+        if (adapter == null) {
+            return;
+        }
         this.adapter = adapter;
         this.wrapAdapter = new WrapperAdapter(adapter, getContext(), itemCount);
-        adapter.registerAdapterDataObserver(
-                new AdapterDataObserver() {
-                    @Override
-                    public void onChanged() {
-                        super.onChanged();
-                        wrapAdapter.notifyDataSetChanged();
-                        reCallListenerWhenChanged();
-                    }
+        adapter.registerAdapterDataObserver(new AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                wrapAdapter.notifyDataSetChanged();
+                reCallListenerWhenChanged();
+            }
 
-                    @Override
-                    public void onItemRangeInserted(int positionStart, int itemCount) {
-                        wrapAdapter.notifyDataSetChanged();
-                        reCallListenerWhenAdd(positionStart);
-                    }
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                wrapAdapter.notifyDataSetChanged();
+                reCallListenerWhenAdd(positionStart);
+            }
 
-                    @Override
-                    public void onItemRangeRemoved(int positionStart, int itemCount) {
-                        wrapAdapter.notifyDataSetChanged();
-                        reCallListenerWhenRemove(positionStart);
-                    }
-                });
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                wrapAdapter.notifyDataSetChanged();
+                reCallListenerWhenRemove(positionStart);
+            }
+        });
         deltaX = 0;
         if (linearLayoutManager == null) {
             linearLayoutManager = new LinearLayoutManager(getContext());
@@ -327,9 +332,9 @@ public class TypeSelectView extends RecyclerView {
 
     class WrapperAdapter extends RecyclerView.Adapter {
         private static final int HEADER_FOOTER_TYPE = -1;
-        private Context context;
+        private final Context context;
         private RecyclerView.Adapter adapter;
-        private int itemCount;
+        private final int itemCount;
         private View itemView;
         /**
          * Width of head or tail
@@ -355,7 +360,7 @@ public class TypeSelectView extends RecyclerView {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == HEADER_FOOTER_TYPE) {
                 View view = new View(context);
                 headerFooterWidth = parent.getMeasuredWidth() / 2 - (parent.getMeasuredWidth() / itemCount) / 2;
@@ -378,7 +383,7 @@ public class TypeSelectView extends RecyclerView {
 
         @SuppressWarnings("unchecked")
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (!isHeaderOrFooter(position)) {
                 adapter.onBindViewHolder(holder, position - 1);
                 if (selectPos == position - 1) {

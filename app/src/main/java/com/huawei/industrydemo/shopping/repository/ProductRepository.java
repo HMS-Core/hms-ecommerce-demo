@@ -56,6 +56,8 @@ public class ProductRepository {
     }
 
     /**
+     * Query Product by product number
+     *
      * @param number Product number
      * @return Product
      */
@@ -64,6 +66,8 @@ public class ProductRepository {
     }
 
     /**
+     * Query product list in bag
+     *
      * @param bag bag
      * @return Value of the String type
      */
@@ -76,6 +80,8 @@ public class ProductRepository {
     }
 
     /**
+     * Query product in specific category
+     *
      * @param category category
      * @return Product list
      */
@@ -84,6 +90,8 @@ public class ProductRepository {
     }
 
     /**
+     * Search product with key word
+     *
      * @param keywords keywords
      * @return Product list
      */
@@ -109,6 +117,8 @@ public class ProductRepository {
     }
 
     /**
+     * Insert new product
+     *
      * @param product product
      */
     public void insert(Product product) {

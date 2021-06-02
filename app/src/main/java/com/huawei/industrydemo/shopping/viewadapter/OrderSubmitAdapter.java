@@ -53,13 +53,10 @@ public class OrderSubmitAdapter extends RecyclerView.Adapter<OrderSubmitAdapter.
 
     private final int orderStatus;
 
-    private final int orderNumber;
-
-    public OrderSubmitAdapter(List<OrderItem> list, Context context, int status, int number) {
+    public OrderSubmitAdapter(List<OrderItem> list, Context context, int status) {
         this.list = list;
         this.context = context;
         this.orderStatus = status;
-        this.orderNumber = number;
     }
 
     @NonNull

@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.huawei.agconnect.crash.AGConnectCrash;
+import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.analytics.HiAnalyticsTools;
 import com.huawei.hms.common.ApiException;
 import com.huawei.hms.hmsscankit.ScanUtil;
@@ -66,6 +68,7 @@ import com.huawei.industrydemo.shopping.page.ProductVisionSearchAnalyseActivity;
 import com.huawei.industrydemo.shopping.page.SearchActivity;
 import com.huawei.industrydemo.shopping.utils.AgcUtil;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
+import com.huawei.industrydemo.shopping.utils.MessagingUtil;
 import com.huawei.industrydemo.shopping.utils.RemoteConfigUtil;
 import com.huawei.industrydemo.shopping.utils.StatusDialogUtil;
 import com.huawei.industrydemo.shopping.utils.SystemUtil;
@@ -334,7 +337,7 @@ public class MainActivityViewModel extends BaseActivityViewModel<MainActivity> {
         initAnalytics();
         initJointOperations();
         RemoteConfigUtil.init();
-        setPushAutoInit(true);
+        getPushToken();
         initNetworkKit();
         invokeSysIntegrity();
 
@@ -370,8 +373,19 @@ public class MainActivityViewModel extends BaseActivityViewModel<MainActivity> {
         AnalyticsUtil.getInstance(mActivity).onEvent(STARTAPP, bundle);
     }
 
-    private void setPushAutoInit(boolean isEnabled) {
-        HmsMessaging.getInstance(mActivity).setAutoInitEnabled(isEnabled);
+    private void getPushToken() {
+        new Thread(() -> {
+            try {
+                String token = HmsInstanceId.getInstance(mActivity)
+                    .getToken(AgcUtil.getAppId(mActivity), HmsMessaging.DEFAULT_TOKEN_SCOPE);
+                Log.i(TAG, "get token: " + token);
+                if (!TextUtils.isEmpty(token)) {
+                    MessagingUtil.refreshedToken(mActivity, token);
+                }
+            } catch (ApiException e) {
+                AgcUtil.reportException(TAG, e);
+            }
+        }).start();
     }
 
     private void showStatusDialog(int status, String msg) {
@@ -418,7 +432,7 @@ public class MainActivityViewModel extends BaseActivityViewModel<MainActivity> {
             AGConnectCrash.getInstance().recordException(e);
         }
 
-        String appId = SystemUtil.getAppId(mActivity);
+        String appId = AgcUtil.getAppId(mActivity);
         SafetyDetect.getClient(mActivity).sysIntegrity(nonce, appId).addOnSuccessListener(response -> {
             // Indicates communication with the service was successful.
             // Use response.getResult() to get the result data.

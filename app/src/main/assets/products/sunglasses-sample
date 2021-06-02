@@ -14,7 +14,7 @@
     "link": "value"
   },
   "category": "Glasses",
-  "threeDimensional": "SceneView/sunglasses/sunglasses.glb",
+  "threeDimensional": "sunglasses/sunglasses.glb",
   "images": ["icon_sunglasses"],
   "videoUrl": "",
   "ar": "SceneView/sunglasses/sunglasses.glb"

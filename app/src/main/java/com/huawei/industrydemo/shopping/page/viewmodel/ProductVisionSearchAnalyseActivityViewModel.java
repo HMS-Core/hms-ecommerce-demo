@@ -16,10 +16,6 @@
 
 package com.huawei.industrydemo.shopping.page.viewmodel;
 
-import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
-import static com.huawei.industrydemo.shopping.fragment.camera.PhotoFragment.DATA_TYPE_BYTES;
-import static com.huawei.industrydemo.shopping.fragment.camera.PhotoFragment.DATA_TYPE_URI;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -34,6 +30,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -56,7 +53,7 @@ import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.page.ProductVisionSearchAnalyseActivity;
 import com.huawei.industrydemo.shopping.repository.ProductRepository;
-import com.huawei.industrydemo.shopping.utils.SystemUtil;
+import com.huawei.industrydemo.shopping.utils.AgcUtil;
 import com.huawei.industrydemo.shopping.viewadapter.ProductHomeAdapter;
 
 import java.io.File;
@@ -69,13 +66,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
+import static com.huawei.industrydemo.shopping.fragment.camera.PhotoFragment.DATA_TYPE_BYTES;
+import static com.huawei.industrydemo.shopping.fragment.camera.PhotoFragment.DATA_TYPE_URI;
+
 /**
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/24]
  * @see [com.huawei.industrydemo.shopping.page.ProductVisionSearchAnalyseActivity]
  * @since [Ecommerce-Demo 1.0.2.300]
  */
 public class ProductVisionSearchAnalyseActivityViewModel
-        extends BaseActivityViewModel<ProductVisionSearchAnalyseActivity> {
+    extends BaseActivityViewModel<ProductVisionSearchAnalyseActivity> {
     private Bitmap photo;
 
     private final List<Product> productList = new ArrayList<>();
@@ -88,18 +89,13 @@ public class ProductVisionSearchAnalyseActivityViewModel
      * @param productVisionSearchAnalyseActivity Activity object
      */
     public ProductVisionSearchAnalyseActivityViewModel(
-            ProductVisionSearchAnalyseActivity productVisionSearchAnalyseActivity) {
+        ProductVisionSearchAnalyseActivity productVisionSearchAnalyseActivity) {
         super(productVisionSearchAnalyseActivity);
     }
 
     @Override
     public void initView() {
-        mActivity
-                .findViewById(R.id.iv_back)
-                .setOnClickListener(
-                        v -> {
-                            mActivity.finish();
-                        });
+        mActivity.findViewById(R.id.iv_back).setOnClickListener(v -> mActivity.finish());
         ((TextView) mActivity.findViewById(R.id.tv_title)).setText(R.string.product_search_result);
         photo = getPhoto();
         if (photo == null) {
@@ -108,56 +104,46 @@ public class ProductVisionSearchAnalyseActivityViewModel
         }
         FrameLayout frameLayout = mActivity.findViewById(android.R.id.content);
         view = LayoutInflater.from(mActivity).inflate(R.layout.view_pb, null);
-        view.setOnClickListener(
-                v -> {
-                    // Forbidden to click the view
-                });
+        view.setOnClickListener(v -> {
+            // Forbidden to click the view
+        });
         frameLayout.addView(view);
     }
 
     public void remoteAnalyzer() {
-        MLRemoteProductVisionSearchAnalyzerSetting setting =
-                new MLRemoteProductVisionSearchAnalyzerSetting.Factory()
-                        // Set the maximum number of products that can be returned.
-                        .setLargestNumOfReturns(2)
-                        .setProductSetId("demo")
-                        .setRegion(MLRemoteProductVisionSearchAnalyzerSetting.REGION_DR_CHINA)
-                        .create();
+        MLRemoteProductVisionSearchAnalyzerSetting setting = new MLRemoteProductVisionSearchAnalyzerSetting.Factory()
+            // Set the maximum number of products that can be returned.
+            .setLargestNumOfReturns(2)
+            .setProductSetId("demo")
+            .setRegion(MLRemoteProductVisionSearchAnalyzerSetting.REGION_DR_CHINA)
+            .create();
         MLRemoteProductVisionSearchAnalyzer analyzer =
-                MLAnalyzerFactory.getInstance().getRemoteProductVisionSearchAnalyzer(setting);
+            MLAnalyzerFactory.getInstance().getRemoteProductVisionSearchAnalyzer(setting);
         MLFrame frame = MLFrame.fromBitmap(photo);
-        MLApplication.getInstance().setApiKey(SystemUtil.getApiKey(mActivity));
+        MLApplication.getInstance().setApiKey(AgcUtil.getApiKey(mActivity));
         Task<List<MLProductVisionSearch>> task = analyzer.asyncAnalyseFrame(frame);
-        task.addOnSuccessListener(
-                        productVisionSearchList -> {
-                            if (productVisionSearchList == null || productVisionSearchList.size() == 0) {
-                                mActivity.findViewById(R.id.no_search_result).setVisibility(View.VISIBLE);
-                                mActivity.findViewById(R.id.recycler_search_result).setVisibility(View.GONE);
-                                view.setVisibility(View.GONE);
-                                return;
-                            }
-                            for (MLProductVisionSearch productVisionSearch : productVisionSearchList) {
-                                for (MLVisionSearchProduct product : productVisionSearch.getProductList()) {
-                                    Product product2 = new Product();
-                                    for (MLVisionSearchProductImage productImage : product.getImageList()) {
-                                        product2.setNumber(Integer.parseInt(productImage.getProductId()));
-                                        productList.add(product2);
-                                    }
-                                }
-                            }
-                            initProductView(mActivity.findViewById(R.id.recycler_search_result));
-                        })
-                .addOnFailureListener(e -> {
-                            MLException mlException = (MLException) e;
-                            Log.e(
-                                    TAG,
-                                    "error "
-                                            + "error code: "
-                                            + mlException.getErrCode()
-                                            + "\n"
-                                            + "error message: "
-                                            + mlException.getMessage());
-                        });
+        task.addOnSuccessListener(productVisionSearchList -> {
+            if (productVisionSearchList == null || productVisionSearchList.size() == 0) {
+                mActivity.findViewById(R.id.no_search_result).setVisibility(View.VISIBLE);
+                mActivity.findViewById(R.id.recycler_search_result).setVisibility(View.GONE);
+                view.setVisibility(View.GONE);
+                return;
+            }
+            for (MLProductVisionSearch productVisionSearch : productVisionSearchList) {
+                for (MLVisionSearchProduct product : productVisionSearch.getProductList()) {
+                    Product product2 = new Product();
+                    for (MLVisionSearchProductImage productImage : product.getImageList()) {
+                        product2.setNumber(Integer.parseInt(productImage.getProductId()));
+                        productList.add(product2);
+                    }
+                }
+            }
+            initProductView(mActivity.findViewById(R.id.recycler_search_result));
+        }).addOnFailureListener(e -> {
+            MLException mlException = (MLException) e;
+            Log.e(TAG, "error code: " + mlException.getErrCode() + System.lineSeparator() + "error message: "
+                + mlException.getMessage());
+        });
     }
 
     private void initProductView(RecyclerView recyclerView) {
@@ -191,10 +177,10 @@ public class ProductVisionSearchAnalyseActivityViewModel
             Uri selectedImage = Uri.parse(bundle.getString(KeyConstants.PHOTO_DATA));
             File file = new File(mActivity.getCacheDir(), getFileName(selectedImage));
             try (OutputStream outputStream = new FileOutputStream(file);
-                    ParcelFileDescriptor parcelFileDescriptor =
-                            mActivity.getContentResolver().openFileDescriptor(selectedImage, "r", null);
-                    InputStream inputStream =
-                            new FileInputStream(Objects.requireNonNull(parcelFileDescriptor).getFileDescriptor())) {
+                ParcelFileDescriptor parcelFileDescriptor =
+                    mActivity.getContentResolver().openFileDescriptor(selectedImage, "r", null);
+                InputStream inputStream =
+                    new FileInputStream(Objects.requireNonNull(parcelFileDescriptor).getFileDescriptor())) {
                 IOUtils.copy(inputStream, outputStream);
                 return BitmapFactory.decodeFile(file.getPath());
             } catch (IOException e) {
@@ -217,12 +203,15 @@ public class ProductVisionSearchAnalyseActivityViewModel
     }
 
     @Override
-    public void onClickEvent(int viewId) {}
+    public void onClickEvent(int viewId) {
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {}
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {}
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+        @NonNull int[] grantResults) {
+    }
 }

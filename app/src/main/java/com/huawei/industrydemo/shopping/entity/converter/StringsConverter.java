@@ -16,6 +16,7 @@
 
 package com.huawei.industrydemo.shopping.entity.converter;
 
+import androidx.annotation.Nullable;
 import androidx.room.TypeConverter;
 
 import static com.huawei.industrydemo.shopping.constants.Constants.COMMA;
@@ -29,11 +30,12 @@ public class StringsConverter {
     @TypeConverter
     public static String[] revertStrings(String value) {
         if (value == null) {
-            return null;
+            return new String[0];
         }
         return value.split(COMMA);
     }
 
+    @Nullable
     @TypeConverter
     public static String converterStrings(String[] value) {
         if (value == null || value.length == 0) {

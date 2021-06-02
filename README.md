@@ -11,7 +11,7 @@ HMS Core Offers an innovative solution that assists e-commerce apps with quick c
 This project contains the shopping demo app based on HMS Core Kits. It shows how to use the HMS Core solution in shopping app. It provides the demo of the whole shopping process except payment.
 
 ## Demo Link
-[Demo website](https://developer.huawei.com/consumer/en/solution/hms/ecommerce)
+[Demo website](https://developer.huawei.com/consumer/en/solution/hms/ecommerce?ha_source=hms7)
 
 Firstly choose the area you are in, then you can download the Demo App from scanning the corresponding QR code.
 
@@ -203,7 +203,7 @@ If you want to evaluate more about HMS Core, [HMSCore on Reddit](https://www.red
 If you have questions about how to use HMS samples, try the following options:
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services) is the best place for any programming questions. Be sure to tag your question with 
 `huawei-mobile-services`.
-- [Huawei Developer Forum](https://forums.developer.huawei.com/forumPortal/en/home?fid=0101187876626530001) HMS Core Module is great for general questions, or seeking recommendations and opinions.
+- [Huawei Developer Forum](https://forums.developer.huawei.com/forumPortal/en/home?fid=0101187876626530001?ha_source=hms7) HMS Core Module is great for general questions, or seeking recommendations and opinions.
 
 If you run into a bug in our samples, please submit an [issue](https://github.com/HMS-Core/hms-ecommerce-demo/issues) to the Repository. Even better you can submit a [Pull Request](https://github.com/HMS-Core/hms-ecommerce-demo/pulls) with a fix.
 

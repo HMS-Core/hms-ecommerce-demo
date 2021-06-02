@@ -69,9 +69,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         AnalyticsUtil.getInstance(this).onEvent(getString(R.string.notice), new Bundle());
     }
 
-    /**
-     * requestPermission
-     */
     public void requestPermission(String[] permission) {
         if (!hasPermissions(this, permission)) {
             ActivityCompat.requestPermissions(this, permission, Constants.REQUEST_PERMISSIONS_CODE);

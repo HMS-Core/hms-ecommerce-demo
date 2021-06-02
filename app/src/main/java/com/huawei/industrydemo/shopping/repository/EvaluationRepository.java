@@ -55,6 +55,8 @@ public class EvaluationRepository {
     }
 
     /**
+     * Query the evaluation of the product in the number
+     *
      * @param number Product Id
      * @return Evaluation List
      */
@@ -64,6 +66,7 @@ public class EvaluationRepository {
 
     /**
      * Insert Evaluation record
+     *
      * @param evaluation Evaluation Content
      */
     public void insert(Evaluation evaluation) {

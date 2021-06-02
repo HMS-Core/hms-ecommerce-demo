@@ -241,6 +241,9 @@ public class KitTipUtil implements KitConstants {
     }
 
     public static String[] getKitDefaultColor() {
-        return KIT_DEFAULT_COLOR;
+        if (KIT_DEFAULT_COLOR == null){
+            return new String[0];
+        }
+        return KIT_DEFAULT_COLOR.clone();
     }
 }

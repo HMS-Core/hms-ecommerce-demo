@@ -76,8 +76,6 @@ public interface Constants {
 
     int COMPLETED_ORDER_INDEX = 3;
 
-    double[][] ADDR_ADJUST_NUMBER = {{-0.001, -0.01}, {0.01, -0.001}, {0.01, 0.01}};
-
     String RESOURCE_TYPE_MIPMAP = "mipmap";
 
     String EMPTY = "";

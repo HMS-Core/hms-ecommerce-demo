@@ -65,7 +65,6 @@ public class GeoDialogAct extends Activity {
             rText.setText(mData.radius + " m");
             idText.setText(String.valueOf(mData.uniqueId));
         }
-        // lanText.setText();
     }
 
     public void onClick(View view) {

@@ -37,8 +37,12 @@ public class CatalogueFragment extends BaseFragment implements View.OnClickListe
 
     private final CatalogueFragmentViewModel mViewModel;
 
+    public CatalogueFragment() {
+        mViewModel = new CatalogueFragmentViewModel(this);
+        mViewModel.setFirstPosition(0);
+    }
+
     public CatalogueFragment(int firstPosition) {
-        //setKits(new String[] {SCAN_QR, ML_ASR});
         mViewModel = new CatalogueFragmentViewModel(this);
         mViewModel.setFirstPosition(firstPosition);
     }
@@ -48,7 +52,6 @@ public class CatalogueFragment extends BaseFragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_catalogue, container, false);
         mViewModel.initView(view);
-        //addTipView();
         return view;
     }
 

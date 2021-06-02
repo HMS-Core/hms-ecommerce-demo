@@ -196,8 +196,8 @@ public class OrderSubmitActivityViewModel extends BaseActivityViewModel<OrderSub
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {
-        OrderSubmitAdapter adapter = new OrderSubmitAdapter(mOrderRepository.queryItemByOrder(order), mActivity,
-            order.getStatus(), order.getNumber());
+        OrderSubmitAdapter adapter =
+            new OrderSubmitAdapter(mOrderRepository.queryItemByOrder(order), mActivity, order.getStatus());
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

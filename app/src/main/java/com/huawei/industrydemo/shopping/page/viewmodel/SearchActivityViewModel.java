@@ -48,8 +48,8 @@ import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.page.SearchActivity;
 import com.huawei.industrydemo.shopping.page.SearchResultActivity;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
+import com.huawei.industrydemo.shopping.utils.AgcUtil;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
-import com.huawei.industrydemo.shopping.utils.SystemUtil;
 import com.huawei.industrydemo.shopping.wight.SearchContentLayout;
 import com.huawei.industrydemo.shopping.wight.SearchView;
 
@@ -111,7 +111,7 @@ public class SearchActivityViewModel extends BaseActivityViewModel<SearchActivit
      */
     public SearchActivityViewModel(SearchActivity searchActivity) {
         super(searchActivity);
-        MLApplication.getInstance().setApiKey(SystemUtil.getApiKey(mActivity));
+        MLApplication.getInstance().setApiKey(AgcUtil.getApiKey(mActivity));
 
         mUserRepository = new UserRepository();
     }
@@ -144,7 +144,6 @@ public class SearchActivityViewModel extends BaseActivityViewModel<SearchActivit
         ivVoice.setOnClickListener(v -> mActivity.addTipView(new String[] {ML_ASR}, this::startAsr));
         ivVoice.setOnLongClickListener(v -> {
             mActivity.addTipView(new String[] {ML_ASR}, this::startAsr);
-            // startAsr();
             return true;
         });
 
@@ -254,6 +253,7 @@ public class SearchActivityViewModel extends BaseActivityViewModel<SearchActivit
     /**
      * Check for duplicate items.
      *
+     * @param item the Search item which need to check
      * @return true:No repetition false：Duplicate
      */
     private boolean checkSearchItem(String item) {

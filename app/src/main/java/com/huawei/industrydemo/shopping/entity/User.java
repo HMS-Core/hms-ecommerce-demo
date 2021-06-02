@@ -28,7 +28,6 @@ import com.huawei.industrydemo.shopping.entity.converter.StringSetConverter;
 import com.huawei.industrydemo.shopping.entity.converter.StringsConverter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
@@ -81,11 +80,14 @@ public class User {
     }
 
     public String[] getRecentSearchList() {
-        return recentSearchList;
+        if (recentSearchList != null) {
+            return recentSearchList.clone();
+        }
+        return new String[0];
     }
 
     public void setRecentSearchList(String[] recentSearchList) {
-        this.recentSearchList = recentSearchList;
+        this.recentSearchList = recentSearchList.clone();
     }
 
     public boolean isPrivacyFlag() {

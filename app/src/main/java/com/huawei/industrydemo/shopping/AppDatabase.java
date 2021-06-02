@@ -47,8 +47,10 @@ import com.huawei.industrydemo.shopping.entity.User;
  * @see [Related Classes/Methods]
  * @since [Ecommerce-Demo 1.0.2.300]
  */
-@Database(entities = {AppConfig.class, Bag.class, Evaluation.class, KitInfo.class, MemberPoint.class, Order.class,
-    OrderItem.class, Product.class, ScanHistory.class, User.class, Collection.class}, version = 1)
+@Database(
+    entities = {AppConfig.class, Bag.class, Evaluation.class, KitInfo.class, MemberPoint.class, Order.class,
+        OrderItem.class, Product.class, ScanHistory.class, User.class, Collection.class},
+    version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     /**
      * Get AppConfigDao

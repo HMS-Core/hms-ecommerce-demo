@@ -60,10 +60,10 @@ public class FeedbackActivity extends BaseActivity {
         mArrayAdapter = new ArrayAdapter<String>(this, R.layout.adapter_feedback_spinner, mArrayString) {
             @Override
             public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-                convertView = getLayoutInflater().inflate(R.layout.adapter_feedback_spinner_item, parent, false);
-                TextView spinnerText = convertView.findViewById(R.id.spinner_textView);
+                View dropDownView = getLayoutInflater().inflate(R.layout.adapter_feedback_spinner_item, parent, false);
+                TextView spinnerText = dropDownView.findViewById(R.id.spinner_textView);
                 spinnerText.setText(getItem(position));
-                return convertView;
+                return dropDownView;
             }
         };
         spinner.setAdapter(mArrayAdapter);

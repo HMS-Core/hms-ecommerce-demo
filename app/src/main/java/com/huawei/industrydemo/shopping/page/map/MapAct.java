@@ -26,7 +26,8 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 
-//adb shell am start -n com.huawei.industrydemo.shopping/.page.map.MapAct
+// adb shell am start -n com.huawei.industrydemo.shopping/.page.map.MapAct
+
 public class MapAct extends BaseActivity {
 
     public static void start(Context context) {

@@ -287,7 +287,10 @@ public class MyAccountActivityViewModel extends BaseActivityViewModel<MyAccountA
                 authAccount = authAccountTask.getResult();
                 loginComplete(authAccount);
             } else {
-                Log.e(TAG, "sign in failed : " + ((ApiException) authAccountTask.getException()).getStatusCode());
+                Exception exception = authAccountTask.getException();
+                if (exception instanceof ApiException) {
+                    Log.e(TAG, "sign in failed : " + ((ApiException) exception).getStatusCode());
+                }
             }
         }
     }

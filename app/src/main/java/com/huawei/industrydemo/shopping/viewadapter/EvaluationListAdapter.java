@@ -40,8 +40,8 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.entity.Evaluation;
 import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.EvaluationListActivity;
+import com.huawei.industrydemo.shopping.utils.AgcUtil;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
-import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,14 +59,14 @@ public class EvaluationListAdapter extends RecyclerView.Adapter<EvaluationListAd
 
     private static final int MORE_TRANSLATION = 101;
 
-    private Context context;
+    private final Context context;
 
-    private List<Evaluation> list;
+    private final List<Evaluation> list;
 
     public EvaluationListAdapter(Context context, List<Evaluation> list) {
         this.context = context;
         this.list = list;
-        MLApplication.getInstance().setApiKey(SystemUtil.getApiKey(context));
+        MLApplication.getInstance().setApiKey(AgcUtil.getApiKey(context));
     }
 
     @NonNull

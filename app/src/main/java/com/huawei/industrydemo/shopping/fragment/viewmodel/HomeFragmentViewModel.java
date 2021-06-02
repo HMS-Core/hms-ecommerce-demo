@@ -16,11 +16,11 @@
 
 package com.huawei.industrydemo.shopping.fragment.viewmodel;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,13 +42,11 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseFragmentViewModel;
 import com.huawei.industrydemo.shopping.entity.ScanHistory;
 import com.huawei.industrydemo.shopping.fragment.HomeFragment;
-import com.huawei.industrydemo.shopping.fragment.camera.PhotoFragment;
 import com.huawei.industrydemo.shopping.page.viewmodel.MainActivityViewModel;
 import com.huawei.industrydemo.shopping.repository.AppConfigRepository;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
 import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 import com.huawei.industrydemo.shopping.utils.RemoteConfigUtil;
-import com.huawei.industrydemo.shopping.utils.SystemUtil;
 import com.huawei.industrydemo.shopping.viewadapter.HomeViewPagerAdapter;
 import com.huawei.industrydemo.shopping.viewadapter.ScanHistoryAdapter;
 
@@ -57,10 +55,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.huawei.industrydemo.shopping.MainApplication.getContext;
-import static com.huawei.industrydemo.shopping.constants.Constants.LANGUAGE_ZH;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.IS_SHOW_TIP;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOURIST_USERID;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
@@ -79,7 +75,7 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
 
     private RecyclerView recyclerView;
 
-    private final int VIEW_PAGER_HEIGHT = 846;
+    private static final int VIEW_PAGER_HEIGHT = 846;
 
     /**
      * Dot below the rotation images
@@ -202,6 +198,9 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
      * @param position Position of the dot to be displayed
      */
     private void showPoint(int position) {
+        if (dots == null) {
+            return;
+        }
         int size = dots.size();
         for (int i = 0; i < size; i++) {
             dots.get(i).setBackgroundResource(R.drawable.dot_no_selected);
@@ -231,9 +230,10 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
     public void onClickEvent(int viewId) {
         switch (viewId) {
             case R.id.card_new:
-                ((MainActivity) Objects.requireNonNull(mFragment.getActivity()))
-                        .getMainActivityViewModel()
-                        .setCurrentPage(R.id.tab_new_in);
+                Activity activity = mFragment.getActivity();
+                if (activity != null && activity instanceof MainActivity) {
+                    ((MainActivity) activity).getMainActivityViewModel().setCurrentPage(R.id.tab_new_in);
+                }
                 break;
             case R.id.card_article1:
                 showArticle(ARTICLE_KEY_ONE);
@@ -247,14 +247,17 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
     }
 
     private void showArticle(String articleKey) {
-        MainActivityViewModel mainActivityViewModel =
-                ((MainActivity) Objects.requireNonNull(mFragment.getActivity())).getMainActivityViewModel();
+        Activity activity = mFragment.getActivity();
+        if (activity == null){
+            return;
+        }
+        MainActivityViewModel mainActivityViewModel = ((MainActivity) activity).getMainActivityViewModel();
         mainActivityViewModel.showLoadView();
         Map<String, Object> results = AGConnectConfig.getInstance().getMergedAll();
         if (results.containsKey(articleKey)) {
             Object url = results.get(articleKey);
             try {
-                mFragment.getActivity().runOnUiThread(() -> {
+                activity.runOnUiThread(() -> {
                     Uri uri = Uri.parse(url.toString());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     mFragment.startActivity(intent);

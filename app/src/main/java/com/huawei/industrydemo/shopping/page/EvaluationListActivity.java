@@ -55,7 +55,6 @@ public class EvaluationListActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluation_list);
 
-        // addTipView(new String[]{});
         Intent intent = getIntent();
         if (intent != null) {
             productId = intent.getIntExtra(KeyConstants.PRODUCT_KEY, -1);

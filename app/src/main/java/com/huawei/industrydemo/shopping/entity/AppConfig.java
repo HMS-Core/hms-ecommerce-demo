@@ -24,6 +24,8 @@ import androidx.room.PrimaryKey;
 import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
 
 /**
+ * App Config
+ * 
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/19]
  * @see [Related Classes/Methods]
  * @since [Ecommerce-Demo 1.0.2.300]

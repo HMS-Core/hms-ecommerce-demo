@@ -61,7 +61,7 @@ public class CollectionActivity extends BaseActivity {
         }
         Collections.reverse(list);
         CollectionAdapter adapter = new CollectionAdapter(list, this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);

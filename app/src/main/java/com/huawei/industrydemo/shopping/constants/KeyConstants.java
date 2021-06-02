@@ -27,6 +27,8 @@ public interface KeyConstants {
     String IS_FIRST_RUN = "is_first_run";
 
     String LAST_LANGUAGE = "m_language";
+    
+    String LAST_VERSION = "m_version";
 
     // Display Kits or not
     String IS_NIGHT = "m_model";

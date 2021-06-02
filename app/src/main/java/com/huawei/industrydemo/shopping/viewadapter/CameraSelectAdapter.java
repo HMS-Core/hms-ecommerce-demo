@@ -17,7 +17,6 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,10 +38,13 @@ import java.util.List;
  * @since [Ecommerce-Demo 1.0.2.300]
  */
 public class CameraSelectAdapter extends RecyclerView.Adapter<CameraSelectAdapter.ViewHolder>
-        implements TypeSelectView.IAutoLocateHorizontalView {
-    private Context context;
+    implements TypeSelectView.IAutoLocateHorizontalView {
+    private final Context context;
+
     private View view;
-    private List<String> functionList;
+
+    private final List<String> functionList;
+
     private OnItemClickListener onItemClickListener;
 
     public CameraSelectAdapter(Context context, List<String> functionList) {
@@ -60,12 +62,11 @@ public class CameraSelectAdapter extends RecyclerView.Adapter<CameraSelectAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvFunc.setText(functionList.get(position));
-        holder.tvFunc.setOnClickListener(
-                view -> {
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(position);
-                    }
-                });
+        holder.tvFunc.setOnClickListener(view -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -75,15 +76,12 @@ public class CameraSelectAdapter extends RecyclerView.Adapter<CameraSelectAdapte
 
     @Override
     public void onViewSelected(boolean isSelected, int pos, RecyclerView.ViewHolder holder, int itemWidth) {
-        if (isSelected) {
-            TextView tv = ((ViewHolder) holder).tvFunc;
-            TextPaint tp = tv.getPaint();
-            tp.setFakeBoldText(true);
-        } else {
-            TextView tv = ((ViewHolder) holder).tvFunc;
-            TextPaint tp = tv.getPaint();
-            tp.setFakeBoldText(false);
+        if (!(holder instanceof ViewHolder)) {
+            return;
         }
+        TextView tv = ((ViewHolder) holder).tvFunc;
+        TextPaint tp = tv.getPaint();
+        tp.setFakeBoldText(isSelected);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

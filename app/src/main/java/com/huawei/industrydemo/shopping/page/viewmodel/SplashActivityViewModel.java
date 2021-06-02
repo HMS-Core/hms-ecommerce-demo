@@ -16,11 +16,8 @@
 
 package com.huawei.industrydemo.shopping.page.viewmodel;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -31,12 +28,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 
 import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivityViewModel;
-import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.page.PrivacyActivity;
 import com.huawei.industrydemo.shopping.page.SplashActivity;
@@ -54,8 +49,6 @@ public class SplashActivityViewModel extends BaseActivityViewModel<SplashActivit
 
     // Ad display timeout message flag.
     private static final int MSG_DELAY = 1000;
-
-    private UserRepository mUserRepository;
 
     private int num = 5;
 
@@ -103,7 +96,7 @@ public class SplashActivityViewModel extends BaseActivityViewModel<SplashActivit
 
     private void jumpToNextPage() {
         showLoadDialog();
-        mUserRepository = new UserRepository();
+        UserRepository mUserRepository = new UserRepository();
         User user = mUserRepository.getCurrentUser();
         if ((user != null) && (user.getHuaweiAccount() != null) && (user.isPrivacyFlag())) {
             mActivity.startActivity(new Intent(mActivity, MainActivity.class));

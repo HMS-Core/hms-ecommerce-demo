@@ -22,7 +22,7 @@ package com.huawei.industrydemo.shopping.constants;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public interface KitConstants {
-    /*-------------Kit Name------------*/
+    /* -------------Kit Name------------ */
     String ADS = "Ads";
 
     String ML = "ML";
@@ -61,7 +61,7 @@ public interface KitConstants {
 
     String NETWORK = "Network";
 
-    /*-------------Kit Function------------*/
+    /* -------------Kit Function------------ */
     String ML_ASR = "ASR";
 
     String ML_PHOTO = "PHOTO";

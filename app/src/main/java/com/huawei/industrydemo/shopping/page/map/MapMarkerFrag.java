@@ -64,8 +64,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.huawei.industrydemo.shopping.constants.Constants.ADDR_ADJUST_NUMBER;
-
 /**
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/22]
  * @see [com.huawei.industrydemo.shopping.page.map.MapMarkerFrag]
@@ -73,6 +71,8 @@ import static com.huawei.industrydemo.shopping.constants.Constants.ADDR_ADJUST_N
  */
 public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
     private static final String TAG = MapMarkerFrag.class.getSimpleName();
+
+    private static final double[][] ADDR_ADJUST_NUMBER = {{-0.001, -0.01}, {0.01, -0.001}, {0.01, 0.01}};
 
     private final static String RADIUS = "50000";
 
@@ -127,7 +127,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
     LocationService.ILocationChangedLister iLocationChangedLister = new LocationService.ILocationChangedLister() {
         @Override
         public void locationChanged(LatLng latLng) {
-            Log.d(TAG, "locationChanged: " + latLng.latitude +" lon: " + latLng.longitude);
+            Log.d(TAG, "locationChanged: " + latLng.latitude + " lon: " + latLng.longitude);
             updateLocation(latLng);
             isLocationReady = true;
             if (IS_AUTO_SEARCH) {
@@ -136,7 +136,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         }
     };
 
-    private ServiceConnection conn = new ServiceConnection() {
+    private final ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
             isBound = true;
@@ -144,7 +144,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
                 LocationService.MyBinder myBinder = (LocationService.MyBinder) binder;
                 locationService = myBinder.getService();
                 Log.d(TAG, "ActivityA onServiceConnected");
-                if(isGetLocationPermission()){
+                if (isGetLocationPermission()) {
                     locationService.addLocationChangedlister(iLocationChangedLister);
                     locationService.getMyLoction();
                 }
@@ -162,15 +162,13 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
     private boolean isGetLocationPermission() {
         Log.d(TAG, "isGetLocationPermission: b");
         if (ActivityCompat.checkSelfPermission(mActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mActivity,
+            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(mActivity,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mActivity,
+            && ActivityCompat.checkSelfPermission(mActivity,
                 "android.permission.ACCESS_BACKGROUND_LOCATION") != PackageManager.PERMISSION_GRANTED) {
             String[] strings = {android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    "android.permission.ACCESS_BACKGROUND_LOCATION"
-            };
+                android.Manifest.permission.ACCESS_COARSE_LOCATION, "android.permission.ACCESS_BACKGROUND_LOCATION"};
             ActivityCompat.requestPermissions(mActivity, strings, 2);
             Log.d(TAG, "isGetLocationPermission: false");
             return false;
@@ -181,8 +179,9 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
 
     @Override
     public void onAttach(@NonNull Context context) {
-        if (mActivity == null && context instanceof Activity)
+        if (mActivity == null && context instanceof Activity) {
             mActivity = (Activity) context;
+        }
         super.onAttach(context);
     }
 
@@ -207,7 +206,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         if (isMapActivity()) {
             viewFull.setVisibility(View.GONE);
         } else if (isHome()) {
-            // lBottom.setVisibility(View.GONE);
+            Log.d(TAG, "isHome()");
         }
         lBottom.setVisibility(View.GONE);
         initData();
@@ -250,13 +249,9 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         });
     }
 
-    /**
-     * https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/petal-maps-application-navigation-0000001060038018
-     */
     public void callNaviPetalMap(LatLng latLng) {
         String lan = String.valueOf(latLng.latitude);
         String lng = String.valueOf(latLng.longitude);
-        // String uriString = "mapapp://navigation?daddr=25.164610000000,55.228869000000&language=en&type=drive";
         String uriString = "mapapp://navigation?daddr=" + lan + "," + lng + "&type=drive";
         Log.d(TAG, "callNaviPetalMap: " + uriString);
         Uri uri = Uri.parse(uriString);
@@ -272,13 +267,9 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         }
     }
 
-    /**
-     * https://developers.google.com/maps/documentation/urls/android-intents
-     */
     public void callNaviGoogleByDest(LatLng latLng) {
         String lan = String.valueOf(latLng.latitude);
         String lng = String.valueOf(latLng.longitude);
-        // "google.navigation:q=25.102916,55.165363"
         String s = "google.navigation:q=" + lan + "," + lng;
         Log.d(TAG, "callNaviByDest: " + s);
         Uri naviUri = Uri.parse("google.navigation:q=25.102916,55.165363");
@@ -346,11 +337,10 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
                 Log.d(TAG, "onSearchResult: ");
                 List<Site> siteList;
                 if (results == null || results.getTotalCount() <= 0 || (siteList = results.getSites()) == null
-                        || siteList.size() <= 0) {
+                    || siteList.size() <= 0) {
 
                     updateMarkerData(new ArrayList<>());
                     String s = "Result is Empty!";
-                    // show(s);
                     Log.d(TAG, "onSearchResult: " + s);
                     return;
                 }
@@ -362,7 +352,6 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
             public void onSearchError(SearchStatus status) {
                 updateMarkerData(new ArrayList<>());
                 String s = "Tips : " + status.getErrorCode() + " " + status.getErrorMessage();
-                // show(s);
                 Log.d(TAG, "onSearchResult: " + s);
             }
         };
@@ -373,7 +362,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
 
     private boolean latlngValidation(LatLng mLatLng) {
         if ((mLatLng.latitude > 90.0) || (mLatLng.latitude < -90.0) || (mLatLng.longitude > 180.0)
-                || (mLatLng.longitude < -180.0)) {
+            || (mLatLng.longitude < -180.0)) {
             return false;
         }
         return true;
@@ -397,7 +386,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(HuaweiMap huaweiMap) {
         hMap = huaweiMap;
-        if(isGetLocationPermission()){
+        if (isGetLocationPermission()) {
             hMap.setMyLocationEnabled(true);
         }
         if (mActivity instanceof MapAct) {
@@ -485,41 +474,26 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
                 Site site = siteList.get(i);
                 site.setName(shopNameList[i]);
             }
-            // for (int i = 0; i < MOCK_MARKER_NUM; i++) {
-            // Site s = siteList.get(i);
-            // Coordinate location = s.getLocation();
-            // MarkerOptions markerOptions = new MarkerOptions().position(
-            // new LatLng(location.getLat(), location.getLng())).title(s.getName()).clusterable(true);
-            // Marker mMarker = hMap.addMarker(markerOptions);
-            // markerMap.put(mMarker, s);
-            // }
-        } else {// If result is less than MOCK_MARKER_NUM, use mock data.
+
+        } else { // If result is less than MOCK_MARKER_NUM, use mock data.
             Log.d(TAG, "getMarkerAddr: 0 result");
 
             for (int i = 0; i < MOCK_MARKER_NUM; i++) {
                 Site site = new Site();
                 site.setLocation(new Coordinate(mLatLng.latitude + ADDR_ADJUST_NUMBER[i][0],
-                        mLatLng.longitude + ADDR_ADJUST_NUMBER[i][1]));
+                    mLatLng.longitude + ADDR_ADJUST_NUMBER[i][1]));
                 site.setName(shopNameList[i]);
                 site.setFormatAddress(shopAddrList[i]);
                 siteList.add(site);
             }
         }
-        //
-        // for (Site s :
-        // siteList) {
-        // Coordinate location = s.getLocation();
-        // MarkerOptions markerOptions = new MarkerOptions()
-        // .position(new LatLng(location.getLat(), location.getLng())).title(s.getName()).clusterable(true);
-        // Marker mMarker = hMap.addMarker(markerOptions);
-        // markerMap.put(mMarker, s);
-        // }
+
         for (int i = 0; i < MOCK_MARKER_NUM; i++) {
             Site s = siteList.get(i);
             Coordinate location = s.getLocation();
             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(location.getLat(), location.getLng()))
-                    .title(s.getName())
-                    .clusterable(true);
+                .title(s.getName())
+                .clusterable(true);
             Marker mMarker = hMap.addMarker(markerOptions);
             markerMap.put(mMarker, s);
         }

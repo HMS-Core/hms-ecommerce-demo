@@ -176,10 +176,18 @@
     <!-- Privacy Page-->
     <string name="privacyReject">拒绝</string>
     <string name="privacyaccept">同意</string>
+    <string name="privacycontinue">继续</string>
     <string name="exitMessage">即将退出Shopping Demo</string>
-    <string name="privacy_summary">点击“同意”，即表示您同意%s和%s。</string>
-    <string name="agreement_title">HMS Core 购物 Demo 用户协议</string>
-    <string name="statement_title">关于 HMS Core 购物 Demo 与隐私的声明</string>
+    <string name="privacy_state">本Demo应用将帮助您了解如何在购物应用中集成HMS Core的各项能力，以及如何在应用中集成HMS Core SDK或Kit服务。 应用演示了除实际付费外的整个购物过程。\n\n HMS Core为电商类应用提供了创新的解决方案以加速客户获取及提高客户转化率，实现可持续的业务增长.\n\n详情参见</string>
+    <string name="privacy_summary1">本服务将需要获取“位置权限”用于提供线下门店功能，“话筒权限”用于提供语音搜索功能，“存储和摄像头权限”用于提供扫描和图片搜索服务。如果您未使用HUAWEI ID登录，请在此确认你年满18岁或以上。在使用以上服务之前，请您授予以上权限，并且确认了解下面的隐私声明，并接受</string>
+    <string name="privacy_title">权限说明及用户协议</string>
+    <string name="privacy_title2">隐私说明</string>
+
+
+    <string name="readme_title">这里。</string>
+    <string name="agreement_title">购物 Demo 用户协议。</string>
+    <string name="statement_title">关于 HMS Core 购物 Demo 与隐私的声明。</string>
+    <string name="readme_url">https://github.com/HMS-Core/hms-ecommerce-demo/blob/main/README_ZH.md#hms-e-commerce-demo</string>
     <string name="agreement_url">file:///android_asset/documents-zh/agreement.html</string>
     <string name="statement_url">file:///android_asset/documents-zh/privacy.html</string>
 
@@ -281,6 +289,7 @@
     <string name="country_not_supported_identity">用户身份服务在当前国家不支持</string>
     <string name="child_account_not_supported_identity">用户身份服务不支持子帐户</string>
     <string name="no_order_tip">订单创建失败，请重试</string>
+    <string name="address_permission">系统将获取您已配置的地址，是否确认</string>
 
     <!-- PaymentSelectActivity -->
     <string name="payment_need_total">￥ %d</string>
@@ -382,7 +391,6 @@
     <string name="search_hot">热门搜索</string>
     <string name="delete_history">清理搜索历史</string>
     <string name="check_delete_history">确认清空历史记录吗？</string>
-    <string name="address_permission">系统将获取您已配置的地址，是否确认</string>
 
     <!-- BuyMemberActivity-->
     <string name="buy_member_price">价格： %s</string>
@@ -445,7 +453,10 @@
     <string name="bank_information">银行卡信息</string>
 
     <!-- scene-->
-    <string name="download_tip">是否要下载资源文件？</string>
-    <string name="downloading">下载中...</string>
-
+    <string name="download_tip">是否要在非wifi环境加载资源文件？</string>
+    <string name="preparing">服务准备中...</string>
+    <string name="downloading">资源加载中...</string>
+    <string name="downloaded">加载完成</string>
+    <string name="download_failed">加载失败，请稍候重试。</string>
+    <string name="not_support_ar">您的设备暂不支持AR Engine！</string>
 </resources>

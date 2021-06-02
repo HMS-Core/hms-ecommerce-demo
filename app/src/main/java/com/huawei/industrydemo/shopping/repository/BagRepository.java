@@ -44,6 +44,8 @@ public class BagRepository {
     }
 
     /**
+     * Query the bag with number
+     *
      * @param number number
      * @return Value of the String type
      */

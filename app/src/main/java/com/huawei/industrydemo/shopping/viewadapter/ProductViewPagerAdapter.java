@@ -17,8 +17,6 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -26,24 +24,14 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.huawei.hmf.tasks.OnFailureListener;
-import com.huawei.hmf.tasks.OnSuccessListener;
-import com.huawei.hmf.tasks.Task;
-import com.huawei.hms.mlsdk.common.MLFrame;
-import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionAnalyzer;
-import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionAnalyzerFactory;
-import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionAnalyzerSetting;
-import com.huawei.hms.mlsdk.imagesuperresolution.MLImageSuperResolutionResult;
 import com.huawei.hms.videokit.player.WisePlayer;
 import com.huawei.hms.videokit.player.common.PlayerConstants;
 import com.huawei.industrydemo.shopping.R;
@@ -64,19 +52,19 @@ import static com.huawei.industrydemo.shopping.constants.Constants.RESOURCE_TYPE
  */
 public class ProductViewPagerAdapter extends PagerAdapter
     implements SurfaceHolder.Callback, SeekBar.OnSeekBarChangeListener {
-    private String[] imgs;
+    private final String[] imgs;
 
-    private String videoUrl;
+    private final String videoUrl;
 
-    private Context context;
+    private final Context context;
 
-    private boolean isHasVideo;
+    private final boolean isHasVideo;
 
     private InitVideoInterface initVideoInterface;
 
-    private int videoPosition;
+    private final int videoPosition;
 
-    private WisePlayer wisePlayer;
+    private final WisePlayer wisePlayer;
 
     private SurfaceView surfaceView;
 
@@ -101,7 +89,7 @@ public class ProductViewPagerAdapter extends PagerAdapter
     private boolean hasReported = false;
 
     public ProductViewPagerAdapter(String[] imgs, String videoUrl, Context context, WisePlayer wisePlayer) {
-        this.imgs = imgs;
+        this.imgs = imgs.clone();
         this.videoUrl = videoUrl;
         this.context = context;
         isHasVideo = !(videoUrl == null || EMPTY.equals(videoUrl));
@@ -179,7 +167,7 @@ public class ProductViewPagerAdapter extends PagerAdapter
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        // super.destroyItem(container, position, object);
+
     }
 
     public interface InitVideoInterface {
@@ -325,43 +313,5 @@ public class ProductViewPagerAdapter extends PagerAdapter
             updateViewHandler.removeCallbacksAndMessages(null);
             updateViewHandler = null;
         }
-    }
-
-    private void initImgSuper(ImageView imageView) {
-        if (null == imageView) {
-            return;
-        }
-        Bitmap srcBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        if (srcBitmap != null) {
-            MLImageSuperResolutionAnalyzerSetting setting = new MLImageSuperResolutionAnalyzerSetting.Factory()
-                .setScale(MLImageSuperResolutionAnalyzerSetting.ISR_SCALE_3X)
-                .create();
-            MLImageSuperResolutionAnalyzer analyzer =
-                MLImageSuperResolutionAnalyzerFactory.getInstance().getImageSuperResolutionAnalyzer(setting);
-
-            MLFrame frame = MLFrame.fromBitmap(srcBitmap);
-            Task<MLImageSuperResolutionResult> task = analyzer.asyncAnalyseFrame(frame);
-            task.addOnSuccessListener(new OnSuccessListener<MLImageSuperResolutionResult>() {
-                public void onSuccess(MLImageSuperResolutionResult result) {
-                    // Recognition success.
-                    initImgView(result);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                public void onFailure(Exception e) {
-                    // Recognition failure.
-                    Toast.makeText(context, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-    }
-
-    private void initImgView(MLImageSuperResolutionResult result) {
-        FrameLayout frameLayout = ((ProductActivity) context).findViewById(R.id.fl_img_super);
-        frameLayout.setVisibility(View.VISIBLE);
-        final View view = LayoutInflater.from(context).inflate(R.layout.view_img, null);
-        ((ImageView) view.findViewById(R.id.view_img)).setImageBitmap(result.getBitmap());
-        view.setOnClickListener(v -> frameLayout.setVisibility(View.GONE));
-        frameLayout.addView(view);
     }
 }

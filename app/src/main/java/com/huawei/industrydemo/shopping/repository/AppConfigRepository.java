@@ -39,6 +39,8 @@ public class AppConfigRepository {
     }
 
     /**
+     * Get the value of specific key
+     *
      * @param keyword Keyword
      * @return Value of the String type
      */
@@ -47,6 +49,8 @@ public class AppConfigRepository {
     }
 
     /**
+     * Set the key-value pair for the app
+     *
      * @param keyword Keyword
      * @param value Value
      */
@@ -55,6 +59,8 @@ public class AppConfigRepository {
     }
 
     /**
+     * Get the boolean value
+     *
      * @param keyword Keyword
      * @param defValue Default value
      * @return Value of the boolean type
@@ -65,6 +71,8 @@ public class AppConfigRepository {
     }
 
     /**
+     * Set the boolean value
+     *
      * @param keyword Keyword
      * @param value Value
      */

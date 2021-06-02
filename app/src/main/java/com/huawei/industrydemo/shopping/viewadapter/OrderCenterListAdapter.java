@@ -16,6 +16,7 @@
 
 package com.huawei.industrydemo.shopping.viewadapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +39,6 @@ import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.User;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.OrderCenterActivity;
 import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
 import com.huawei.industrydemo.shopping.page.PaymentSelectActivity;
@@ -181,22 +181,27 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         holder.pendingPaymentTime.setText(pendingPaymentTime);
         holder.productTotalInfo.setText(productTotalInfo);
 
-        OrderSubmitAdapter orderCheckAdapter =
-            new OrderSubmitAdapter(orderItemList, mActivity, order.getStatus(), order.getNumber());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
+        OrderSubmitAdapter orderCheckAdapter = new OrderSubmitAdapter(orderItemList, mActivity, order.getStatus());
+        LinearLayoutManager layoutManager = new MyLinearLayoutManager(mActivity);
         holder.orderItemList.setLayoutManager(layoutManager);
         holder.orderItemList.setAdapter(orderCheckAdapter);
         holder.cancelOrder.setOnClickListener(view -> cancelOrder(order));
-        holder.payOrder.setOnClickListener(
-            view -> mActivity.addTipView(new String[] {PUSH_ORDER}, (ShowTipsCallback) () -> payOrder(order)));
+        holder.payOrder
+            .setOnClickListener(view -> mActivity.addTipView(new String[] {PUSH_ORDER}, () -> payOrder(order)));
         holder.modifyOrder.setOnClickListener(view -> modifyOrder(order));
-        holder.confirmOrder.setOnClickListener(
-            v -> mActivity.addTipView(new String[] {PUSH_ORDER}, (ShowTipsCallback) () -> confirmOrder(order)));
+        holder.confirmOrder
+            .setOnClickListener(v -> mActivity.addTipView(new String[] {PUSH_ORDER}, () -> confirmOrder(order)));
+    }
+
+    private static class MyLinearLayoutManager extends LinearLayoutManager {
+        public MyLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean canScrollVertically() {
+            return false;
+        }
     }
 
     private void confirmOrder(Order order) {
@@ -270,9 +275,7 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
             dialog.dismiss();
         });
 
-        dialog.setCancelListener(v -> {
-            dialog.dismiss();
-        });
+        dialog.setCancelListener(v -> dialog.dismiss());
 
         dialog.show();
     }

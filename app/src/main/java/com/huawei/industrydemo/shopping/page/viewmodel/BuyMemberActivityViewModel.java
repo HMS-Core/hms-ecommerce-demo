@@ -86,7 +86,7 @@ public class BuyMemberActivityViewModel extends BaseActivityViewModel<BuyMemberA
         mActivity.findViewById(R.id.iv_back).setOnClickListener(mActivity);
         ((TextView)mActivity.findViewById(R.id.tv_title)).setText(mActivity.getText(R.string.member_buy));
 
-        //init RecyclerView 
+        // init RecyclerView
         RecyclerView recyclerView = mActivity.findViewById(R.id.recycler_member);
         ProductInfoReq req = new ProductInfoReq();
         ArrayList<String> list = new ArrayList<>();
@@ -166,7 +166,7 @@ public class BuyMemberActivityViewModel extends BaseActivityViewModel<BuyMemberA
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
-            case BUY_INTENT:// Create payment order for PMS item.
+            case BUY_INTENT: // Create payment order for PMS item.
                 showResultInfo(data);
                 break;
             default:

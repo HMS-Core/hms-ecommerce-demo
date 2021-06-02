@@ -144,6 +144,7 @@ public class StatusDialogUtil extends Dialog {
     /**
      * dp to px
      *
+     * @param context Context
      * @param dpValue dpValue
      * @return px
      */

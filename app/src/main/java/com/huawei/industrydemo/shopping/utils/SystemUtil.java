@@ -23,19 +23,35 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.huawei.agconnect.config.AGConnectServicesConfig;
+import androidx.annotation.Nullable;
+
 import com.huawei.agconnect.remoteconfig.AGConnectConfig;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
+import com.huawei.hms.kit.awareness.Awareness;
+import com.huawei.hms.kit.awareness.capture.WifiStatusResponse;
+import com.huawei.hms.kit.awareness.status.WifiStatus;
 import com.huawei.industrydemo.shopping.BuildConfig;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseDialog;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import static com.huawei.industrydemo.shopping.base.BaseDialog.CANCEL_BUTTON;
 import static com.huawei.industrydemo.shopping.base.BaseDialog.CONFIRM_BUTTON;
@@ -49,36 +65,6 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.LATEST_VER
  */
 public class SystemUtil {
     private static final String TAG = SystemUtil.class.getSimpleName();
-
-    private static String appId;
-
-    private static String apiKey;
-
-    /**
-     * Obtain App Id.
-     * 
-     * @param context context
-     * @return appId
-     */
-    public static synchronized String getAppId(Context context) {
-        if (appId == null) {
-            appId = AGConnectServicesConfig.fromContext(context).getString("client/app_id");
-        }
-        return appId;
-    }
-
-    /**
-     * Obtain Api Key.
-     * 
-     * @param context context
-     * @return apiKey
-     */
-    public static synchronized String getApiKey(Context context) {
-        if (apiKey == null) {
-            apiKey = AGConnectServicesConfig.fromContext(context).getString("client/api_key");
-        }
-        return apiKey;
-    }
 
     /**
      * getLanguage
@@ -109,6 +95,34 @@ public class SystemUtil {
         }
 
         return wifiNetworkInfo.isConnected();
+    }
+
+    /**
+     * Check whether the Wi-Fi connection is normal.
+     *
+     * @param context Context
+     * @param onSuccessListener wifi connected
+     * @param onFailureListener wifi not connected
+     */
+    public static void isWifiConnected(Context context,
+        @Nullable OnSuccessListener<WifiStatusResponse> onSuccessListener,
+        @Nullable OnFailureListener onFailureListener) {
+        Awareness.getCaptureClient(context).getWifiStatus().addOnCompleteListener(task -> {
+            boolean isWifiConnected = false;
+            if (task.isSuccessful()) {
+                if (task.getResult().getWifiStatus().getStatus() == WifiStatus.CONNECTED) {
+                    isWifiConnected = true;
+                    if (onSuccessListener != null) {
+                        onSuccessListener.onSuccess(task.getResult());
+                    }
+                }
+            }
+            if (!isWifiConnected) {
+                if (onFailureListener != null) {
+                    onFailureListener.onFailure(new Exception("wifi is not connected"));
+                }
+            }
+        });
     }
 
     /**
@@ -153,7 +167,7 @@ public class SystemUtil {
     }
 
     /**
-     * Change Status Bar Text Color
+     * set Android Native Light StatusBar
      *
      * @param activity activity
      * @param dark isDark
@@ -166,4 +180,5 @@ public class SystemUtil {
             decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
     }
+
 }

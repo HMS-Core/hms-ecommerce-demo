@@ -111,9 +111,6 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
 
         View.OnClickListener redirectToProductDetail = view -> {
             Log.d(TAG, "redirectToProductDetail");
-            // Intent intent = new Intent(context, ProductActivity.class);
-            // intent.putExtra(KeyConstants.PRODUCT_KEY, product.getNumber());
-            // context.startActivity(intent);
         };
         holder.textProductName.setOnClickListener(redirectToProductDetail);
         holder.textConfiguration.setOnClickListener(redirectToProductDetail);

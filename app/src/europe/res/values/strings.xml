@@ -16,4 +16,5 @@
 
 <resources>
     <string name="domain_uri_prefix">https://industrydemo.dre.agconnect.link</string>
+    <string name="privacy_summary2">The data controller is Aspiegel SE. Your data is used for shopping service, product analysis and improvement purposes. For more information about how your data is processed and about your rights, including the right to object, please read </string>
 </resources>

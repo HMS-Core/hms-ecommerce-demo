@@ -48,6 +48,7 @@ import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.inteface.OnNonDoubleClickListener;
 import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.PrivacyActivity;
+import com.huawei.industrydemo.shopping.page.SceneViewActivity;
 import com.huawei.industrydemo.shopping.page.SplashActivity;
 import com.huawei.industrydemo.shopping.page.WebViewActivity;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
@@ -70,7 +71,8 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.WEB_URL;
  */
 public class BaseActivity extends AppCompatActivity implements LogConfig, KitConstants {
 
-    private final static Class<?>[] EXCLUDE_ACTIVITIES = {SplashActivity.class, PrivacyActivity.class};
+    private final static Class<?>[] EXCLUDE_ACTIVITIES =
+        {SceneViewActivity.class, SplashActivity.class, PrivacyActivity.class};
 
     private LinearLayout mFloatLayout;
 
@@ -130,7 +132,10 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
                 AuthAccount authAccount = authAccountTask.getResult();
                 saveUserAccountInfo(authAccount);
             } else {
-                Log.e(TAG, "sign in failed : " + ((ApiException) authAccountTask.getException()).getStatusCode());
+                Exception exception = authAccountTask.getException();
+                if (exception instanceof ApiException) {
+                    Log.e(TAG, "sign in failed : " + ((ApiException) exception).getStatusCode());
+                }
             }
         }
     }

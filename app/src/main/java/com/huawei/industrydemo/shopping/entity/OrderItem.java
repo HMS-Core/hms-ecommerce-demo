@@ -1,5 +1,5 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
+ * Order Item
+ * 
  * @version [Ecommerce-Demo 1.0.0.300, 2020/9/24]
  * @see Order
  * @since [Ecommerce-Demo 1.0.0.300]

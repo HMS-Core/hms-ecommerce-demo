@@ -34,17 +34,15 @@ import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
-import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.huawei.industrydemo.shopping.constants.Constants.LANGUAGE_ZH;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.WEB_URL;
 
 public class PrivacyActivity extends BaseActivity {
 
-    static int innerFlag = 0;
+    private int innerFlag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,40 +53,6 @@ public class PrivacyActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_privacy);
-        TextView privacyView = findViewById(R.id.textView_privacy);
-        UserRepository mUserRepository = new UserRepository();
-        User user = mUserRepository.getCurrentUser();
-
-        Button btnAgree = findViewById(R.id.button_agree);
-        if (innerFlag == 0) {
-            btnAgree.setOnClickListener(v -> {
-                if (user != null && user.getHuaweiAccount() != null) {
-                    // User has agreed on the privacy policy.
-                    user.setPrivacyFlag(true);
-                    mUserRepository.setCurrentUser(user);
-                }
-                FrameLayout frameLayout = findViewById(android.R.id.content);
-                View loadView = LayoutInflater.from(PrivacyActivity.this).inflate(R.layout.view_pb, null);
-                loadView.setOnClickListener(v1 -> {
-                    // Forbidden to click the view
-                });
-                frameLayout.addView(loadView);
-                startActivity(new Intent(PrivacyActivity.this, MainActivity.class));
-                finish();
-            });
-        } else {
-            btnAgree.setText(R.string.confirm_button);
-            btnAgree.setOnClickListener(v -> {
-                FrameLayout frameLayout = findViewById(android.R.id.content);
-                View loadView = LayoutInflater.from(PrivacyActivity.this).inflate(R.layout.view_pb, null);
-                loadView.setOnClickListener(v1 -> {
-                    // Forbidden to click the view
-                });
-                frameLayout.addView(loadView);
-
-                finish();
-            });
-        }
 
         Button btnReject = findViewById(R.id.button_reject);
         btnReject.setOnClickListener(v -> {
@@ -96,19 +60,121 @@ public class PrivacyActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), exitMessage, Toast.LENGTH_LONG).show();
             finishPrivacyActivity(2000);
         });
-
-        if (innerFlag == 1) {
-            btnReject.setVisibility(View.GONE);
+        if (innerFlag == 0) {
+            setInitPrivacy();
+        } else {
+            setInnerPrivacy();
         }
-        SpannableStringBuilder privacyContent = privacyContentReading();
-        if (privacyContent.length() != 0) {
-            privacyView.setText(privacyContent);
-            privacyView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void setInitPrivacy() {
+        Button btnAgree = findViewById(R.id.button_agree);
+        Button btnContinue = findViewById(R.id.button_continue);
+        Button btnReject = findViewById(R.id.button_reject);
+
+        TextView privacyView1 = findViewById(R.id.textView_privacy);
+        TextView privacyView2 = findViewById(R.id.textView_privacy2);
+
+        TextView privacyTitleView1 = findViewById(R.id.textView_privacy_titile);
+        TextView privacyTitleView2 = findViewById(R.id.textView_privacy_titile2);
+
+        UserRepository mUserRepository = new UserRepository();
+        User user = mUserRepository.getCurrentUser();
+
+        privacyTitleView1.setVisibility(View.GONE);
+        privacyTitleView2.setVisibility(View.GONE);
+        privacyView2.setVisibility(View.GONE);
+
+        btnContinue.setText(R.string.privacycontinue);
+        btnReject.setVisibility(View.INVISIBLE);
+
+        btnContinue.setOnClickListener(v -> {
+            privacyTitleView1.setVisibility(View.VISIBLE);
+            privacyTitleView2.setVisibility(View.VISIBLE);
+            privacyView2.setVisibility(View.VISIBLE);
+
+            SpannableStringBuilder privacyContent1 = privacyContentReading1();
+            SpannableStringBuilder privacyContent2 = privacyContentReading2();
+
+            if (privacyContent1.length() != 0 && privacyContent2.length() != 0) {
+                privacyView1.setText(privacyContent1);
+                privacyView1.setMovementMethod(LinkMovementMethod.getInstance());
+
+                privacyView2.setText(privacyContent2);
+                privacyView2.setMovementMethod(LinkMovementMethod.getInstance());
+            } else {
+                String exitMessage = getString(R.string.exitMessage);
+                Toast.makeText(getApplicationContext(), exitMessage, Toast.LENGTH_LONG).show();
+                finishPrivacyActivity(2000);
+            }
+            btnAgree.setVisibility(View.VISIBLE);
+            btnReject.setVisibility(View.VISIBLE);
+            btnContinue.setVisibility(View.GONE);
+        });
+
+        btnAgree.setOnClickListener(v -> {
+            if (user != null && user.getHuaweiAccount() != null) {
+                // User has agreed on the privacy policy.
+                user.setPrivacyFlag(true);
+                mUserRepository.setCurrentUser(user);
+            }
+            FrameLayout frameLayout = findViewById(android.R.id.content);
+            View loadView = LayoutInflater.from(PrivacyActivity.this).inflate(R.layout.view_pb, null);
+            loadView.setOnClickListener(v1 -> {
+                // Forbidden to click the view
+            });
+            frameLayout.addView(loadView);
+            startActivity(new Intent(PrivacyActivity.this, MainActivity.class));
+            finish();
+        });
+        btnAgree.setVisibility(View.GONE);
+
+        SpannableStringBuilder introduceContent = introductionContentReading();
+        if (introduceContent.length() != 0) {
+            privacyView1.setText(introduceContent);
+            privacyView1.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             String exitMessage = getString(R.string.exitMessage);
             Toast.makeText(getApplicationContext(), exitMessage, Toast.LENGTH_LONG).show();
             finishPrivacyActivity(2000);
         }
+
+    }
+
+    private void setInnerPrivacy() {
+        Button btnAgree = findViewById(R.id.button_agree);
+        Button btnContinue = findViewById(R.id.button_continue);
+        Button btnReject = findViewById(R.id.button_reject);
+
+        TextView privacyView1 = findViewById(R.id.textView_privacy);
+        TextView privacyView2 = findViewById(R.id.textView_privacy2);
+
+        btnAgree.setText(R.string.confirm_button);
+        btnAgree.setOnClickListener(v -> {
+            FrameLayout frameLayout = findViewById(android.R.id.content);
+            View loadView = LayoutInflater.from(PrivacyActivity.this).inflate(R.layout.view_pb, null);
+            loadView.setOnClickListener(v1 -> {
+                // Forbidden to click the view
+            });
+            frameLayout.addView(loadView);
+
+            finish();
+        });
+        btnContinue.setVisibility(View.GONE);
+        SpannableStringBuilder privacyContent1 = privacyContentReading1();
+        SpannableStringBuilder privacyContent2 = privacyContentReading2();
+        if (privacyContent1.length() != 0 && privacyContent2.length() != 0) {
+            privacyView1.setText(privacyContent1);
+            privacyView1.setMovementMethod(LinkMovementMethod.getInstance());
+
+            privacyView2.setText(privacyContent2);
+            privacyView2.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            String exitMessage = getString(R.string.exitMessage);
+            Toast.makeText(getApplicationContext(), exitMessage, Toast.LENGTH_LONG).show();
+            finishPrivacyActivity(2000);
+        }
+        btnReject.setVisibility(View.GONE);
     }
 
     private void finishPrivacyActivity(int waitTime) {
@@ -120,8 +186,33 @@ public class PrivacyActivity extends BaseActivity {
         }, waitTime);
     }
 
-    private SpannableStringBuilder privacyContentReading() {
+    private SpannableStringBuilder introductionContentReading() {
         String privacyContent;
+        SpannableStringBuilder style = new SpannableStringBuilder();
+        ClickableSpan readmeClick = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                toDetailPage(getString(R.string.readme_url));
+            }
+        };
+
+        privacyContent = getString(R.string.privacy_state);
+        int preLength = privacyContent.length();
+
+        String readmeTitle = getString(R.string.readme_title);
+
+        style.append(privacyContent);
+        style.append(" ");
+        style.append(readmeTitle);
+
+        style.setSpan(readmeClick, preLength + 1, preLength + readmeTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return style;
+    }
+
+    private SpannableStringBuilder privacyContentReading1() {
+        String privacyContent;
+
         SpannableStringBuilder style = new SpannableStringBuilder();
         ClickableSpan agreementClick = new ClickableSpan() {
             @Override
@@ -129,26 +220,44 @@ public class PrivacyActivity extends BaseActivity {
                 toDetailPage(getString(R.string.agreement_url));
             }
         };
+
+        String agreementTitle = getString(R.string.agreement_title);
+
+        privacyContent = getString(R.string.privacy_summary1);
+        int length1 = privacyContent.length();
+        style.append(privacyContent);
+        style.append(" ");
+
+        style.append(agreementTitle);
+
+        style.setSpan(agreementClick, length1 + 1, length1 + agreementTitle.length(),
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return style;
+    }
+
+    private SpannableStringBuilder privacyContentReading2() {
+        String privacyContent;
+
+        SpannableStringBuilder style = new SpannableStringBuilder();
         ClickableSpan statementClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
                 toDetailPage(getString(R.string.statement_url));
             }
         };
-        String agreementTitle = getString(R.string.agreement_title);
+
         String statementTitle = getString(R.string.statement_title);
-        privacyContent = getString(R.string.privacy_summary, agreementTitle, statementTitle);
+
+        privacyContent = getString(R.string.privacy_summary2);
+        int length1 = privacyContent.length();
         style.append(privacyContent);
-        if (LANGUAGE_ZH.equals(SystemUtil.getLanguage())) {
-            style.setSpan(agreementClick, 13, 13 + agreementTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(statementClick, 14 + agreementTitle.length(), privacyContent.length() - 1,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            style.setSpan(agreementClick, 55, 55 + agreementTitle.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(statementClick, 60 + agreementTitle.length(), privacyContent.length() - 1,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
+        style.append(" ");
+
+        style.append(statementTitle);
+
+        style.setSpan(statementClick, length1 + 1, length1 + statementTitle.length(),
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         return style;
     }
 

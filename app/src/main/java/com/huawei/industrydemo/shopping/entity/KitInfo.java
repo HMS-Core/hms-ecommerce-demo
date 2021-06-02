@@ -32,10 +32,10 @@ import com.huawei.industrydemo.shopping.entity.converter.StringsConverter;
 @Entity(primaryKeys = {"kitFunction", "userId"})
 public class KitInfo {
     @NonNull
-    private String kitOriginame;
+    private String kitOriginame = "";
 
     @NonNull
-    private String kitOrigiFunc;
+    private String kitOrigiFunc = "";
 
     // The Kit Function name string id
     private int kitFunction;
@@ -44,7 +44,7 @@ public class KitInfo {
     private String kitFunctionStr;
 
     @NonNull
-    private String userId;
+    private String userId = "";
 
     // The Kit name string id
     private int kitName;
@@ -103,7 +103,6 @@ public class KitInfo {
         this.kitOrigiFunc = kitOrigiFunc;
     }
 
-    @NonNull
     public int getKitFunction() {
         return kitFunction;
     }
@@ -159,10 +158,13 @@ public class KitInfo {
     }
 
     public String[] getKitColors() {
-        return kitColors;
+        if (kitColors != null) {
+            return kitColors.clone();
+        }
+        return new String[0];
     }
 
     public void setKitColors(String[] kitColors) {
-        this.kitColors = kitColors;
+        this.kitColors = kitColors.clone();
     }
 }

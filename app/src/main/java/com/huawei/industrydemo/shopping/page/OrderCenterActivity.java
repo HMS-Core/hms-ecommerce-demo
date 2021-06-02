@@ -109,12 +109,12 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @NonNull
             @Override
-            public Fragment getItem(int position) {// 从集合中获取对应位置的Fragment
+            public Fragment getItem(int position) { // 从集合中获取对应位置的Fragment
                 return mFragments.get(position);
             }
 
             @Override
-            public int getCount() {// 获取集合中Fragment的总数
+            public int getCount() { // 获取集合中Fragment的总数
                 return mFragments.size();
             }
 

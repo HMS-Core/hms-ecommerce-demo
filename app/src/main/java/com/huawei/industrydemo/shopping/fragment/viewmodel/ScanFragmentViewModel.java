@@ -16,6 +16,7 @@
 
 package com.huawei.industrydemo.shopping.fragment.viewmodel;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -46,7 +48,7 @@ public class ScanFragmentViewModel extends BaseFragmentViewModel<ScanFragment> {
     private RemoteView remoteView;
 
     // The width and height of the current demo code scanning box are 300 dp.
-    private final int SCAN_FRAME_SIZE = 300;
+    private static final int SCAN_FRAME_SIZE = 300;
 
     private Toast toast;
 
@@ -78,20 +80,16 @@ public class ScanFragmentViewModel extends BaseFragmentViewModel<ScanFragment> {
         rect.top = screenHeight / 2 - scanFrameSize / 2;
         rect.bottom = screenHeight / 2 + scanFrameSize / 2;
         // Initialize the remoteView.
-        remoteView =
-                new RemoteView.Builder()
-                        .setContext(mFragment.getActivity())
-                        .setBoundingBox(rect)
-                        .setContinuouslyScan(true)
-                        .setIsCustomView(true)
-                        .build();
+        remoteView = new RemoteView.Builder().setContext(mFragment.getActivity())
+            .setBoundingBox(rect)
+            .setContinuouslyScan(true)
+            .build();
         // Subscribe to the scanning result callback event.
         remoteView.setOnResultCallback(this::handleRes);
         FrameLayout frameLayout = view.findViewById(R.id.fv_scan);
         remoteView.onCreate(savedInstanceState);
-        FrameLayout.LayoutParams params =
-                new FrameLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT);
         frameLayout.addView(remoteView, params);
     }
 
@@ -105,7 +103,10 @@ public class ScanFragmentViewModel extends BaseFragmentViewModel<ScanFragment> {
             intent.putExtra(KeyConstants.PRODUCT_KEY, Integer.parseInt(result[0].originalValue));
             intent.putExtra(ScanFragment.RESULT, result);
             mFragment.startActivity(intent);
-            mFragment.getActivity().finish();
+            Activity activity = mFragment.getActivity();
+            if (activity != null) {
+                activity.finish();
+            }
         } catch (NumberFormatException e) {
             Log.e(LogConfig.TAG, e.toString());
             showErrorToast();
@@ -116,9 +117,11 @@ public class ScanFragmentViewModel extends BaseFragmentViewModel<ScanFragment> {
         if (toast != null) {
             toast.cancel();
         }
-        toast = Toast.makeText(mFragment.getActivity(),
-            mFragment.getActivity().getResources().getString(R.string.camera_scan_tip), Toast.LENGTH_SHORT);
-        toast.show();
+        Activity activity = mFragment.getActivity();
+        if (activity != null) {
+            toast = Toast.makeText(activity, activity.getString(R.string.camera_scan_tip), Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     /**

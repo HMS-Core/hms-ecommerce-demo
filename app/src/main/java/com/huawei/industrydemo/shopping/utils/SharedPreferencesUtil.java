@@ -58,8 +58,4 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     public static void setContext(Context context) {
         SharedPreferencesUtil.context = context;
     }
-
-    private SharedPreferences.Editor getSpWithEdit() {
-        return sp.edit();
-    }
 }

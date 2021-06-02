@@ -22,11 +22,7 @@ import android.util.Log;
 
 import com.huawei.hms.push.BaseException;
 import com.huawei.hms.push.HmsMessageService;
-import com.huawei.industrydemo.shopping.repository.AppConfigRepository;
-import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 import com.huawei.industrydemo.shopping.utils.MessagingUtil;
-
-import static com.huawei.industrydemo.shopping.constants.KeyConstants.PUSH_TOKEN;
 
 public class PushService extends HmsMessageService {
     private static final String TAG = PushService.class.getSimpleName();
@@ -45,9 +41,9 @@ public class PushService extends HmsMessageService {
         Log.i(TAG, "received refresh token:" + token);
         // send the token to your app server.
         if (!TextUtils.isEmpty(token)) {
-            // This method callback must be completed in 10 seconds. Otherwise, you need to start a new Job for callback
-            // processing.
-            refreshedToken(token);
+            // This method callback must be completed in 10 seconds. Otherwise, you need to start
+            // a new Job for callback processing.
+            MessagingUtil.refreshedToken(this, token);
         }
     }
 
@@ -63,17 +59,7 @@ public class PushService extends HmsMessageService {
     public void onNewToken(String token, Bundle bundle) {
         Log.i(TAG, "received refresh token:" + token);
         if (!TextUtils.isEmpty(token)) {
-            refreshedToken(token);
-        }
-    }
-
-    private void refreshedToken(String token) {
-        Log.i(TAG, "sending token to local. token:" + token);
-        MessagingUtil.refreshAppSecret();
-        AppConfigRepository appConfigRepository = new AppConfigRepository();
-        if (!token.equals(appConfigRepository.getStringValue(PUSH_TOKEN))) {
-            appConfigRepository.setStringValue(PUSH_TOKEN, token);
-            AnalyticsUtil.getInstance(this).setPushToken(token);
+            MessagingUtil.refreshedToken(this, token);
         }
     }
 
@@ -86,9 +72,14 @@ public class PushService extends HmsMessageService {
     @Override
     public void onTokenError(Exception e) {
         super.onTokenError(e);
-        int errCode = ((BaseException) e).getErrorCode();
+        StringBuffer msg = new StringBuffer("onTokenError called");
+        if (e instanceof BaseException) {
+            int errCode = ((BaseException) e).getErrorCode();
+            msg.append(", errCode:").append(errCode);
+        }
         String errInfo = e.getMessage();
-        Log.i(TAG, "onTokenError called, errCode:" + errCode + ",errInfo=" + errInfo);
+        msg.append(", errInfo=").append(errInfo);
+        Log.i(TAG, msg.toString());
     }
 
     /**
@@ -102,8 +93,13 @@ public class PushService extends HmsMessageService {
      */
     public void onTokenError(Exception e, Bundle bundle) {
         super.onTokenError(e);
-        int errCode = ((BaseException) e).getErrorCode();
+        StringBuffer msg = new StringBuffer("onTokenError called");
+        if (e instanceof BaseException) {
+            int errCode = ((BaseException) e).getErrorCode();
+            msg.append(", errCode:").append(errCode);
+        }
         String errInfo = e.getMessage();
-        Log.i(TAG, "onTokenError called, errCode:" + errCode + ",errInfo=" + errInfo);
+        msg.append(", errInfo=").append(errInfo);
+        Log.i(TAG, msg.toString());
     }
 }

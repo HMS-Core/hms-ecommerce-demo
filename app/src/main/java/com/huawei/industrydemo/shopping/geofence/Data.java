@@ -19,6 +19,8 @@ package com.huawei.industrydemo.shopping.geofence;
 import java.io.Serializable;
 
 public class Data implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     public double latitude;
 
     public double longitude;

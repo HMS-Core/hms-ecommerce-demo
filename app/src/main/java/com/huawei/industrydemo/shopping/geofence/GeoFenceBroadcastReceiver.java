@@ -26,7 +26,7 @@ import com.huawei.hms.location.Geofence;
 import com.huawei.hms.location.GeofenceData;
 import com.huawei.industrydemo.shopping.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * location broadcast receiver
@@ -51,7 +51,7 @@ public class GeoFenceBroadcastReceiver extends BroadcastReceiver {
                 if (geofenceData != null) {
                     int errorCode = geofenceData.getErrorCode();
                     int conversion = geofenceData.getConversion();
-                    ArrayList<Geofence> list = (ArrayList<Geofence>) geofenceData.getConvertingGeofenceList();
+                    List<Geofence> list = geofenceData.getConvertingGeofenceList();
                     Location myLocation = geofenceData.getConvertingLocation();
                     boolean status = geofenceData.isSuccess();
                     sb.append("errorcode: ").append(errorCode).append(next);
@@ -73,19 +73,20 @@ public class GeoFenceBroadcastReceiver extends BroadcastReceiver {
                     Log.w(TAG, "onReceive: " + sb.toString());
 
                     switch (conversion) {
-                        case 1:// Enter the geofence
+                        case 1: // Enter the geofence
                             new NotificatioHelper(context, context.getResources().getString(R.string.geofence),
                                 context.getResources().getString(R.string.geofence_in));
                             break;
-                        case 4:// Stay in geofence
+                        case 4: // Stay in geofence
                             new NotificatioHelper(context, context.getResources().getString(R.string.geofence),
                                 context.getResources().getString(R.string.geofence_stay));
                             break;
-                        case 2:// Go out of geofence
+                        case 2: // Go out of geofence
                             new NotificatioHelper(context, context.getResources().getString(R.string.geofence),
                                 context.getResources().getString(R.string.geofence_out));
                             break;
-
+                        default:
+                            break;
                     }
                 }
             }

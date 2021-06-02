@@ -45,7 +45,7 @@ public class RequestList {
                 .append(requestCode)
                 .append(" UniqueID: ")
                 .append(geofences.get(i).getUniqueId())
-                .append("\n");
+                .append(System.lineSeparator());
         }
         s = buf.toString();
         return s;

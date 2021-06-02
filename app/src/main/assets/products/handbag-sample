@@ -14,7 +14,7 @@
     "link": "value"
   },
   "category": "ShoesBags",
-  "threeDimensional": "SceneView/handbag/bag.gltf",
+  "threeDimensional": "handbag/bag.gltf",
   "images": ["side_handbag","fronts_handbag","lookup_handbg"],
   "videoUrl": "",
   "ar": ""

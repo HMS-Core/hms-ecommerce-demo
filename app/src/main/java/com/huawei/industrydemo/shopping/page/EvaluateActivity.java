@@ -33,7 +33,6 @@ import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.User;
 import com.huawei.industrydemo.shopping.repository.ProductRepository;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
-import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 
 import java.text.DateFormat;
@@ -88,7 +87,6 @@ public class EvaluateActivity extends BaseActivity implements View.OnClickListen
         tvDetail.setText(product.getBasicInfo().getName());
         tvPrice.setText(getString(R.string.product_price, product.getBasicInfo().getPrice()));
 
-        // orderNumber = data[4];
         productId = product.getNumber();
         productAmount = getProductAmount();
     }
@@ -133,6 +131,8 @@ public class EvaluateActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(getApplicationContext(), getString(R.string.order_evaluate_empty), Toast.LENGTH_SHORT).show();
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -163,7 +163,6 @@ public class EvaluateActivity extends BaseActivity implements View.OnClickListen
     private void addTolist(String data, int productId) {
         Evaluation evaluation = new Evaluation();
         evaluation.setContent(data);
-        // User user = SharedPreferencesUtil.getInstance().getUser();
         User user = new UserRepository().getCurrentUser();
         if (user == null || user.getHuaweiAccount() == null) {
             evaluation.setName("");

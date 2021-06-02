@@ -72,15 +72,18 @@ public class BaseDialog {
 
         btnConfirm = view.findViewById(R.id.confirm_view);
         btnConfirm.setText(R.string.confirm);
+        btnConfirm.setOnClickListener(v -> dismiss());
         setTextContent(btnConfirm, mData.getString(CONFIRM_BUTTON), R.string.confirm);
 
         dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btnCancel = view.findViewById(R.id.cancel_view);
         if (cancelable) {
+            btnCancel.setOnClickListener(v -> dismiss());
             setTextContent(btnCancel, mData.getString(CANCEL_BUTTON), R.string.cancel);
         } else {
-            btnCancel.setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.split_line).setVisibility(View.GONE);
+            btnCancel.setVisibility(View.GONE);
         }
     }
 
@@ -98,9 +101,9 @@ public class BaseDialog {
         dialog.show();
     }
 
-    private void setTextContent(TextView textview, String inputdata, @StringRes int resid) {
+    private void setTextContent(TextView textview, String inputdata, @StringRes int resId) {
         if (inputdata == null) {
-            textview.setText(resid);
+            textview.setText(resId);
         } else {
             textview.setText(inputdata);
         }

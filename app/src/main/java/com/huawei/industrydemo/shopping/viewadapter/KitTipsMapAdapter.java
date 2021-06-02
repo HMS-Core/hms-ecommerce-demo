@@ -116,7 +116,6 @@ public class KitTipsMapAdapter extends RecyclerView.Adapter<KitTipsMapAdapter.Vi
                 holder.ivSave.setImageResource(R.mipmap.icon_un_saved);
                 Toast.makeText(context, R.string.cancel_saved, Toast.LENGTH_SHORT).show();
                 mUserRepository.removeSavedKits(kitInfo);
-                //AnalyticsUtil.kitFavoritesReport(kitInfo.getKitOriginame(), kitInfo.getKitOrigiFunc(), false);
             } else {
                 savedKits.add(kitFunction);
                 holder.ivSave.setImageResource(R.mipmap.icon_saved);

@@ -1,17 +1,17 @@
 /*
-    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+*   Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
+*
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
 */
 
 package com.huawei.industrydemo.shopping;
@@ -35,8 +35,10 @@ import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.repository.AppConfigRepository;
 import com.huawei.industrydemo.shopping.repository.ProductRepository;
 import com.huawei.industrydemo.shopping.utils.AgcUtil;
+import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 import com.huawei.industrydemo.shopping.utils.JsonUtil;
+import com.huawei.industrydemo.shopping.utils.ProcessUtil;
 import com.huawei.industrydemo.shopping.utils.SharedPreferencesUtil;
 import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
@@ -47,8 +49,8 @@ import java.util.Objects;
 import static com.huawei.industrydemo.shopping.constants.Constants.LANGUAGE_EN;
 import static com.huawei.industrydemo.shopping.constants.Constants.LANGUAGE_ZH;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.LAST_LANGUAGE;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.LAST_VERSION;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
-import static com.huawei.industrydemo.shopping.utils.SystemUtil.isWifiConnected;
 
 /**
  * Application
@@ -57,32 +59,39 @@ import static com.huawei.industrydemo.shopping.utils.SystemUtil.isWifiConnected;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class MainApplication extends Application {
-    private static WisePlayerFactory wisePlayerFactory;
+    public static WisePlayerFactory wisePlayerFactory;
 
     private static MainApplication mApplication;
-
-    private volatile boolean hasAgreePrivacy = true;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mApplication = this;
+        setContext(this);
+        AnalyticsUtil.getInstance(this).setAnalyticsEnabled(false);
         SharedPreferencesUtil.setContext(this);
         DatabaseUtil.init(this);
-        refreshLanguage(SystemUtil.getLanguage());
+        refreshProductInfo(SystemUtil.getLanguage());
 
-        if (hasAgreePrivacy && isWifiConnected(this)) {
+        String currentProcessName = ProcessUtil.getCurrentProcessName(this);
+        if (currentProcessName != null && currentProcessName.endsWith(":player") && SystemUtil.isWifiConnected(this)) {
             initWisePlayer();
         }
     }
 
-    private void refreshLanguage(String newLanguage) {
+    private void refreshProductInfo(String newLanguage) {
         AppConfigRepository appConfigRepository = new AppConfigRepository();
         String lastLan = appConfigRepository.getStringValue(LAST_LANGUAGE);
         if (lastLan == null || !lastLan.equals(newLanguage)) {
             Log.d(TAG, "on Language Changed");
             initializeProductInfo();
             appConfigRepository.setStringValue(LAST_LANGUAGE, newLanguage);
+            return;
+        }
+        String lastVersion = appConfigRepository.getStringValue(LAST_VERSION);
+        if (lastVersion == null || !lastVersion.equals(String.valueOf(BuildConfig.VERSION_CODE))) {
+            Log.d(TAG, "on Version Changed");
+            initializeProductInfo();
+            appConfigRepository.setStringValue(LAST_VERSION, String.valueOf(BuildConfig.VERSION_CODE));
         }
     }
 
@@ -110,9 +119,28 @@ public class MainApplication extends Application {
         }
     }
 
+    static class MyInitFactoryCallback implements InitFactoryCallback {
+        @Override
+        public void onSuccess(WisePlayerFactory wisePlayerFactory) {
+            Log.d(TAG, "onSuccess wisePlayerFactory:" + wisePlayerFactory);
+            setWisePlayerFactory(wisePlayerFactory);
+        }
+
+        @Override
+        public void onFailure(int errorCode, String reason) {
+            AgcUtil.reportFailure(TAG, "onFailure errorcode:" + errorCode + " reason:" + reason);
+        }
+    }
+
+    private static void setWisePlayerFactory(WisePlayerFactory wisePlayerFactory) {
+        MainApplication.wisePlayerFactory = wisePlayerFactory;
+    }
+
+    /**
+     * init video kit
+     */
     public void initWisePlayer() {
-        Log.e(TAG, "initWisePlayer");
-        hasAgreePrivacy = true;
+        Log.d(TAG, "initWisePlayer");
         // Call the getOdid method to obtain the ODID.
         OpenDevice.getOpenDeviceClient(this).getOdid().addOnSuccessListener(odidResult -> {
             String odid = odidResult.getId();
@@ -120,18 +148,7 @@ public class MainApplication extends Application {
             // DeviceId test is used in the demo, specific access to incoming deviceId after encryption
             WisePlayerFactoryOptionsExt factoryOptions =
                 new WisePlayerFactoryOptionsExt.Builder().setDeviceId(odid).build();
-            WisePlayerFactory.initFactory(this, factoryOptions, new InitFactoryCallback() {
-                @Override
-                public void onSuccess(WisePlayerFactory wisePlayerFactory) {
-                    Log.d(TAG, "onSuccess wisePlayerFactory:" + wisePlayerFactory);
-                    MainApplication.wisePlayerFactory = wisePlayerFactory;
-                }
-
-                @Override
-                public void onFailure(int errorCode, String reason) {
-                    AgcUtil.reportFailure(TAG, "onFailure errorcode:" + errorCode + " reason:" + reason);
-                }
-            });
+            WisePlayerFactory.initFactory(this, factoryOptions, new MyInitFactoryCallback());
         }).addOnFailureListener(myException -> AgcUtil.reportException(TAG, myException));
     }
 
@@ -142,6 +159,10 @@ public class MainApplication extends Application {
      */
     public static WisePlayerFactory getWisePlayerFactory() {
         return wisePlayerFactory;
+    }
+    
+    private static void setContext(MainApplication application) {
+        mApplication = application;
     }
 
     public static Context getContext() {
@@ -155,6 +176,6 @@ public class MainApplication extends Application {
         if (!newLanguage.equals(LANGUAGE_ZH)) {
             newLanguage = LANGUAGE_EN;
         }
-        refreshLanguage(newLanguage);
+        refreshProductInfo(newLanguage);
     }
 }

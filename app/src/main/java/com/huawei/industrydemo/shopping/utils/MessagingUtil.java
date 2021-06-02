@@ -26,6 +26,7 @@ import com.huawei.hms.network.httpclient.Request;
 import com.huawei.hms.network.httpclient.RequestBody;
 import com.huawei.hms.network.httpclient.Response;
 import com.huawei.hms.network.httpclient.ResponseBody;
+import com.huawei.hms.push.HmsMessaging;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.constants.KeyConstants;
 import com.huawei.industrydemo.shopping.entity.Product;
@@ -269,7 +270,7 @@ public class MessagingUtil {
     }
 
     private static String getAccessToken(Context context) {
-        String appId = SystemUtil.getAppId(context);
+        String appId = AgcUtil.getAppId(context);
         HttpClient httpClient = new HttpClient.Builder().readTimeout(5000).connectTimeout(5000).build();
         Request.Builder requestBuilder = httpClient.newRequest().url(GET_ACCESS_TOKEN_API).method("POST");
         requestBuilder.requestBody(new RequestBody() {
@@ -329,7 +330,7 @@ public class MessagingUtil {
 
     private static String sendNotificationMessage(Context context, String accessToken, String msgContent) {
         Log.d(TAG, msgContent);
-        String sendApi = SEND_API_PRE + SystemUtil.getAppId(context) + SEND_API_POST;
+        String sendApi = SEND_API_PRE + AgcUtil.getAppId(context) + SEND_API_POST;
         HttpClient httpClient = new HttpClient.Builder().readTimeout(5000).connectTimeout(5000).build();
         Request.Builder requestBuilder = httpClient.newRequest().url(sendApi).method("POST");
         requestBuilder.addHeader("Authorization", accessToken);
@@ -377,6 +378,23 @@ public class MessagingUtil {
         } else {
             Log.e(TAG, "App_Secret is null!");
             RemoteConfigUtil.fetch();
+        }
+    }
+
+    /**
+     * refresh local push token
+     * 
+     * @param context Context
+     * @param token push token
+     */
+    public static void refreshedToken(Context context, String token) {
+        Log.i(TAG, "sending token to local. token: " + token);
+        HmsMessaging.getInstance(context).setAutoInitEnabled(false);
+        MessagingUtil.refreshAppSecret();
+        AppConfigRepository appConfigRepository = new AppConfigRepository();
+        if (!token.equals(appConfigRepository.getStringValue(PUSH_TOKEN))) {
+            appConfigRepository.setStringValue(PUSH_TOKEN, token);
+            AnalyticsUtil.getInstance(context).setPushToken(token);
         }
     }
 }

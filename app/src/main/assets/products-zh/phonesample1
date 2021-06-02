@@ -14,7 +14,7 @@
     "link": "value"
   },
   "category": "手机",
-  "threeDimensional": "SceneView/p40/phone1.gltf",
+  "threeDimensional": "p40/phone1.gltf",
   "images": ["fronts_phonesample1","back_phonesample1"],
   "videoUrl": "https://1251250874.vod2.myqcloud.com/439f276avodtransgzp1251250874/d6b452205285890800654415131/v.f20.mp4",
   "ar": ""

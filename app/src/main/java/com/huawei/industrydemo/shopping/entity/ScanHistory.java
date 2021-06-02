@@ -22,11 +22,10 @@ import androidx.room.Entity;
 @Entity(primaryKeys = {"productNumber", "userId"})
 public class ScanHistory {
 
-    @NonNull
     private int productNumber;
 
     @NonNull
-    private String userId;
+    private String userId = "";
 
     public int getProductNumber() {
         return productNumber;
@@ -36,11 +35,12 @@ public class ScanHistory {
         this.productNumber = productNumber;
     }
 
+    @NonNull
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(@NonNull String userId) {
         this.userId = userId;
     }
 

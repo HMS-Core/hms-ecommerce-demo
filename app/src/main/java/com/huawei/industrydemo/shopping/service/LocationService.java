@@ -26,9 +26,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.huawei.hmf.tasks.OnFailureListener;
-import com.huawei.hmf.tasks.OnSuccessListener;
-import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.location.FusedLocationProviderClient;
 import com.huawei.hms.location.LocationAvailability;
 import com.huawei.hms.location.LocationCallback;
@@ -119,7 +116,6 @@ public class LocationService extends Service {
         locationChangedList.add(iLocationChangedLister);
     }
 
-
     public void getMyLoction() {
         Log.d(TAG, "getMyLoction: ");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -137,34 +133,6 @@ public class LocationService extends Service {
                 .requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper())
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "onSuccess: " + aVoid)))
             .addOnFailureListener(exception -> Log.e(TAG, exception.getMessage(), exception));
-    }
-
-    /**
-     * get last location
-     */
-    public void  getLastLocation(){
-        Task<Location> task
-                = fusedLocationProviderClient
-                .getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location
-                    ) {
-                        if (location == null) {
-                            return;
-                        }else {
-                            for (ILocationChangedLister locationChanged : locationChangedList) {
-                                locationChanged.locationChanged(new LatLng(location.getLatitude(), location.getLongitude()));
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        // ...
-                    }
-                });
     }
 
     /**

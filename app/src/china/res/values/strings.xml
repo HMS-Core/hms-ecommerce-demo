@@ -16,4 +16,6 @@
 
 <resources>
     <string name="domain_uri_prefix">https://industrydemo.drcn.agconnect.link</string>
+    <string name="privacy_summary2">The data controller is Huawei Technologies Co.,Ltd. Your data is used for shopping service and for product improvement and analysis purposes. For more information about how your data is processed and about your rights, including the right to object, please read </string>
+    <string name="readme_url">https://gitee.com/hms-core/hms-ecommerce-demo/blob/main/README.md#hms-e-commerce-demo</string>
 </resources>

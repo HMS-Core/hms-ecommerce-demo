@@ -49,7 +49,7 @@ public class CatalogueTypeListAdapter extends RecyclerView.Adapter<CatalogueType
     private int showPosition;
 
     public CatalogueTypeListAdapter(String[] types, Context context, int showPosition) {
-        this.types = types;
+        this.types = types.clone();
         this.context = context;
         this.showPosition = showPosition;
     }
@@ -88,7 +88,6 @@ public class CatalogueTypeListAdapter extends RecyclerView.Adapter<CatalogueType
         currentBar = holder.bar;
 
         currentType.setText(types[position]);
-//        currentType.setTextColor(context.getResources().getColor(R.color.item_catalogue_selected));
         currentBar.setVisibility(View.GONE);
         currentType.setBackgroundColor(context.getResources().getColor(R.color.red_type_1));
         currentType.setTextColor(context.getResources().getColor(R.color.white));

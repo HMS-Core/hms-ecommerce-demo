@@ -16,4 +16,5 @@
 
 <resources>
     <string name="domain_uri_prefix">https://industrydemo.dra.agconnect.link</string>
+    <string name="privacy_summary2">The data controller is HUAWEI Services (Hong Kong) Co., Limited. Your data is used for shopping service and for product improvement and analysis purposes. For more information about how your data is processed and about your rights, including the right to object, please read </string>
 </resources>

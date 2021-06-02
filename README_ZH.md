@@ -11,7 +11,7 @@ HMS Core提供了电商类购物App的集成方案，以协助开发者快速获
 该项目提供了基于HMS Core相关Kit的购物App的Demo，演示了在购物类App中如何使用HMS Core方案。该Demo包含了除支付之外，完整的购物流程。
 
 ## Demo下载链接
-Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
+Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_source=hms7
 
 选择适当的区域，使用浏览器扫描对应的二维码，便可以下载Demo应用。
 
@@ -175,7 +175,7 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce
 
 如果对使用该样例项目仍然存在疑问，欢迎通过以下渠道告诉我们：
 - 建议在[Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services) 中反映开发编程中的问题。请给您的问题打上 `huawei-mobile-services`的标签。
-- 建议在[Huawei开发者论坛](https://developer.huawei.com/consumer/cn/forum/block/hms-core) HMS Core办款中反馈其他问题，或者搜索相关建议和意见。
+- 建议在[Huawei开发者论坛](https://developer.huawei.com/consumer/cn/forum/block/hms-core?ha_source=hms7) HMS Core办款中反馈其他问题，或者搜索相关建议和意见。
 
 如果您在样例工程中发现Bug，欢迎您在 [issue](https://github.com/HMS-Core/hms-ecommerce-demo/issues) 中反馈给我们。同时欢迎您直接提交进行修改[Pull Request](https://github.com/HMS-Core/hms-ecommerce-demo/pulls) 。
 
