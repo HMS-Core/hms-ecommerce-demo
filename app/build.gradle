@@ -10,8 +10,8 @@ android {
         applicationId "com.huawei.industrydemo.shopping"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 111
-        versionName "1.1.1"
+        versionCode 112
+        versionName "1.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN"
 
