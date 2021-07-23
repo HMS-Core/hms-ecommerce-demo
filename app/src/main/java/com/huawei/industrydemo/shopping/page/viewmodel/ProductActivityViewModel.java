@@ -116,12 +116,7 @@ import static com.huawei.industrydemo.shopping.constants.Constants.CNY;
 import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
 import static com.huawei.industrydemo.shopping.constants.Constants.LOGIN_REQUEST_CODE;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOURIST_USERID;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.ACCOUNT_LOGIN;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.AR_ENGINE_REALITY;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.CAAS_SHARE;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.PUSH_BAG;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.PUSH_SUB;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.SCENE_3D;
+
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
 /**
@@ -220,7 +215,6 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         } else {
             getDeepLink();
         }
-
     }
 
     private void updateView(Product product) {
@@ -263,6 +257,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
 
     /**
      * Get product number in deeplink
+     *
      * @param deepLink http://...?num=1
      * @return 1
      */
@@ -298,14 +293,14 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         dPTextView.setText(mActivity.getString(R.string.product_price, product.getBasicInfo().getDisplayPrice()));
         dPTextView.setPaintFlags(dPTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // Set strikethrough
         ((TextView) mActivity.findViewById(R.id.text_price))
-            .setText(mActivity.getString(R.string.product_price, product.getBasicInfo().getPrice()));
+                .setText(mActivity.getString(R.string.product_price, product.getBasicInfo().getPrice()));
         ((TextView) mActivity.findViewById(R.id.text_name)).setText(product.getBasicInfo().getName());
         ((TextView) mActivity.findViewById(R.id.text_color))
-            .setText(product.getBasicInfo().getConfiguration().getColor());
+                .setText(product.getBasicInfo().getConfiguration().getColor());
         ((TextView) mActivity.findViewById(R.id.text_capacity))
-            .setText(product.getBasicInfo().getConfiguration().getCapacity());
+                .setText(product.getBasicInfo().getConfiguration().getCapacity());
         ((TextView) mActivity.findViewById(R.id.text_version))
-            .setText(product.getBasicInfo().getConfiguration().getVersion());
+                .setText(product.getBasicInfo().getConfiguration().getVersion());
 
         addButton = mActivity.findViewById(R.id.btn_add);
         addButton.setOnClickListener(mActivity);
@@ -349,15 +344,15 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
     public void onClickEvent(int viewId) {
         switch (viewId) {
             case R.id.iv_3d:
-                mActivity.addTipView(new String[] {SCENE_3D}, this::checkSceneKit);
+                checkSceneKit();
                 break;
             case R.id.iv_ar:
                 if (ContextCompat.checkSelfPermission(mActivity,
-                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(mActivity, new String[] {Manifest.permission.CAMERA},
-                        FACE_VIEW_REQUEST_CODE);
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA},
+                            FACE_VIEW_REQUEST_CODE);
                 } else {
-                    mActivity.addTipView(new String[] {AR_ENGINE_REALITY}, this::showARView);
+                    showARView();
                 }
                 break;
             case R.id.btn_add:
@@ -385,13 +380,13 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
                     mActivity.signIn();
                 } else {
                     // has login
-                    mActivity.addTipView(new String[] {PUSH_BAG}, this::addToShoppingCart);
+                    addToShoppingCart();
                 }
                 break;
             case R.id.buy_now: // buy now
                 if (mUser == null) {
                     // no login
-                    mActivity.addTipView(new String[] {ACCOUNT_LOGIN}, () -> mActivity.signIn());
+                    mActivity.signIn();
                 } else {
                     // has login
                     Intent intent = new Intent(mActivity, OrderSubmitActivity.class);
@@ -430,14 +425,14 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
 
     private void loadingResources() {
         SystemUtil.isWifiConnected(mActivity, wifiStatusResponse -> SceneUtil.download3dResources(mActivity, product),
-            task -> {
-                Bundle data = new Bundle();
-                data.putString(CONTENT, mActivity.getString(R.string.download_tip));
-                BaseDialog dialog = new BaseDialog(mActivity, data, true);
-                dialog.setConfirmListener(v -> SceneUtil.download3dResources(mActivity, product));
-                dialog.setCancelListener(v -> dialog.dismiss());
-                dialog.show();
-            });
+                task -> {
+                    Bundle data = new Bundle();
+                    data.putString(CONTENT, mActivity.getString(R.string.download_tip));
+                    BaseDialog dialog = new BaseDialog(mActivity, data, true);
+                    dialog.setConfirmListener(v -> SceneUtil.download3dResources(mActivity, product));
+                    dialog.setCancelListener(v -> dialog.dismiss());
+                    dialog.show();
+                });
     }
 
     private void checkSceneKit() {
@@ -446,9 +441,9 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
             return;
         }
         SceneKit.Property property = SceneKit.Property.builder()
-            .setAppId(AgcUtil.getAppId(mActivity))
-            .setGraphicsBackend(SceneKit.Property.GraphicsBackend.GLES)
-            .build();
+                .setAppId(AgcUtil.getAppId(mActivity))
+                .setGraphicsBackend(SceneKit.Property.GraphicsBackend.GLES)
+                .build();
 
         SceneKit.getInstance().setProperty(property).initialize(mActivity, new SceneKit.OnInitEventListener() {
             @Override
@@ -490,8 +485,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
             imageView.setImageResource(R.mipmap.product_saved);
             DatabaseUtil.getDatabase().collectionDao().setCollectionData(collection);
             hasCollected = true;
-            mActivity.addTipView(new String[] {PUSH_SUB},
-                () -> MessagingUtil.saveNotificationMessage(mActivity, product.getBasicInfo().getName()));
+            MessagingUtil.saveNotificationMessage(mActivity, product.getBasicInfo().getName());
         }
     }
 
@@ -530,7 +524,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
                     // Contact list view
                     mHwCaasHandler.setContactViewStyle(HwCaasUtils.ContactsViewStyle.FLOAT_VIEW);
                     mHwCaasHandler.setFloatViewLocation(HwCaasUtils.CONTACTVIEW, HwCaasUtils.POINT_RIGHTANDDOWN,
-                        CONTACT_POSITION_X, CONTACT_POSITION_Y);
+                            CONTACT_POSITION_X, CONTACT_POSITION_Y);
 
                     // Monitor the calling status
                     mHwCaasHandler.setCallStateCallBack(mCallStateCallBack);
@@ -576,6 +570,9 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         };
     }
 
+    /**
+     * caas Start call
+     */
     public void caasStartcall() {
         Log.d(TAG, "caasStartcall: ");
 
@@ -616,7 +613,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
                 caasKitRelease();
                 return;
             }
-            mActivity.addTipView(new String[] {CAAS_SHARE}, this::sendShow);
+            sendShow();
         }
     }
 
@@ -709,7 +706,6 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -735,7 +731,6 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
         viewPager.setAdapter(adapter);
@@ -765,7 +760,6 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         reportBagEvent();
         MessagingUtil.cartCheckoutReminder(mActivity, product.getBasicInfo().getName());
         Toast.makeText(mActivity, R.string.add_to_car_success, Toast.LENGTH_SHORT).show();
-
     }
 
     private void reportBagEvent() {
@@ -828,8 +822,8 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
                         if (!locations.isEmpty()) {
                             for (Location location : locations) {
                                 Log.i(TAG,
-                                    "onLocationResult location[Longitude,Latitude,Accuracy]:" + location.getLongitude()
-                                        + "," + location.getLatitude() + "," + location.getAccuracy());
+                                        "onLocationResult location[Longitude,Latitude,Accuracy]:" + location.getLongitude()
+                                                + "," + location.getLatitude() + "," + location.getAccuracy());
                             }
 
                             String addressText = transLocationToGeoCoder(locations.get(0));
@@ -851,8 +845,8 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
             Geocoder geocoder = new Geocoder(mActivity, Locale.getDefault());
             List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             mSendText = addressList != null && addressList.size() > 0
-                ? addressList.get(0).getLocality() + " " + addressList.get(0).getSubLocality()
-                : mActivity.getString(R.string.empty_address);
+                    ? addressList.get(0).getLocality() + " " + addressList.get(0).getSubLocality()
+                    : mActivity.getString(R.string.empty_address);
             Log.i(TAG, "geocoder  :::" + mSendText);
 
         } catch (IOException e) {
@@ -876,7 +870,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
                     return;
                 }
                 Log.i(TAG, "getLastLocation onSuccess location[Longitude,Latitude]:" + location.getLongitude() + ","
-                    + location.getLatitude());
+                        + location.getLatitude());
 
                 String addressText = transLocationToGeoCoder(location);
                 if (!TextUtils.isEmpty(addressText)) {
@@ -899,14 +893,14 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
             LocationSettingsRequest locationSettingsRequest = builder.build();
             // Before requesting location update, invoke checkLocationSettings to check device settings.
             Task<LocationSettingsResponse> locationSettingsResponseTask =
-                mSettingsClient.checkLocationSettings(locationSettingsRequest);
+                    mSettingsClient.checkLocationSettings(locationSettingsRequest);
             locationSettingsResponseTask.addOnSuccessListener(locationSettingsResponse -> {
                 Log.i(TAG, "check location settings success");
                 mFusedLocationProviderClient
-                    .requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper())
-                    .addOnSuccessListener(aVoid -> Log.i(TAG, "requestLocationUpdatesWithCallback onSuccess"))
-                    .addOnFailureListener(exception -> Log.e(TAG,
-                        "requestLocationUpdatesWithCallback onFailure:" + exception.getMessage()));
+                        .requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper())
+                        .addOnSuccessListener(aVoid -> Log.i(TAG, "requestLocationUpdatesWithCallback onSuccess"))
+                        .addOnFailureListener(exception -> Log.e(TAG,
+                                "requestLocationUpdatesWithCallback onFailure:" + exception.getMessage()));
             }).addOnFailureListener(exception -> {
                 Log.e(TAG, "checkLocationSetting onFailure:" + exception.getMessage());
                 int statusCode = ((ApiException) exception).getStatusCode();
@@ -944,7 +938,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         try {
             Task<Void> voidTask = mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
             voidTask.addOnSuccessListener(aVoid -> Log.i(TAG, "removeLocationUpdatesWithCallback onSuccess"))
-                .addOnFailureListener(e -> Log.e(TAG, "removeLocationUpdatesWithCallback onFailure:" + e.getMessage()));
+                    .addOnFailureListener(e -> Log.e(TAG, "removeLocationUpdatesWithCallback onFailure:" + e.getMessage()));
         } catch (Exception e) {
             Log.e(TAG, "removeLocationUpdatesWithCallback exception:" + e.getMessage());
         }
@@ -956,11 +950,11 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             Log.i(TAG, "sdk < 28 Q");
             if (ActivityCompat.checkSelfPermission(mActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mActivity,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(mActivity,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 String[] strings =
-                    {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+                        {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
                 ActivityCompat.requestPermissions(mActivity, strings, 1);
                 return;
             }
@@ -999,7 +993,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
                 initialized = true;
             } catch (Exception e) {
                 Toast.makeText(mActivity, "failed to initialize SceneKit: " + e.getMessage(), Toast.LENGTH_SHORT)
-                    .show();
+                        .show();
             }
         }
     }
@@ -1009,7 +1003,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
         @NonNull int[] grantResults) {
         if (requestCode == 1) {
             if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "onRequestPermissionsResult: apply LOCATION PERMISSION successful");
                 initLocation();
             } else {
@@ -1040,7 +1034,7 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
             imageView.setImageResource(R.mipmap.product_unsaved);
         } else {
             List<Collection> collectionList =
-                DatabaseUtil.getDatabase().collectionDao().getCollectionData(mUser.getOpenId());
+                    DatabaseUtil.getDatabase().collectionDao().getCollectionData(mUser.getOpenId());
             for (Collection c : collectionList) {
                 if (c.getProductNumber() == product.getNumber()) {
                     hasCollected = true;
@@ -1051,7 +1045,6 @@ public class ProductActivityViewModel extends BaseActivityViewModel<ProductActiv
             } else {
                 imageView.setImageResource(R.mipmap.product_unsaved);
             }
-
         }
     }
 }

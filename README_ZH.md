@@ -11,7 +11,7 @@ HMS Core提供了电商类购物App的集成方案，以协助开发者快速获
 该项目提供了基于HMS Core相关Kit的购物App的Demo，演示了在购物类App中如何使用HMS Core方案。该Demo包含了除支付之外，完整的购物流程。
 
 ## Demo下载链接
-Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_source=hms7
+[Demo网站](https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_source=hms7)
 
 选择适当的区域，使用浏览器扫描对应的二维码，便可以下载Demo应用。
 
@@ -74,7 +74,7 @@ Demo网站: https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_s
 
 您也可以下载包含该项目的Zip包。
 
-2. 将您的jks文件和agconnect-services.json文件拷贝到app目录。关于jks和agconnect-services.json的生成可以参考：[配置AppGallery Connect](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/config-agc-0000001050196065)
+2. 将您的jks文件和agconnect-services.json文件拷贝到app目录。关于jks和agconnect-services.json的生成可以参考：[配置AppGallery Connect](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/config-agc-0000001050196065?ha_source=hms7)
 
 3. 在app/build.gradle文件中更新您的jks文件信息及Application ID。
 

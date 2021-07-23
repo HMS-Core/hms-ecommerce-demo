@@ -170,6 +170,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mViewModel.backToHomeFragment()) {
                 return true;
+            } else if (mDrawerViewModel.isDrawerOpen()) {
+                return true;
             }
 
             if (secondTime - firstTime < 2000) {

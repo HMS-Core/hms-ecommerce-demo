@@ -12,9 +12,9 @@
     <string name="welcome">欢迎</string>
     <string name="first_press_back">再按一次返回键退出</string>
     <string name="notice">test_zh</string>
+    <string name="no_used_kits">未使用Kit能力</string>
 
     <!-- kits tip-->
-    <string name="no_kits">未使用Kit</string>
     <string name="used_kits">本页面使用了以下Kits:</string>
     <string name="cancel_saved">收藏删除成功</string>
     <string name="saved_success">加入收藏</string>
@@ -73,6 +73,7 @@
     <string name="scan_link">https://developer.huawei.com/consumer/cn/hms/huawei-scankit?ha_source=hms7</string>
     <string name="scan_pay">扫码支付</string>
     <string name="scan_code">生成会员码</string>
+    <string name="scan_shopping">扫码购</string>
 
     <string name="video_name">视频服务</string>
     <string name="video_link">https://developer.huawei.com/consmer/cn/hms/huawei-videokit?ha_source=hms7</string>
@@ -136,6 +137,7 @@
     <string name="push_discount_des">根据用户在线上购物App中已留的查看、消费记录，商家可针对性地推送折扣、新品等个性化推荐消息，以提高用户粘性和消费欲望。</string>
     <string name="push_geo_des">基于用户进入、驻留、离开某商圈/消费地点的状态进行消息推送，帮助O2O商户精准推送内容，引导消费，线上线下相互引流。</string>
     <string name="scan_pay_des">统一扫码服务能提供便捷的二维码与条形码扫描、解析、生成能力，支持自动对焦扫描识别商品二维码，带给用户极致扫码体验。（支持Android/iOS）</string>
+    <string name="scan_shopping_des">统一扫码服务能提供便捷的二维码与条形码扫描、解析、生成能力，支持自动对焦扫描识别商品二维码，带给用户极致扫码体验。（支持Android/iOS）</string>
     <string name="scan_qr_des">统一扫码服务能提供便捷的二维码与条形码扫描、解析、生成能力，实现会员码生成、扫码积分等电商场景。（支持Android/iOS）</string>
     <string name="ml_bankcard_des">机器学习服务提供包括银行卡识别在内的通用卡证识别纯端侧能力，覆盖全球5类主流银行卡识别，低时延，准确率达99&#37;，可广泛用于金融支付场景中。</string>
     <string name="analytics_report_des">华为分析服务作为免费的跨平台、多设备数据分析产品，可帮您提供行业分析报告与行业基准数据对比，便于衡量自身优势与差距，同时进行用户分析、漏斗分析、帮您全面洞察不同用户的行为特征，寻找增长潜力，实现数据驱动的精细化运营。</string>
@@ -225,6 +227,7 @@
     <string name="new_feature_lunch">加载新特性</string>
     <string name="ar_try_on_makeup">AR试妆</string>
     <string name="near_store">查看附近的线下门店：</string>
+    <string name="market_recommendation">商城推荐</string>
     <string name="recently_viewed">近期查看</string>
     <string name="home_uri_error_tip">敬请期待</string>
     <string name="banner_url_1">https://developer.huawei.com/consumer/cn/solution/hms/ecommerce?ha_source=hms7</string>
@@ -256,8 +259,8 @@
 
     <!-- ProductVisionSearchAnalyseActivity -->
     <string name="product_search_result">拍照购结果</string>
-    <string name="product_no_result">No Offering Identified</string>
-    <string name="product_category">Categorization:%s</string>
+    <string name="product_no_result">仅为测试版本，暂无商品图片底库，效果以实际情况为准。</string>
+    <string name="product_category">分类:%s</string>
     <string name="installment_discount">享6期免息</string>
 
     <!-- push -->
@@ -299,7 +302,6 @@
     <string name="payment_thanks">感谢您的购买</string>
     <string name="payment_prompt">提示</string>
     <string name="payment_prompt_content">这里识别的银行卡数据不会进行保存，只是展示扫描结果</string>
-    <string name="payment_total">￥%d</string>
     <string name="view_order">查看订单</string>
     <string name="back_to_home">返回首页</string>
     <string name="select_payment_method">选择支付方式</string>
@@ -338,7 +340,8 @@
     <!-- NewInFragment -->
     <string name="product_discount">已折扣 ￥%d</string>
     <string name="subscribe">+订阅</string>
-    <string name="countdown">前10件5折 | %1$s</string>
+    <string name="countdown">前10件5折</string>
+    <string name="countdown2"> %1$s</string>
     <string name="subscribed">已订阅</string>
 
     <!-- FeedbackActivity -->
@@ -385,7 +388,7 @@
     <string name="log_in_success">登录成功</string>
 
     <!-- SearchActivity-->
-    <string name="ed_search_tip">请输入搜索内容</string>
+    <string name="ed_search_tip">手机</string>
     <string name="search_no_tip">请输入搜索内容</string>
     <string name="search_history">搜索历史</string>
     <string name="search_hot">热门搜索</string>
@@ -459,4 +462,5 @@
     <string name="downloaded">加载完成</string>
     <string name="download_failed">加载失败，请稍候重试。</string>
     <string name="not_support_ar">您的设备暂不支持AR Engine！</string>
+
 </resources>

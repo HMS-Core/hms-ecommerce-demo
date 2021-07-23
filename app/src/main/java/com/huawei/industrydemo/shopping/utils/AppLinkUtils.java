@@ -16,8 +16,13 @@
 
 package com.huawei.industrydemo.shopping.utils;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,6 +31,9 @@ import com.huawei.agconnect.applinking.AppLinking;
 import com.huawei.agconnect.applinking.ShortAppLinking;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.industrydemo.shopping.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * AppLinkUtils
@@ -81,7 +89,7 @@ public class AppLinkUtils {
     public String createAppLinkingAndShare() {
         return createAppLinking(shortAppLinking -> {
             String shourturl = shortAppLinking.getShortUrl().toString();
-            Log.d(TAG, "onSuccess: "+shourturl);
+            Log.d(TAG, "onSuccess: " + shourturl);
             shareLink(shourturl);
         });
     }
@@ -108,7 +116,7 @@ public class AppLinkUtils {
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, agcLink);
             try {
-                context.startActivity(intent);
+                doShareLink(intent, agcLink);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
             }
@@ -122,5 +130,43 @@ public class AppLinkUtils {
      */
     public void appendDeepLink(String suffix) {
         mDeepLink += suffix;
+    }
+
+    private void doShareLink(Intent intent, String agcLink) {
+        PackageManager pm = context.getPackageManager();
+        List<ResolveInfo> resInfo = pm.queryIntentActivities(intent, 0);
+        if (resInfo.isEmpty()) {
+            return;
+        }
+        List<Intent> targetIntents = new ArrayList<>();
+        List<Intent> tempIntents = new ArrayList<>();
+        for (ResolveInfo resolveInfo : resInfo) {
+            ActivityInfo activityInfo = resolveInfo.activityInfo;
+            Intent target = new Intent(Intent.ACTION_SEND);
+            target.setComponent(new ComponentName(activityInfo.packageName, activityInfo.name));
+            target.putExtra(Intent.EXTRA_TEXT, agcLink);
+            target.setType("text/plain");
+            if (activityInfo.packageName.contains("com.tencent.mm")
+                || activityInfo.packageName.contains("com.tencent.mobileqq")
+                || activityInfo.packageName.contains("whatsapp") || activityInfo.packageName.contains("facebook")
+                || activityInfo.packageName.contains("whatsup")) {
+                tempIntents.add(
+                    new LabeledIntent(target, activityInfo.packageName, resolveInfo.loadLabel(pm), resolveInfo.icon));
+            } else {
+                targetIntents.add(
+                    new LabeledIntent(target, activityInfo.packageName, resolveInfo.loadLabel(pm), resolveInfo.icon));
+            }
+        }
+        targetIntents.addAll(tempIntents);
+        if (targetIntents.size() <= 0) {
+            return;
+        }
+        Intent chooser = Intent.createChooser(targetIntents.remove(0), "");
+        if (chooser == null) {
+            return;
+        }
+        LabeledIntent[] labeledIntents = targetIntents.toArray(new LabeledIntent[0]);
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, labeledIntents);
+        context.startActivity(chooser);
     }
 }

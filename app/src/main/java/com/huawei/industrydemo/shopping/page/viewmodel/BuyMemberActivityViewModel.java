@@ -36,11 +36,9 @@ import com.huawei.hms.iap.entity.ProductInfo;
 import com.huawei.hms.iap.entity.ProductInfoReq;
 import com.huawei.hms.iap.entity.PurchaseIntentReq;
 import com.huawei.hms.iap.entity.PurchaseResultInfo;
-import com.huawei.hms.iap.entity.StartIapActivityReq;
 import com.huawei.hms.support.api.client.Status;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivityViewModel;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.BuyMemberActivity;
 import com.huawei.industrydemo.shopping.viewadapter.MemberBuyAdapter;
 
@@ -51,7 +49,6 @@ import static com.huawei.hms.analytics.type.HAEventType.UPDATEMEMBERSHIPLEVEL;
 import static com.huawei.hms.analytics.type.HAParamType.CURRVLEVEL;
 import static com.huawei.hms.analytics.type.HAParamType.PREVLEVEL;
 import static com.huawei.hms.analytics.type.HAParamType.REASON;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.IAP_SUB;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
 /**
@@ -102,9 +99,7 @@ public class BuyMemberActivityViewModel extends BaseActivityViewModel<BuyMemberA
             }
 
             MemberBuyAdapter adapter = new MemberBuyAdapter(productInfos, mActivity);
-            adapter.setOnItemClickListener(position -> {
-                mActivity.addTipView(new String[] {IAP_SUB}, () -> payMember(productInfos.get(position)));
-            });
+            adapter.setOnItemClickListener(position -> payMember(productInfos.get(position)));
             LinearLayoutManager linearLayoutManager =
                     new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(linearLayoutManager);

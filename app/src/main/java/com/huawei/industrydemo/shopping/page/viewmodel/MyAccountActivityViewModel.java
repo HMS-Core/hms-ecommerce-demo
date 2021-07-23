@@ -50,7 +50,6 @@ import com.huawei.industrydemo.shopping.base.BaseActivityViewModel;
 import com.huawei.industrydemo.shopping.base.BaseDialog;
 import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.entity.User;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.BuyMemberActivity;
 import com.huawei.industrydemo.shopping.page.MyAccountActivity;
 import com.huawei.industrydemo.shopping.page.PointsActivity;
@@ -64,7 +63,6 @@ import static com.huawei.industrydemo.shopping.base.BaseDialog.CANCEL_BUTTON;
 import static com.huawei.industrydemo.shopping.base.BaseDialog.CONFIRM_BUTTON;
 import static com.huawei.industrydemo.shopping.base.BaseDialog.CONTENT;
 import static com.huawei.industrydemo.shopping.constants.Constants.LOGIN_REQUEST_CODE;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.IDENTITY_ADDRESS;
 import static com.huawei.industrydemo.shopping.constants.KitConstants.SCAN_QR;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
@@ -175,7 +173,6 @@ public class MyAccountActivityViewModel extends BaseActivityViewModel<MyAccountA
                 break;
             case R.id.lv_address:
                 askOpinionFromUser();
-
                 break;
             case R.id.lv_reward:
                 mActivity.startActivity(new Intent(mActivity, PointsActivity.class));
@@ -259,7 +256,7 @@ public class MyAccountActivityViewModel extends BaseActivityViewModel<MyAccountA
     }
 
     private void loginComplete(AuthAccount authAccount) {
-        mUser.setOpenId(authAccount.openId);
+        mUser.setOpenId(authAccount.getOpenId());
         mUser.setPrivacyFlag(true);
         mUser.setHuaweiAccount(authAccount);
         mUserRepository.setCurrentUser(mUser);
@@ -309,7 +306,7 @@ public class MyAccountActivityViewModel extends BaseActivityViewModel<MyAccountA
         BaseDialog dialog = new BaseDialog(mActivity, data, true);
         dialog.setConfirmListener(v -> {
             dialog.dismiss();
-            mActivity.addTipView(new String[] {IDENTITY_ADDRESS}, (ShowTipsCallback) this::checkUserAddress);
+            checkUserAddress();
         });
         dialog.setCancelListener(v -> {
             dialog.dismiss();

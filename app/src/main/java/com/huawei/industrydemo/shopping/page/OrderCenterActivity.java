@@ -91,7 +91,7 @@ public class OrderCenterActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         int startPage = getIntent().getIntExtra(PAGE_INDEX, ALL_ORDER_INDEX);
         setContentView(R.layout.activity_order_center);
-        addTipView(new String[] {PUSH_NOTIFY, NETWORK_CONNECT});
+        addTipView(new String[] {PUSH_NOTIFY, NETWORK_CONNECT,PUSH_ORDER});
         getNotificationData();
         initViews();
         initEvents();

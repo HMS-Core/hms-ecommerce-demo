@@ -28,14 +28,13 @@ import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.page.viewmodel.ProductActivityViewModel;
 
 public class ProductActivity extends BaseActivity implements View.OnClickListener {
-
     private ProductActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-        addTipView(new String[] {VIDEO_PLAY, LOCATION_LBS});
+        addTipView(new String[]{VIDEO_PLAY, LOCATION_LBS, SCENE_3D, AR_ENGINE_REALITY, PUSH_BAG, ACCOUNT_LOGIN, PUSH_SUB, CAAS_SHARE});
         mViewModel = new ProductActivityViewModel(this);
         mViewModel.init();
     }

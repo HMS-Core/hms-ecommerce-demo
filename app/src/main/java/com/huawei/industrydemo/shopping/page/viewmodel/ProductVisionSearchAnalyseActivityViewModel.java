@@ -114,8 +114,9 @@ public class ProductVisionSearchAnalyseActivityViewModel
         MLRemoteProductVisionSearchAnalyzerSetting setting = new MLRemoteProductVisionSearchAnalyzerSetting.Factory()
             // Set the maximum number of products that can be returned.
             .setLargestNumOfReturns(2)
-            .setProductSetId("demo")
-            .setRegion(MLRemoteProductVisionSearchAnalyzerSetting.REGION_DR_CHINA)
+            .setMinAcceptablePossibility(0.1f)
+            .setProductSetId("All_Product")
+            .setRegion(mActivity.getResources().getInteger(R.integer.VISION_SEARCH_REGION))
             .create();
         MLRemoteProductVisionSearchAnalyzer analyzer =
             MLAnalyzerFactory.getInstance().getRemoteProductVisionSearchAnalyzer(setting);

@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
@@ -81,6 +82,7 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.PAYMENT_TY
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOTAL_PRICE;
 import static com.huawei.industrydemo.shopping.constants.KitConstants.ACCOUNT_LOGIN;
 import static com.huawei.industrydemo.shopping.constants.KitConstants.OFFLINE_STORE;
+import static com.huawei.industrydemo.shopping.constants.KitConstants.SCAN_PAY;
 import static com.huawei.industrydemo.shopping.constants.KitConstants.SCAN_QR;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
@@ -90,7 +92,6 @@ import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
  * @since [Ecommerce-Demo 1.0.2.300]
  */
 public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainActivity> {
-
     private DrawerLayout mDrawerLayout;
 
     private UserRepository mUserRepository;
@@ -109,12 +110,14 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
 
     private ImageView mIvUserHead;
 
+    private String[] lastKits;
+
     private final RequestOptions option = new RequestOptions().circleCrop()
-        .placeholder(R.mipmap.head_load)
-        .error(R.mipmap.head_my)
-        .signature(new ObjectKey(UUID.randomUUID().toString()))
-        .diskCacheStrategy(DiskCacheStrategy.NONE)
-        .skipMemoryCache(true);
+            .placeholder(R.mipmap.head_load)
+            .error(R.mipmap.head_my)
+            .signature(new ObjectKey(UUID.randomUUID().toString()))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true);
 
     /**
      * constructor
@@ -143,21 +146,43 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
         // left drawer
         mDrawerLayout = mActivity.findViewById(R.id.draw_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                lastKits = mActivity.getTips();
+                mActivity.addTipView(new String[]{SCAN_QR, ACCOUNT_LOGIN, OFFLINE_STORE,SCAN_PAY});
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                mActivity.addTipView(lastKits);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
 
         // User Sign
         mUserRepository = new UserRepository();
 
         mAuthParam =
-            new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setAccessToken().createParams();
+                new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setAccessToken().createParams();
         mAuthService = AccountAuthManager.getService(mActivity, mAuthParam);
 
         mIvQRCode = mActivity.findViewById(R.id.iv_qr_code);
         mTvSign = mActivity.findViewById(R.id.tv_sign_in);
         mTvUserName = mActivity.findViewById(R.id.tv_user_name);
         mIvUserHead = mActivity.findViewById(R.id.iv_head);
-
     }
 
+    /**
+     * checkSignIn
+     */
     public void checkSignIn() {
         mUser = mUserRepository.getCurrentUser();
         if (mUser == null) { // no sign
@@ -187,6 +212,7 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
         }
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClickEvent(int viewId) {
@@ -196,16 +222,15 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
                     Toast.makeText(mActivity, R.string.no_log_tip, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mActivity.addTipView(new String[] {SCAN_QR},
-                    () -> initQrCodeDialog(mUser.getHuaweiAccount().getDisplayName()));
+                initQrCodeDialog(mUser.getHuaweiAccount().getDisplayName());
                 break;
             case R.id.tv_sign_in: // Sign in
-                mActivity.addTipView(new String[] {ACCOUNT_LOGIN}, () -> mActivity.signIn());
+                mActivity.signIn();
                 break;
             case R.id.lv_scan: // Scan to pay
                 mActivity.requestPermissions(
-                    new String[] {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    Constants.CAMERA_REQ_CODE);
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        Constants.CAMERA_REQ_CODE);
                 break;
             case R.id.lv_account: // My Account
                 if (mUserRepository.getCurrentUser() == null) {
@@ -227,7 +252,7 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
                 mActivity.startActivity(new Intent(mActivity, SettingActivity.class));
                 break;
             case R.id.lv_offline: // Offline Shop
-                mActivity.addTipView(new String[] {OFFLINE_STORE}, () -> MapAct.start(mActivity));
+                MapAct.start(mActivity);
                 break;
             case R.id.lv_contact: // Contact Us
                 mActivity.startActivity(new Intent(mActivity, ContactUsActivity.class));
@@ -250,13 +275,27 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
             Bitmap qrBitmap = ScanUtil.buildBitmap(content, type, width, height, null);
             View view = LayoutInflater.from(mActivity).inflate(R.layout.dialog_qr_code, null);
             AlertDialog dialog =
-                new AlertDialog.Builder(Objects.requireNonNull(mActivity), R.style.dialog).setView(view).create();
+                    new AlertDialog.Builder(Objects.requireNonNull(mActivity), R.style.dialog).setView(view).create();
             ((ImageView) view.findViewById(R.id.iv_qr_code)).setImageBitmap(qrBitmap);
             dialog.show();
         } catch (WriterException e) {
             Log.w(TAG, e);
             AGConnectCrash.getInstance().recordException(e);
         }
+    }
+
+    /**
+     * isDrawerOpen
+     * @return isOpen
+     */
+    public boolean isDrawerOpen(){
+        boolean isOpen = mDrawerLayout.isDrawerOpen(GravityCompat.START);
+        Log.d(TAG, "closeDrawer:isOpen   " + isOpen);
+        if(isOpen){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        return false;
     }
 
     private void checkSignOut() {
@@ -314,6 +353,9 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
         });
     }
 
+    /**
+     * slidLeftDrawer
+     */
     public void slidLeftDrawer() {
         mDrawerLayout.openDrawer(Gravity.LEFT);
     }
@@ -331,8 +373,8 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
             HmsScan obj = data.getParcelableExtra(ScanUtil.RESULT);
             if (obj != null) {
                 mActivity.startActivity(new Intent(mActivity, PaymentSucceededActivity.class).putExtra(TOTAL_PRICE, 1)
-                    .putExtra(ORDER_KEY, 999999999)
-                    .putExtra(PAYMENT_TYPE, mActivity.getResources().getString(R.string.other_payment_methods)));
+                        .putExtra(ORDER_KEY, 999999999)
+                        .putExtra(PAYMENT_TYPE, mActivity.getResources().getString(R.string.other_payment_methods)));
             }
             return;
         }
@@ -341,6 +383,7 @@ public class MainActivityLeftDrawerViewModel extends BaseActivityViewModel<MainA
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
         @NonNull int[] grantResults) {
-
     }
+
+
 }

@@ -7,7 +7,8 @@
     android:background="@color/tip_view_bdg"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="40dp">
+    android:paddingTop="40dp"
+    android:paddingBottom="40dp">
 
     <TextView
         android:id="@+id/tv_kit"
@@ -32,5 +33,5 @@
         android:background="@color/tip_view_bdg2"
         android:gravity="center"
         android:overScrollMode="never"
-        android:scrollbars="none"></androidx.recyclerview.widget.RecyclerView>
+        android:scrollbars="none"/>
 </LinearLayout>

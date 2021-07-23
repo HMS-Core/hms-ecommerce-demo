@@ -45,7 +45,6 @@ import com.huawei.industrydemo.shopping.entity.Order;
 import com.huawei.industrydemo.shopping.entity.OrderItem;
 import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.User;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.OrderCenterActivity;
 import com.huawei.industrydemo.shopping.page.OrderSubmitActivity;
 import com.huawei.industrydemo.shopping.repository.BagRepository;
@@ -79,9 +78,6 @@ import static com.huawei.industrydemo.shopping.constants.Constants.EMPTY;
 import static com.huawei.industrydemo.shopping.constants.Constants.PENDING_PAYMENT_INDEX;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.BAG_KEY;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.PAGE_INDEX;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.ACCOUNT_LOGIN;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.IDENTITY_ADDRESS;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.PUSH_ORDER;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
 /**
@@ -219,7 +215,7 @@ public class OrderSubmitActivityViewModel extends BaseActivityViewModel<OrderSub
                 break;
             case R.id.rv_change_address:
                 // Get address from identity kit
-                mActivity.addTipView(new String[] {IDENTITY_ADDRESS}, (ShowTipsCallback) this::askOpinionFromUser);
+                askOpinionFromUser();
                 break;
             default:
                 break;
@@ -233,7 +229,7 @@ public class OrderSubmitActivityViewModel extends BaseActivityViewModel<OrderSub
         }
         if (user == null || user.getHuaweiAccount() == null) {
             // If no login
-            mActivity.addTipView(new String[] {ACCOUNT_LOGIN}, (ShowTipsCallback) () -> mActivity.signIn());
+            mActivity.signIn();
         } else {
             if (modifyFlag) {
                 Bundle bundle = new Bundle();
@@ -275,7 +271,7 @@ public class OrderSubmitActivityViewModel extends BaseActivityViewModel<OrderSub
                 }
             }
             // If has logged in
-            mActivity.addTipView(new String[] {PUSH_ORDER}, (ShowTipsCallback) this::saveOrder);
+            saveOrder();
         }
     }
 
@@ -369,7 +365,7 @@ public class OrderSubmitActivityViewModel extends BaseActivityViewModel<OrderSub
         } else if (requestCode == Constants.LOGIN_REQUEST_CODE) {
             MemberUtil.getInstance().isMember(mActivity, user, (isMember, isAutoRenewing, productName, time) -> {
                 initActualPrice();
-                mActivity.addTipView(new String[] {PUSH_ORDER}, (ShowTipsCallback) this::saveOrder);
+                saveOrder();
             });
         }
     }

@@ -28,6 +28,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.common.ApiException;
 import com.huawei.hms.location.FusedLocationProviderClient;
 import com.huawei.hms.location.Geofence;
 import com.huawei.hms.location.GeofenceRequest;
@@ -217,7 +218,8 @@ public class GeoService extends Service {
                 .addOnSuccessListener(aVoid -> Log.i(TAG, "geoFence onSuccess"))
                 .addOnFailureListener(e -> Log.e(TAG, "geoFence onFailure:" + e.getMessage()));
         }).addOnFailureListener(e -> {
-            Log.e(TAG, "checkLocationSetting onFailures:" + e.getMessage());
+            ApiException errorInfo = (ApiException)e;
+            Log.e(TAG, "checkLocationSetting onFailures:" + errorInfo.getStatusCode());
         });
     }
 

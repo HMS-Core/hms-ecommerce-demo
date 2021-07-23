@@ -17,13 +17,9 @@
 package com.huawei.industrydemo.shopping.page;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +33,6 @@ import com.huawei.industrydemo.shopping.viewadapter.CollectionAdapter;
 import java.util.Collections;
 import java.util.List;
 
-import static com.huawei.industrydemo.shopping.MainApplication.getContext;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOURIST_USERID;
 
 public class CollectionActivity extends BaseActivity {
@@ -47,6 +42,11 @@ public class CollectionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
+        addTipView(new String[] {PUSH_SUB});
+        initView();
+    }
+
+    private void initView() {
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.drawer_save);
         recyclerView = findViewById(R.id.collection_products);
@@ -56,8 +56,8 @@ public class CollectionActivity extends BaseActivity {
             list = DatabaseUtil.getDatabase().collectionDao().getCollectionData(TOURIST_USERID);
         } else {
             list = DatabaseUtil.getDatabase()
-                .collectionDao()
-                .getCollectionData(userRepository.getCurrentUser().getOpenId());
+                    .collectionDao()
+                    .getCollectionData(userRepository.getCurrentUser().getOpenId());
         }
         Collections.reverse(list);
         CollectionAdapter adapter = new CollectionAdapter(list, this);
@@ -66,12 +66,6 @@ public class CollectionActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
         ImageView backView = findViewById(R.id.iv_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
+        backView.setOnClickListener(v -> finish());
     }
 }

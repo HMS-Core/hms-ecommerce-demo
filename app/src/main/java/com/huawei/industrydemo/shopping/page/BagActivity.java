@@ -42,6 +42,7 @@ public class BagActivity extends BaseActivity implements View.OnClickListener, O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_bag);
+        addTipView(new String[] {ACCOUNT_LOGIN});
         mViewModel = new BagActivityViewModel(this);
         mViewModel.initView();
     }

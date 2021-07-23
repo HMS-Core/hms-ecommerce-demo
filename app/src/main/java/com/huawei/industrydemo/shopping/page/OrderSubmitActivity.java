@@ -33,6 +33,7 @@ public class OrderSubmitActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_submit);
+        addTipView(new String[]{IDENTITY_ADDRESS, ACCOUNT_LOGIN, PUSH_ORDER});
         mViewModel = new OrderSubmitActivityViewModel(this);
         mViewModel.init();
         mViewModel.initView();

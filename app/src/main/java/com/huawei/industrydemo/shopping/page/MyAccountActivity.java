@@ -33,6 +33,7 @@ public class MyAccountActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+        addTipView(new String[]{IDENTITY_ADDRESS});
         mViewModel = new MyAccountActivityViewModel(this);
         mViewModel.initUser();
         mViewModel.initView();

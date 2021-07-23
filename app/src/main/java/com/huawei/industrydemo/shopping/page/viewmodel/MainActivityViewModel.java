@@ -88,8 +88,6 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 import static com.huawei.hms.analytics.type.HAEventType.STARTAPP;
 import static com.huawei.industrydemo.shopping.constants.Constants.REQUEST_CODE_SCAN_ONE;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.ML_PHOTO;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.SCAN_PAY;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 import static com.huawei.industrydemo.shopping.page.viewmodel.ProductActivityViewModel.caasKitRelease;
 
@@ -254,10 +252,7 @@ public class MainActivityViewModel extends BaseActivityViewModel<MainActivity> {
                 || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            mActivity.addTipView(new String[] {ML_PHOTO}, () -> {
-                mActivity.startActivity(new Intent(mActivity, CameraSelectActivity.class));
-            });
-
+            mActivity.startActivity(new Intent(mActivity, CameraSelectActivity.class));
             return;
         }
 
@@ -266,8 +261,8 @@ public class MainActivityViewModel extends BaseActivityViewModel<MainActivity> {
                 || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            mActivity.addTipView(new String[] {SCAN_PAY}, () -> ScanUtil.startScan(mActivity, REQUEST_CODE_SCAN_ONE,
-                new HmsScanAnalyzerOptions.Creator().create()));
+            ScanUtil.startScan(mActivity, REQUEST_CODE_SCAN_ONE,
+                    new HmsScanAnalyzerOptions.Creator().create());
             return;
         }
     }

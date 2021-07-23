@@ -38,7 +38,7 @@ public class NewInFragment extends BaseFragment implements CountdownRefresh {
     private final NewInFragmentViewModel mViewModel;
 
     public NewInFragment() {
-        setKits(new String[] {ANALYTICS_REPORT, PUSH_DISCOUNT});
+        setKits(new String[]{ANALYTICS_REPORT, PUSH_DISCOUNT, PUSH_SUB});
         mViewModel = new NewInFragmentViewModel(this);
     }
 

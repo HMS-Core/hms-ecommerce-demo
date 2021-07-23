@@ -17,14 +17,12 @@
 package com.huawei.industrydemo.shopping.page;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -76,6 +74,7 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_select);
+        addTipView(new String[] {ML_BANKCARD});
         initView();
         initAction();
         totalPrice = getIntent().getIntExtra(TOTAL_PRICE, 0);
@@ -114,7 +113,7 @@ public class PaymentSelectActivity extends BaseActivity implements View.OnClickL
             case R.id.confirm_button:
                 int radioButtonId = paymentGroup.getCheckedRadioButtonId();
                 if (radioButtonId == R.id.bcr_payment_button) {
-                    addTipView(new String[] {ML_BANKCARD}, () -> initDialog());
+                    initDialog();
                 } else if (radioButtonId == R.id.other_payment_button) {
                     startActivity(new Intent(this, PaymentSucceededActivity.class).putExtra(TOTAL_PRICE, totalPrice)
                         .putExtra(ORDER_KEY, orderNumber)

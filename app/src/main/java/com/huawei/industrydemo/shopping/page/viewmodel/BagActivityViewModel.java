@@ -76,7 +76,6 @@ import static com.huawei.industrydemo.shopping.constants.Constants.CNY;
 import static com.huawei.industrydemo.shopping.constants.Constants.LOGIN_REQUEST_CODE;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.BAG_KEY;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.ORDER_KEY;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.ACCOUNT_LOGIN;
 
 /**
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/23]
@@ -222,7 +221,7 @@ public class BagActivityViewModel extends BaseActivityViewModel<BagActivity> {
                 mActivity.finish();
                 break;
             case R.id.layout_login_first:
-                mActivity.addTipView(new String[] {ACCOUNT_LOGIN}, () -> mActivity.signIn());
+                mActivity.signIn();
                 break;
             case R.id.checkBox_all_select:
                 if (bagList.size() != 0) {

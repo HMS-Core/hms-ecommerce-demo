@@ -30,12 +30,6 @@ public interface KeyConstants {
     
     String LAST_VERSION = "m_version";
 
-    // Display Kits or not
-    String IS_NIGHT = "m_model";
-
-    // Display Kits or not
-    String IS_SHOW_TIP = "m_tip";
-
     String BAG_KEY = "bag_number";
 
     String ORDER_KEY = "order_number";

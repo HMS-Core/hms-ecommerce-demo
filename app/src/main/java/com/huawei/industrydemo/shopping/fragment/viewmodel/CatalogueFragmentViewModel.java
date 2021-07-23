@@ -108,7 +108,6 @@ public class CatalogueFragmentViewModel extends BaseFragmentViewModel<CatalogueF
 
     @Override
     public void onClickEvent(int viewId) {
-
     }
 
     @Override
@@ -120,6 +119,11 @@ public class CatalogueFragmentViewModel extends BaseFragmentViewModel<CatalogueF
         @NonNull int[] grantResults) {
     }
 
+    /**
+     * setFirstPosition
+     *
+     * @param firstPosition firstPosition
+     */
     public void setFirstPosition(int firstPosition) {
         this.firstPosition = firstPosition;
     }

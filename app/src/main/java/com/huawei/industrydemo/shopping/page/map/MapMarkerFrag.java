@@ -74,7 +74,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
 
     private static final double[][] ADDR_ADJUST_NUMBER = {{-0.001, -0.01}, {0.01, -0.001}, {0.01, 0.01}};
 
-    private final static String RADIUS = "50000";
+    private final static String RADIUS = "5000";
 
     private final String PAGE_INDEX = "1";
 
@@ -194,6 +194,9 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView:getActivity " + getActivity());
+        setKits(new String[] {OFFLINE_STORE});
+        addTipView();
+
         mActivity = (mActivity == null && getActivity() != null) ? getActivity() : mActivity;
         View view = inflater.inflate(getLayoutId(), container, false);
         mapView = view.findViewById(R.id.map);
@@ -202,7 +205,6 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         lBottom = view.findViewById(R.id.lBottom);
         viewNavi = view.findViewById(R.id.navi);
         viewFull = view.findViewById(R.id.full);
-
         if (isMapActivity()) {
             viewFull.setVisibility(View.GONE);
         } else if (isHome()) {
@@ -210,7 +212,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         }
         lBottom.setVisibility(View.GONE);
         initData();
-        setListerner();
+        setListener();
         return view;
     }
 
@@ -233,7 +235,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         bindLocationService();
     }
 
-    private void setListerner() {
+    private void setListener() {
         lBottom.setOnTouchListener((v, event) -> {
             // intercept the touch of map bottom
             Log.d(TAG, "onTouch: ");
@@ -284,7 +286,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
 
     private void updateLocation(LatLng latLng) {
         mLatLng = latLng;
-        hMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 1));
+        hMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 
     private void bindLocationService() {
@@ -396,7 +398,9 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
             hMap.getUiSettings().setMyLocationButtonEnabled(false);
             hMap.getUiSettings().setZoomControlsEnabled(false);
         }
-        hMap.setPadding(0, 0, 0, 300);
+        if(isMapActivity()){
+            hMap.setPadding(0, 0, 0, 300);
+        }
 
         Log.d(TAG, "onMapReady: ");
         isMapReady = true;
@@ -414,8 +418,7 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
         if (mActivity instanceof MapAct) {
 
         } else {
-            MainActivity thisActivity = (MainActivity) mActivity;
-            thisActivity.addTipView(new String[] {OFFLINE_STORE}, () -> MapAct.start(mActivity));
+            MapAct.start(mActivity);
         }
     }
 
@@ -448,11 +451,6 @@ public class MapMarkerFrag extends BaseFragment implements OnMapReadyCallback {
             updateSelectMarker(s);
             return false;
         });
-
-        // jump camera
-        Coordinate coordinate = siteList.get(0).getLocation();
-        LatLng latLng = new LatLng(coordinate.getLat(), coordinate.getLng());
-        hMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
     }
 
     private void getMarkerAddr(List<Site> siteList) {

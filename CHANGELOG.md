@@ -1,4 +1,13 @@
 # Change Log
+## 1.1.3 (July 24, 2021)
+* HMS Core SDK update.
+* Kit remind mode updated.
+* Main page updated.
+* Bug fix.
+
+## 1.1.2 (June 28, 2021)
+* Icon Update.
+
 ## 1.1.1 (June 2, 2021)
 * 3D Model online download.
 * Privacy agreement update.

@@ -39,8 +39,7 @@ import com.huawei.industrydemo.shopping.repository.AppConfigRepository;
 import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
 import static android.content.Context.BIND_AUTO_CREATE;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.LOCATION_GEO;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.PUSH_GEO;
+
 
 /**
  * @version [Ecommerce-Demo 1.0.2.300, 2021/3/25]
@@ -83,7 +82,7 @@ public class SettingActivityViewModel extends BaseActivityViewModel<SettingActiv
         sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mAppConfigRepository.setBooleanValue(KeyConstants.SETTING_GEO_KEY, isChecked);
             if (isChecked) {
-                mActivity.addTipView(new String[] {LOCATION_GEO, PUSH_GEO}, this::startGeoFence);
+                startGeoFence();
             } else {
                 stopGeoFence();
             }

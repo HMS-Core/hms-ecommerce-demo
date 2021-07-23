@@ -98,6 +98,8 @@ public interface KitConstants {
 
     String SCAN_PAY = "SCANPAY";
 
+    String SCAN_SHOPPING = "SCANSHOPPING";
+
     String VIDEO_PLAY = "PLAY";
 
     String SCENE_3D = "3D";

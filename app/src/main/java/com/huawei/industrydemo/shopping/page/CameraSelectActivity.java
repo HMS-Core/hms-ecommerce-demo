@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import androidx.annotation.Nullable;
 
 import com.huawei.industrydemo.shopping.R;
@@ -43,7 +44,7 @@ public class CameraSelectActivity extends BaseActivity implements View.OnClickLi
         this.getWindow()
                 .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_camera_select);
-
+        addTipView(new String[]{ML_PHOTO, SCAN_SHOPPING});
         mViewModel = new CameraSelectActivityViewModel(this);
         mViewModel.initView();
     }

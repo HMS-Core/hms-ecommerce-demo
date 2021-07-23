@@ -70,11 +70,12 @@ import static com.huawei.industrydemo.shopping.constants.KeyConstants.WEB_URL;
  * @since [Ecommerce-Demo 1.0.0.300]
  */
 public class BaseActivity extends AppCompatActivity implements LogConfig, KitConstants {
-
     private final static Class<?>[] EXCLUDE_ACTIVITIES =
-        {SceneViewActivity.class, SplashActivity.class, PrivacyActivity.class};
+            {SceneViewActivity.class, SplashActivity.class, PrivacyActivity.class};
 
     private LinearLayout mFloatLayout;
+    private LinearLayout mTipLayout;
+    private String[] tips;
 
     /**
      * Control the display of floating window
@@ -91,33 +92,40 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
     @Override
     protected void onResume() {
         super.onResume();
+        showKitTipsFloat();
         showSmartAssistantFloat();
     }
 
-    public void addTipView(String[] kits) {
-        addTipView(KitTipUtil.getKitMap(kits));
-    }
-
-    public void addTipView(Map<String, KitInfo> kits) {
-        KitTipUtil.addTipView(this, kits);
-    }
-
-    public void addTipView(String[] kits, ShowTipsCallback showTipsCallback) {
-        addTipView(KitTipUtil.getKitMap(kits), showTipsCallback);
-    }
-
-    public void addTipView(Map<String, KitInfo> kits, ShowTipsCallback showTipsCallback) {
-        runOnUiThread(() -> KitTipUtil.addTipViewForResult(this, kits, showTipsCallback));
+    /**
+     * addTipView
+     *
+     * @param tips tips
+     */
+    public void addTipView(String[] tips) {
+        if (tips == null) {
+            this.tips = new String[0];
+            return;
+        }
+        this.tips = tips.clone();
     }
 
     /**
-     * requestCode = Constants#LOGIN_REQUEST_CODE
+     * addTipView
+     *
+     * @param kits map
+     */
+    public void addTipView(Map<String, KitInfo> kits) {
+        runOnUiThread(() -> KitTipUtil.addTipView(this, kits));
+    }
+
+    /**
+     * signIn
      */
     public void signIn() {
         AccountAuthParams authParams =
-            new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setAccessToken()
-                .setDialogAuth()
-                .createParams();
+                new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setAccessToken()
+                        .setDialogAuth()
+                        .createParams();
         AccountAuthService service = AccountAuthManager.getService(this, authParams);
         startActivityForResult(service.getSignInIntent(), LOGIN_REQUEST_CODE);
     }
@@ -144,7 +152,7 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
      * Save User Account
      *
      * @param authAccount Signed-in HUAWEI ID information, including the ID, nickname, profile picture URI, permission,
-     *        and access token.
+     *                    and access token.
      */
     private void saveUserAccountInfo(AuthAccount authAccount) {
         if (authAccount != null) {
@@ -160,30 +168,34 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
             userRepository.setCurrentUser(user);
 
             MemberUtil.getInstance()
-                .isMember(this, user, (isMember, isAutoRenewing, productName,
-                    time) -> Toast.makeText(this, R.string.log_in_success, Toast.LENGTH_SHORT).show());
+                    .isMember(this, user, (isMember, isAutoRenewing, productName,
+                        time) -> Toast.makeText(this, R.string.log_in_success, Toast.LENGTH_SHORT).show());
 
             AnalyticsUtil.getInstance(this).setUserId(authAccount.getUid());
         }
     }
 
-    /**
-     * display floating window
-     */
-    @SuppressLint("ClickableViewAccessibility")
-    public void showSmartAssistantFloat() {
-        Log.d(TAG, "showSmartAssistantFloat");
-        if (mFloatLayout != null || !isShowFloat) {
+    private void showKitTipsFloat() {
+        if (mTipLayout != null) {
             return;
         }
-        for (Class<?> clazz : EXCLUDE_ACTIVITIES) {
-            if (clazz.isInstance(this)) {
-                return;
+        LayoutInflater inflater = LayoutInflater.from(getApplication());
+        mTipLayout = (LinearLayout) inflater.inflate(R.layout.tip_kits, null);
+        mTipLayout.setOnClickListener(new OnNonDoubleClickListener() {
+            @Override
+            public void run(View v) {
+                addTipView(KitTipUtil.getKitMap(tips));
             }
+        });
+        showFloat(mTipLayout, 200);
+    }
+
+    private void showSmartAssistantFloat() {
+        if (mFloatLayout != null) {
+            return;
         }
         LayoutInflater inflater = LayoutInflater.from(getApplication());
         mFloatLayout = (LinearLayout) inflater.inflate(R.layout.smart_robot, null);
-
         mFloatLayout.setOnClickListener(new OnNonDoubleClickListener() {
             @Override
             public void run(View v) {
@@ -194,19 +206,31 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
                 startActivity(intent);
             }
         });
+        showFloat(mFloatLayout, 10);
+    }
 
-        mFloatLayout.setOnTouchListener(new StackViewTouchListener(mFloatLayout, 18 / 4));
+    @SuppressLint("ClickableViewAccessibility")
+    private void showFloat(LinearLayout layout, int rightMargin) {
+        Log.d(TAG, "showSmartAssistantFloat");
+        if (layout == null || !isShowFloat) {
+            return;
+        }
+        for (Class<?> clazz : EXCLUDE_ACTIVITIES) {
+            if (clazz.isInstance(this)) {
+                return;
+            }
+        }
 
+        layout.setOnTouchListener(new StackViewTouchListener(layout, 18 / 4));
         FrameLayout.LayoutParams layoutParams =
-            new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.bottomMargin = 250;
-        layoutParams.rightMargin = 10;
+        layoutParams.rightMargin = rightMargin;
         layoutParams.gravity = Gravity.BOTTOM | Gravity.END;
-        addContentView(mFloatLayout, layoutParams);
+        addContentView(layout, layoutParams);
     }
 
     static class StackViewTouchListener implements View.OnTouchListener {
-
         private final View stackView;
 
         private final int clickLimitValue;
@@ -259,5 +283,17 @@ public class BaseActivity extends AppCompatActivity implements LogConfig, KitCon
             }
             return true;
         }
+    }
+
+    /**
+     * getTips
+     *
+     * @return tips
+     */
+    public String[] getTips() {
+        if (tips == null) {
+            return new String[0];
+        }
+        return tips.clone();
     }
 }

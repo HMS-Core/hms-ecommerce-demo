@@ -2,11 +2,8 @@
 <resources>
     <string-array name="catalogue_type">
         <item>手机</item>
-        <item>女装</item>
-        <item>男装</item>
         <item>电子产品</item>
         <item>鞋包</item>
-        <item>家具</item>
         <item>眼镜</item>
     </string-array>
 

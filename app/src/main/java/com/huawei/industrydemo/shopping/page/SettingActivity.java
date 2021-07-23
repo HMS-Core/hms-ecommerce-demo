@@ -30,6 +30,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        addTipView(new String[] {LOCATION_GEO, PUSH_GEO});
         mViewModel = new SettingActivityViewModel(this);
         mViewModel.initView();
     }

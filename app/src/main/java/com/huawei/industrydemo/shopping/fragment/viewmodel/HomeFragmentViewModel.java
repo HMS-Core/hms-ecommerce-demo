@@ -17,6 +17,7 @@
 package com.huawei.industrydemo.shopping.fragment.viewmodel;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -24,10 +25,12 @@ import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
+import android.widget.Scroller;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,24 +43,28 @@ import com.huawei.agconnect.remoteconfig.AGConnectConfig;
 import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseFragmentViewModel;
+import com.huawei.industrydemo.shopping.constants.Constants;
+import com.huawei.industrydemo.shopping.entity.Product;
 import com.huawei.industrydemo.shopping.entity.ScanHistory;
 import com.huawei.industrydemo.shopping.fragment.HomeFragment;
 import com.huawei.industrydemo.shopping.page.viewmodel.MainActivityViewModel;
-import com.huawei.industrydemo.shopping.repository.AppConfigRepository;
+import com.huawei.industrydemo.shopping.repository.ProductRepository;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
 import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
 import com.huawei.industrydemo.shopping.utils.RemoteConfigUtil;
 import com.huawei.industrydemo.shopping.viewadapter.HomeViewPagerAdapter;
+import com.huawei.industrydemo.shopping.viewadapter.ProductHomeAdapter;
 import com.huawei.industrydemo.shopping.viewadapter.ScanHistoryAdapter;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.huawei.industrydemo.shopping.MainApplication.getContext;
-import static com.huawei.industrydemo.shopping.constants.KeyConstants.IS_SHOW_TIP;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.TOURIST_USERID;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
@@ -68,10 +75,12 @@ import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
  */
 public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
     private static final String ARTICLE_KEY_ONE = "Article_Link_1";
+    private static final String ARTICLE_KEY_ONE_CN = "Article_Link_1_cn";
 
     private static final String ARTICLE_KEY_TWO = "Article_Link_2";
+    private static final String ARTICLE_KEY_TWO_CN = "Article_Link_2_cn";
 
-    private Switch mSwitch;
+    private RecyclerView rvRecommendation;
 
     private RecyclerView recyclerView;
 
@@ -88,6 +97,9 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
 
     private LinearLayout lvDot;
 
+    String article1Link = ARTICLE_KEY_ONE;
+    String article2Link = ARTICLE_KEY_TWO;
+
     public HomeFragmentViewModel(HomeFragment homeFragment) {
         super(homeFragment);
         handler = new HomeImageHandler(new WeakReference<>(this));
@@ -100,15 +112,17 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
         view.findViewById(R.id.card_article2).setOnClickListener(mFragment);
 
         recyclerView = view.findViewById(R.id.recycler_product);
-        AppConfigRepository appConfigRepository = new AppConfigRepository();
-        mSwitch = view.findViewById(R.id.sw_kit_tip);
-        mSwitch.setChecked(appConfigRepository.getBooleanValue(IS_SHOW_TIP, true));
-        mSwitch.setOnCheckedChangeListener(
-            (buttonView, isChecked) -> appConfigRepository.setBooleanValue(IS_SHOW_TIP, isChecked));
+        rvRecommendation = view.findViewById(R.id.recycler_recommendation);
 
         lvDot = view.findViewById(R.id.layout_dot);
         viewPager = view.findViewById(R.id.pager_home);
         setViewPagerHeight();
+
+        String language = Locale.getDefault().getLanguage();
+        if (Constants.LANGUAGE_ZH.equals(language)) {
+            article1Link = ARTICLE_KEY_ONE_CN;
+            article2Link = ARTICLE_KEY_TWO_CN;
+        }
     }
 
     /**
@@ -128,6 +142,14 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
+
+        ProductRepository productRepository = new ProductRepository();
+        List<Product> recommendations = productRepository.queryAll();
+        ProductHomeAdapter productHomeAdapter = new ProductHomeAdapter(recommendations, getContext(), false);
+        GridLayoutManager recommendationLayoutManager = new GridLayoutManager(getContext(), 2);
+        rvRecommendation.setLayoutManager(recommendationLayoutManager);
+        rvRecommendation.setAdapter(productHomeAdapter);
+        rvRecommendation.setNestedScrollingEnabled(false);
     }
 
     /**
@@ -136,7 +158,7 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
     public void initViewPager() {
         dots = new ArrayList<>();
 
-        Integer[] images = new Integer[]{R.mipmap.banner1, R.mipmap.banner1, R.mipmap.banner1};
+        Integer[] images = new Integer[]{R.mipmap.banner1, R.mipmap.article1,R.mipmap.article2};
         Integer[] urls = new Integer[]{R.string.banner_url_1, R.string.banner_url_1, R.string.banner_url_1};
 
         for (int i = 0; i < images.length; i++) {
@@ -148,9 +170,20 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
         }
 
         viewPager.setAdapter(new HomeViewPagerAdapter(images, getContext(), position -> {
-            Uri uri = Uri.parse(mFragment.getString(urls[position]));
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            mFragment.startActivity(intent);
+            switch (position){
+                case 1:
+                    showArticle(article1Link);
+                    break;
+                case 2:
+                    showArticle(article2Link);
+                    break;
+                case 0:
+                default:
+                    Uri uri = Uri.parse(mFragment.getString(urls[position]));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    mFragment.startActivity(intent);
+                    break;
+            }
         }));
 
         viewPager.addOnPageChangeListener(
@@ -181,13 +214,14 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
                 });
 
         viewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+        viewPager.setCurrentItem(0);
 
         // Start the NVOD effect.
         handler.sendEmptyMessageDelayed(HomeImageHandler.UPDATE, HomeImageHandler.TIME_DELAY);
     }
 
     private void setViewPagerHeight() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) viewPager.getLayoutParams();
         layoutParams.height = VIEW_PAGER_HEIGHT;
         viewPager.setLayoutParams(layoutParams);
     }
@@ -204,8 +238,8 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
         int size = dots.size();
         for (int i = 0; i < size; i++) {
             dots.get(i).setBackgroundResource(R.drawable.dot_no_selected);
-            dots.get(position % size).setBackgroundResource(R.drawable.dot_selected);
         }
+        dots.get(position % size).setBackgroundResource(R.drawable.dot_selected);
     }
 
     /**
@@ -214,7 +248,24 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
      * @param currentPosition currentPosition
      */
     public void setCurrentPosition(int currentPosition) {
+        setViewPageScrollTime(viewPager);
         viewPager.setCurrentItem(currentPosition, true);
+    }
+
+    private void setViewPageScrollTime(ViewPager mViewPager){
+        Field field = null;
+        try {
+            field = ViewPager.class.getDeclaredField("mScroller");
+            field.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(mViewPager.getContext(),
+                    new AccelerateInterpolator());
+            field.set(mViewPager, scroller);
+            scroller.setmDuration(1000);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -231,15 +282,15 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
         switch (viewId) {
             case R.id.card_new:
                 Activity activity = mFragment.getActivity();
-                if (activity != null && activity instanceof MainActivity) {
+                if (activity instanceof MainActivity) {
                     ((MainActivity) activity).getMainActivityViewModel().setCurrentPage(R.id.tab_new_in);
                 }
                 break;
             case R.id.card_article1:
-                showArticle(ARTICLE_KEY_ONE);
+                showArticle(article1Link);
                 break;
             case R.id.card_article2:
-                showArticle(ARTICLE_KEY_TWO);
+                showArticle(article2Link);
                 break;
             default:
                 break;
@@ -359,4 +410,38 @@ public class HomeFragmentViewModel extends BaseFragmentViewModel<HomeFragment> {
             }
         }
     }
+
+    public static class FixedSpeedScroller extends Scroller {
+        private int mDuration = 1000;
+
+        public FixedSpeedScroller(Context context) {
+            super(context);
+        }
+
+        public FixedSpeedScroller(Context context, Interpolator interpolator) {
+            super(context, interpolator);
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+            // Ignore received duration, use fixed one instead
+            super.startScroll(startX, startY, dx, dy, mDuration);
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy) {
+            // Ignore received duration, use fixed one instead
+            super.startScroll(startX, startY, dx, dy, mDuration);
+        }
+
+        /**
+         * setmDuration
+         * @param time ms
+         */
+        public void setmDuration(int time) {
+            mDuration = time;
+        }
+
+    }
+
 }

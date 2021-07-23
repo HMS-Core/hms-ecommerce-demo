@@ -38,8 +38,6 @@ import com.huawei.hms.mlsdk.translate.cloud.MLRemoteTranslateSetting;
 import com.huawei.hms.mlsdk.translate.cloud.MLRemoteTranslator;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.entity.Evaluation;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
-import com.huawei.industrydemo.shopping.page.EvaluationListActivity;
 import com.huawei.industrydemo.shopping.utils.AgcUtil;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 
@@ -47,7 +45,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static com.huawei.industrydemo.shopping.constants.KitConstants.ML_TRANSLATION;
 
 /**
  * @version [Ecommerce-Demo 1.0.0.300, 2020/10/10]
@@ -83,8 +80,7 @@ public class EvaluationListAdapter extends RecyclerView.Adapter<EvaluationListAd
         holder.tvContent.setText(evaluation.getContent());
         holder.tvTime.setText(evaluation.getTime());
         holder.tvContent.setOnClickListener(v -> {
-            EvaluationListActivity thisActivity = (EvaluationListActivity) context;
-            thisActivity.addTipView(new String[] {ML_TRANSLATION}, (ShowTipsCallback) () -> initPopupMenu(v, holder));
+            initPopupMenu(v, holder);
         });
         String uri = evaluation.getImgUri();
         if (uri.equals("")) {

@@ -75,7 +75,7 @@ public class User {
     }
 
     public void setHuaweiAccount(AuthAccount huaweiAccount) {
-        this.openId = huaweiAccount.openId;
+        this.openId = huaweiAccount.getOpenId();
         this.huaweiAccount = huaweiAccount;
     }
 

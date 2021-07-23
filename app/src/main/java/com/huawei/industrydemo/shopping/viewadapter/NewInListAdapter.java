@@ -17,6 +17,7 @@
 package com.huawei.industrydemo.shopping.viewadapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +30,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.huawei.industrydemo.shopping.MainActivity;
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.constants.KitConstants;
 import com.huawei.industrydemo.shopping.entity.BasicInfo;
 import com.huawei.industrydemo.shopping.entity.Product;
+import com.huawei.industrydemo.shopping.page.ProductActivity;
 import com.huawei.industrydemo.shopping.repository.UserRepository;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
 import com.huawei.industrydemo.shopping.utils.MessagingUtil;
@@ -51,6 +52,7 @@ import static com.huawei.hms.analytics.type.HAParamType.PRODUCTNAME;
 import static com.huawei.hms.analytics.type.HAParamType.REVENUE;
 import static com.huawei.industrydemo.shopping.constants.Constants.CNY;
 import static com.huawei.industrydemo.shopping.constants.Constants.RESOURCE_TYPE_MIPMAP;
+import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KEY;
 
 /**
  * OrderCenterList Adapter
@@ -125,7 +127,7 @@ public class NewInListAdapter extends RecyclerView.Adapter<NewInListAdapter.View
         int discount = basicInfo.getDisplayPrice() - 1;
         holder.ivProduct.setImageResource(imageResource);
         holder.tvName.setText(basicInfo.getShortName());
-        holder.tvCountdown.setText(mActivity.getString(R.string.countdown, countdown));
+        holder.tvCountdown2.setText(mActivity.getString(R.string.countdown2, countdown));
         holder.tvPrice.setText(mActivity.getString(R.string.product_price, basicInfo.getPrice()));
         holder.tvCount.setText(mActivity.getString(R.string.product_discount, discount));
 
@@ -138,9 +140,15 @@ public class NewInListAdapter extends RecyclerView.Adapter<NewInListAdapter.View
             AnalyticsUtil.getInstance(mActivity)
                 .setUserProfile(FAVORITE_PRODUCTS_KEY_PREFIX + product.getNumber(), String.valueOf(isSubscribe));
             if (isSubscribe) {
-                MainActivity thisActivity = (MainActivity) mActivity;
-                thisActivity.addTipView(new String[] {PUSH_SUB}, () -> notificationMessage(product));
+                notificationMessage(product);
             }
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(mActivity, ProductActivity.class);
+            intent.putExtra(PRODUCT_KEY, product.getNumber());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mActivity.startActivity(intent);
         });
     }
 
@@ -154,7 +162,7 @@ public class NewInListAdapter extends RecyclerView.Adapter<NewInListAdapter.View
         for (Object payload : payloads) {
             switch ((int) payload) {
                 case PAYLOAD_TYPE_COUNTDOWN:
-                    holder.tvCountdown.setText(mActivity.getString(R.string.countdown, countdown));
+                    holder.tvCountdown2.setText(mActivity.getString(R.string.countdown2, countdown));
                     break;
                 default:
                     break;
@@ -201,7 +209,7 @@ public class NewInListAdapter extends RecyclerView.Adapter<NewInListAdapter.View
 
         TextView tvName;
 
-        TextView tvCountdown;
+        TextView tvCountdown2;
 
         TextView tvPrice;
 
@@ -213,7 +221,7 @@ public class NewInListAdapter extends RecyclerView.Adapter<NewInListAdapter.View
             super(itemView);
             ivProduct = itemView.findViewById(R.id.iv_product);
             tvName = itemView.findViewById(R.id.tv_product_name);
-            tvCountdown = itemView.findViewById(R.id.tv_countdown);
+            tvCountdown2 = itemView.findViewById(R.id.tv_countdown2);
             tvPrice = itemView.findViewById(R.id.tv_price);
             tvCount = itemView.findViewById(R.id.tv_discount);
             tvSubscribe = itemView.findViewById(R.id.tv_product_subscribe);

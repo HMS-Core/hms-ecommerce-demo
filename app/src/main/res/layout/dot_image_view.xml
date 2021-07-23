@@ -3,4 +3,4 @@
     android:layout_width="6dp"
     android:layout_height="6dp"
     android:layout_marginEnd="4dp"
-    android:background="@drawable/dot_no_selected"></ImageView>
+    android:background="@drawable/dot_no_selected"/>

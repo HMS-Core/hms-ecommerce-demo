@@ -28,10 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.huawei.industrydemo.shopping.R;
-import com.huawei.industrydemo.shopping.base.BaseActivity;
 import com.huawei.industrydemo.shopping.entity.Collection;
 import com.huawei.industrydemo.shopping.entity.Product;
-import com.huawei.industrydemo.shopping.inteface.ShowTipsCallback;
 import com.huawei.industrydemo.shopping.page.ProductActivity;
 import com.huawei.industrydemo.shopping.repository.ProductRepository;
 import com.huawei.industrydemo.shopping.utils.DatabaseUtil;
@@ -40,7 +38,6 @@ import com.huawei.industrydemo.shopping.utils.MessagingUtil;
 import java.util.List;
 
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.PRODUCT_KEY;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.PUSH_SUB;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
     private List<Collection> collections;
@@ -95,8 +92,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                     holder.imageViewHeart.setImageResource(R.mipmap.product_saved);
                     DatabaseUtil.getDatabase().collectionDao().setCollectionData(a);
                     turnToUnfavorite = true;
-                    ((BaseActivity) context).addTipView(new String[] {PUSH_SUB},
-                        (ShowTipsCallback) () -> MessagingUtil.saveNotificationMessage(context, productName));
+                    MessagingUtil.saveNotificationMessage(context, productName);
                 }
 
             }

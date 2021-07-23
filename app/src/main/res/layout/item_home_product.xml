@@ -19,7 +19,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:textColor="@color/analytics_item_text"
-        android:textSize="13sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/text_Possibility"

@@ -16,47 +16,35 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_toStartOf="@+id/sw_kit_tip"
-                android:gravity="center"
-                android:text="@string/show_kit"
-                android:textColor="@color/switch_kit_tip" />
-
-            <Switch
-                android:id="@+id/sw_kit_tip"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:theme="@style/Custom.MySwitch"
-                tools:ignore="UseSwitchCompatOrMaterialXml">
-            </Switch>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pager_home"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sw_kit_tip"/>
-
-            <LinearLayout
-                android:id="@+id/layout_dot"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_alignBottom="@+id/pager_home"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                android:layout_margin="10dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/card_banner">
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/layout_dot"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_new"
-                android:layout_below="@+id/pager_home"
+                android:layout_below="@+id/card_banner"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_margin="10dp"
-                app:cardCornerRadius="20dp">
+                app:cardCornerRadius="20dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -69,7 +57,8 @@
                 android:layout_below="@+id/card_new"
                 layout="@layout/view_home_article"
                 android:layout_height="300dp"
-                android:layout_width="match_parent" />
+                android:layout_width="match_parent"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_store"
                 android:layout_width="wrap_content"
@@ -116,13 +105,37 @@
                 android:paddingBottom="10dp"
                 android:text="@string/recently_viewed"
                 android:textColor="@color/switch_kit_tip"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_product"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_history"
+                android:background="@color/white"
+                android:overScrollMode="never"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_recommendation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recycler_product"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/market_recommendation"
+                android:textColor="@color/switch_kit_tip"
+                android:textSize="14sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_recommendation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_recommendation"
                 android:background="@color/white"
                 android:overScrollMode="never" />
         </RelativeLayout>

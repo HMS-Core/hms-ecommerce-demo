@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.huawei.industrydemo.shopping.constants.KitConstants;
 import com.huawei.industrydemo.shopping.constants.LogConfig;
-import com.huawei.industrydemo.shopping.utils.KitTipUtil;
 
 /**
  * Base Fragment
@@ -34,7 +33,11 @@ public class BaseFragment extends Fragment implements LogConfig, KitConstants {
     private String[] kits = null;
 
     public void addTipView() {
-        KitTipUtil.addTipView(getActivity(), KitTipUtil.getKitMap(kits));
+        BaseActivity activity = (BaseActivity) getActivity();
+        // show current fragment
+        if (activity != null) {
+            activity.addTipView(kits);
+        }
     }
 
     protected void setKits(String[] kits) {
@@ -44,8 +47,10 @@ public class BaseFragment extends Fragment implements LogConfig, KitConstants {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden && kits != null) { // show current fragment
-            addTipView();
+        BaseActivity activity = (BaseActivity) getActivity();
+        // show current fragment
+        if (!hidden && kits != null && activity != null) {
+            activity.addTipView(kits);
         }
     }
 }

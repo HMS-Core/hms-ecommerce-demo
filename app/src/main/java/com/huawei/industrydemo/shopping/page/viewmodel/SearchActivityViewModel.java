@@ -63,7 +63,6 @@ import static com.huawei.industrydemo.shopping.base.BaseDialog.CANCEL_BUTTON;
 import static com.huawei.industrydemo.shopping.base.BaseDialog.CONFIRM_BUTTON;
 import static com.huawei.industrydemo.shopping.base.BaseDialog.CONTENT;
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.SEARCH_CONTENT;
-import static com.huawei.industrydemo.shopping.constants.KitConstants.ML_ASR;
 import static com.huawei.industrydemo.shopping.constants.LogConfig.TAG;
 
 /**
@@ -141,9 +140,9 @@ public class SearchActivityViewModel extends BaseActivityViewModel<SearchActivit
             Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
         }
-        ivVoice.setOnClickListener(v -> mActivity.addTipView(new String[] {ML_ASR}, this::startAsr));
+        ivVoice.setOnClickListener(v -> startAsr());
         ivVoice.setOnLongClickListener(v -> {
-            mActivity.addTipView(new String[] {ML_ASR}, this::startAsr);
+            startAsr();
             return true;
         });
 
@@ -274,8 +273,7 @@ public class SearchActivityViewModel extends BaseActivityViewModel<SearchActivit
     private void edSearch() {
         String content = searchEdit.getText().toString().replace(" ", "");
         if ("".equals(content)) {
-            Toast.makeText(mActivity, R.string.search_no_tip, Toast.LENGTH_SHORT).show();
-            return;
+            content = searchEdit.getHint().toString().replace(" ", "");
         }
         goSearch(content, true);
     }

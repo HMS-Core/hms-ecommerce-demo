@@ -14,9 +14,8 @@
     <string name="notice">test</string>
 
     <!-- kits tip-->
-    <string name="no_kits">No Kit</string>
     <string name="used_kits">The following kits are used here:</string>
-    <string name="cancel_saved">Favorite remvoed.</string>
+    <string name="cancel_saved">Favorite removed.</string>
     <string name="saved_success">Favorite Added.</string>
 
     <!-- kits information-->
@@ -73,6 +72,7 @@
     <string name="scan_link">https://developer.huawei.com/consumer/en/hms/huawei-scankit?ha_source=hms7</string>
     <string name="scan_pay">Scan Pay</string>
     <string name="scan_code">Membership Code Generation</string>
+    <string name="scan_shopping">Scan Shopping</string>
 
     <string name="video_name">Video Kit</string>
     <string name="video_link">https://developer.huawei.com/consmer/en/hms/huawei-videokit?ha_source=hms7</string>
@@ -141,6 +141,7 @@
     <string name="push_discount_des">Push personalized messages such as discounts and new products to improve user stickiness and consumption desire according to their viewing and consumption records in e-commerce App.</string>
     <string name="push_geo_des">Push messages based on the status of users entering, staying, and leaving a certain district/consumption location, helping O2O merchants to accurately appeal users, and promote consumption both online and offline.</string>
     <string name="scan_pay_des">The scanning service can scans, parses, and generates major 1D and 2D barcodes, and support auto-focus scanning to identify product QR codes, bringing users the great scanning experience. （Scan Kit can be integrated into both Android and iOS apps.）</string>
+    <string name="scan_shopping_des">The scanning service can scans, parses, and generates major 1D and 2D barcodes, and support auto-focus scanning to identify product QR codes, bringing users the great scanning experience. （Scan Kit can be integrated into both Android and iOS apps.）</string>
     <string name="scan_qr_des">The scanning service can scans, parses, and generates major 1D and 2D barcodes, and realize e-commerce operation such as membership code generation and points accumulation. （Scan Kit can be integrated into both Android and iOS apps.）</string>
     <string name="analytics_report_des">Huawei Analytics Service provides free data analysis and comparison for a wide range of devices and platforms, so you can make informed decisions on product optimization and marketing based on your users\' behavior.</string>
     <string name="site_geo_des">Address autocomplete capability suggests location names and addresses with keywords entered by the users, which helps users fill in addresses more quickly and optimize shopping experience.</string>
@@ -204,7 +205,7 @@
     <string name="geofence_enabled">The Geo Fence is enabled Successfully</string>
     <string name="id">id:</string>
     <string name="geofence">Geo-Fence</string>
-    <string name="geofence_in">Welcom to here</string>
+    <string name="geofence_in">Welcome to here</string>
     <string name="geofence_stay">You are welcome to take a look.</string>
     <string name="geofence_out">Welcome next time.</string>
 
@@ -212,7 +213,7 @@
     <string name="sparkle_store">SPARKLE STORE</string>
     <string name="drawer_des">Discover your inspiration with HUAWEI Mobile Services</string>
     <string name="drawer_sign_in"><u><![CDATA[SIGN IN WITH HUAWEI ID > ]]></u></string>
-    <string name="drawer_scan">SACN QR CODE TO PAY</string>
+    <string name="drawer_scan">SCAN QR CODE TO PAY</string>
     <string name="drawer_account">MY ACCOUNT</string>
     <string name="drawer_bag">BAG</string>
     <string name="drawer_order">MY ORDER</string>
@@ -231,8 +232,10 @@
     <string name="new_feature_lunch">NEW FEATURE LUNCH</string>
     <string name="ar_try_on_makeup">AR TRY-ON MAKEUP</string>
     <string name="near_store">FIND YOUR NEAREST SPARKLE STORE:</string>
+    <string name="market_recommendation">Recommendation</string>
     <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="power_by">Powered By HMS Core</string>
+    <string name="no_used_kits">No ability to use kit</string>
     <string name="home_new">NEW</string>
     <string name="home_uri_error_tip">Coming Soon…</string>
     <string name="banner_url_1">https://developer.huawei.com/consumer/en/solution/hms/ecommerce?ha_source=hms7</string>
@@ -240,7 +243,7 @@
     <!-- InterestKit Activity -->
     <string name="my_favorite_title1">My Favorite HMS Core Kits</string>
     <string name="my_favorite_title2">with eCommerce Apps</string>
-    <string name="no_interest_kits_tip">no kits</string>
+    <string name="no_interest_kits_tip">No Favorite Kit</string>
     <string name="kit_details_name">%s\n%s</string>
     <string name="kit_delete_tip">Do you want to cancel the Kit from favorites?</string>
 
@@ -267,7 +270,7 @@
 
     <!-- ProductVisionSearchAnalyseActivity -->
     <string name="product_search_result">Photo Purchase Result</string>
-    <string name="product_no_result">No Offering Identified</string>
+    <string name="product_no_result">It is only a test version, there is no base library of the product, and the effect is subject to actual conditions</string>
     <string name="product_category">Categorization:%s</string>
     <string name="installment_discount">6 interest-free periods</string>
 
@@ -310,7 +313,6 @@
     <string name="payment_thanks">Thank you for your purchase</string>
     <string name="payment_prompt">prompt</string>
     <string name="payment_prompt_content">The bank card data identified here will not be saved, just show the scan result</string>
-    <string name="payment_total">¥%d</string>
     <string name="view_order">View Order</string>
     <string name="back_to_home">Back to Home</string>
     <string name="select_payment_method">Select payment method</string>
@@ -349,7 +351,9 @@
     <!-- NewInFragment -->
     <string name="product_discount">¥%d off</string>
     <string name="subscribe">+Follow</string>
-    <string name="countdown">Coming soon | %1$s</string>
+    <string name="countdown">Coming soon</string>
+    <string name="countdown2"> %1$s</string>
+
     <string name="subscribed">Followed</string>
     <string name="text_search_query_label" translatable="false">Query:</string>
     <string name="text_search_query_def_value" translatable="false">Shop</string>
@@ -374,7 +378,7 @@
     <string name="caas_callfail">Fail to Call</string>
     <string name="caas_title">Screen Sharing</string>
     <string name="caas_exist">You are sharing screen now.</string>
-    <string name="caas_no_active">Meetime is not actived.</string>
+    <string name="caas_no_active">Meetime is not activated.</string>
 
     <!-- MyAccountActivity -->
     <string name="account_title">My Account</string>
@@ -398,7 +402,7 @@
     <string name="log_in_success">Login Successfully</string>
 
     <!-- SearchActivity-->
-    <string name="ed_search_tip">Please input content to search</string>
+    <string name="ed_search_tip">Mobile Phone</string>
     <string name="search_no_tip">Please input content to search</string>
     <string name="search_history">Search History</string>
     <string name="search_hot">Hot Search</string>
@@ -454,7 +458,6 @@
     <string name="splash_des2">HUAWEI Mobile Services!</string>
     <string name="splash_des3">HUAWEI DEVELOPERS</string>
     <string name="splash_des4">HMS Core E-Commerce Solution Demo App</string>
-    <string name="splash_copy">Copyright 2020 Huawei Technologies Co. Ltd</string>
 
     <!-- Evaluation List -->
     <string name="order_evaluate_list">Comments list</string>
@@ -483,4 +486,5 @@
     <string name="downloaded">Loading Completed</string>
     <string name="download_failed">Loading failed, please try again later.</string>
     <string name="not_support_ar">Your device does not support AR Engine.</string>
+
 </resources>

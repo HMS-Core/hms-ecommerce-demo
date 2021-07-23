@@ -93,7 +93,7 @@ Features of this application with HMS Core solution
 
 You can also download the zip file containing the code in this page
 
-2. Copy jks file and agconnect-services.json to app folder. About how to get these files, you can refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/config-agc-0000001050196065)
+2. Copy jks file and agconnect-services.json to app folder. About how to get these files, you can refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/config-agc-0000001050196065?ha_source=hms7)
 
 3. Update jks file information and application ID in app/build.gradle file.
 

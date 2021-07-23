@@ -187,10 +187,10 @@ public class OrderCenterListAdapter extends RecyclerView.Adapter<OrderCenterList
         holder.orderItemList.setAdapter(orderCheckAdapter);
         holder.cancelOrder.setOnClickListener(view -> cancelOrder(order));
         holder.payOrder
-            .setOnClickListener(view -> mActivity.addTipView(new String[] {PUSH_ORDER}, () -> payOrder(order)));
+            .setOnClickListener(view -> payOrder(order));
         holder.modifyOrder.setOnClickListener(view -> modifyOrder(order));
         holder.confirmOrder
-            .setOnClickListener(v -> mActivity.addTipView(new String[] {PUSH_ORDER}, () -> confirmOrder(order)));
+            .setOnClickListener(v -> confirmOrder(order));
     }
 
     private static class MyLinearLayoutManager extends LinearLayoutManager {

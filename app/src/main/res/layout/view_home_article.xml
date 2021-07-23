@@ -14,7 +14,7 @@
         app:cardCornerRadius="20dp"
         >
         <ImageView
-            android:background="@mipmap/article_1"
+            android:background="@mipmap/article1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
            >
@@ -30,7 +30,7 @@
         app:cardCornerRadius="20dp"
         >
         <ImageView
-            android:background="@mipmap/article_2"
+            android:background="@mipmap/article2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
