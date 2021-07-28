@@ -17,15 +17,9 @@
 package com.huawei.industrydemo.shopping.page;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.huawei.industrydemo.shopping.R;
 import com.huawei.industrydemo.shopping.base.BaseActivity;
@@ -38,15 +32,11 @@ import static com.huawei.industrydemo.shopping.base.BaseDialog.CONTENT;
 public class FeedbackActivity extends BaseActivity {
     private static final String RATE_SCORE = "RateScore";
 
-    private static final String COMMENT_TYPE = "CommentType";
+    private static final String ANSWER_ONE = "Answer1";
 
-    private static final String DETAIL = "Detail";
+    private static final String ANSWER_TWO = "Answer2";
 
     private static final String FEEDBACK = "FeedBack";
-
-    private Spinner spinner;
-
-    private ArrayAdapter<String> mArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +45,6 @@ public class FeedbackActivity extends BaseActivity {
         addTipView(new String[] {ANALYTICS_REPORT});
 
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.help_and_feedback);
-        spinner = findViewById(R.id.feedback_options);
-        String[] mArrayString = getResources().getStringArray(R.array.feedback_list);
-        mArrayAdapter = new ArrayAdapter<String>(this, R.layout.adapter_feedback_spinner, mArrayString) {
-            @Override
-            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-                View dropDownView = getLayoutInflater().inflate(R.layout.adapter_feedback_spinner_item, parent, false);
-                TextView spinnerText = dropDownView.findViewById(R.id.spinner_textView);
-                spinnerText.setText(getItem(position));
-                return dropDownView;
-            }
-        };
-        spinner.setAdapter(mArrayAdapter);
 
         findViewById(R.id.iv_back).setOnClickListener(v -> finish());
 
@@ -78,15 +56,14 @@ public class FeedbackActivity extends BaseActivity {
         BaseDialog dialog = new BaseDialog(this, data, false);
         dialog.setConfirmListener(v -> finish());
         findViewById(R.id.submit).setOnClickListener(v -> {
-            int ratingScore = ((RatingBar) findViewById(R.id.ratingBar)).getNumStars();
-            String content = ((EditText) findViewById(R.id.feedback_content)).getText().toString();
-            String type = String.valueOf(((Spinner) findViewById(R.id.feedback_options)).getSelectedItem());
+            float ratingScore = ((RatingBar) findViewById(R.id.ratingBar)).getRating();
+            String content1 = ((EditText) findViewById(R.id.feedback_content1)).getText().toString();
+            String content2 = ((EditText) findViewById(R.id.feedback_content2)).getText().toString();
             Bundle bundle = new Bundle();
             bundle.putString(RATE_SCORE, String.valueOf(ratingScore));
-            bundle.putString(COMMENT_TYPE, type);
-            bundle.putString(DETAIL, content);
+            bundle.putString(ANSWER_ONE, content1);
+            bundle.putString(ANSWER_TWO, content2);
             AnalyticsUtil.getInstance(FeedbackActivity.this).onEvent(FEEDBACK, bundle);
-
             dialog.show();
         });
     }

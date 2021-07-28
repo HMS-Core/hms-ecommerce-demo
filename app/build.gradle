@@ -41,32 +41,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 
-    flavorDimensions "area"
-
-    productFlavors {
-        europe {
-            dimension "area"
-            versionNameSuffix "-europe"
-        }
-
-        aala {
-            dimension "area"
-            versionNameSuffix "-aala"
-            applicationIdSuffix ".aala"
-        }
-
-        china {
-            dimension "area"
-            versionNameSuffix "-china"
-            applicationIdSuffix ".cn"
-        }
-
-        russia {
-            dimension "area"
-            versionNameSuffix '-russia'
-            applicationIdSuffix ".ru"
-        }
-    }
 
     repositories {
         flatDir {

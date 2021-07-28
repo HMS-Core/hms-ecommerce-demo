@@ -11,13 +11,67 @@
         android:id="@+id/feedback_title"
         layout="@layout/title_page" />
 
+    <TextView
+        android:id="@+id/question1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/feedback_title"
+        android:padding="20dp"
+        android:text="@string/question1"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/feedback_content1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/question1"
+        android:layout_marginHorizontal="20dp"
+        android:background="#F8F8F8"
+        android:gravity="top"
+        android:hint="@string/feedback_content"
+        android:maxLength="1000"
+        android:minLines="10"
+        android:padding="20dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/question2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/feedback_content1"
+        android:padding="20dp"
+        android:text="@string/question2"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/feedback_content2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/question2"
+        android:layout_marginHorizontal="20dp"
+        android:background="#F8F8F8"
+        android:gravity="top"
+        android:hint="@string/feedback_content"
+        android:maxLength="1000"
+        android:minLines="10"
+        android:padding="20dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/question3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/feedback_content2"
+        android:padding="20dp"
+        android:text="@string/question3"
+        android:textSize="18sp" />
+
     <LinearLayout
         android:id="@+id/rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/feedback_title"
+        android:layout_below="@id/question3"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -36,7 +90,7 @@
             android:isIndicator="false"
             android:numStars="5"
             android:rating="0"
-            android:stepSize="1" />
+            android:stepSize="0.5" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,29 +100,6 @@
             android:textSize="18sp"
             android:visibility="invisible" />
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/feedback_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rating"
-        android:layout_marginHorizontal="20dp"
-        android:background="#F8F8F8"
-        android:gravity="top"
-        android:hint="@string/feedback_content"
-        android:maxLength="1000"
-        android:minLines="10"
-        android:padding="20dp"
-        android:text="" />
-
-    <Spinner
-        android:id="@+id/feedback_options"
-        android:layout_width="102dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/feedback_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@mipmap/feedback_type_background" />
 
     <Button
         android:id="@+id/submit"

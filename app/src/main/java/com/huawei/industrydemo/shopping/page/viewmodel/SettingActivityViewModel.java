@@ -65,7 +65,7 @@ public class SettingActivityViewModel extends BaseActivityViewModel<SettingActiv
         ((TextView) (mActivity.findViewById(R.id.tv_title))).setText(R.string.setting_title);
         mActivity.findViewById(R.id.iv_back).setOnClickListener(mActivity);
         mActivity.findViewById(R.id.tv_private).setOnClickListener(mActivity);
-        mActivity.findViewById(R.id.tv_help).setOnClickListener(mActivity);
+        mActivity.findViewById(R.id.tv_survey).setOnClickListener(mActivity);
         mActivity.findViewById(R.id.tv_version).setOnClickListener(mActivity);
         mAppConfigRepository = new AppConfigRepository();
         initContentSwitch(mActivity.findViewById(R.id.lv_sub_product), mActivity.getString(R.string.set_sub),
@@ -136,7 +136,7 @@ public class SettingActivityViewModel extends BaseActivityViewModel<SettingActiv
                 intent.putExtra("innerFlag",1);
                 mActivity.startActivity(intent);
                 break;
-            case R.id.tv_help:
+            case R.id.tv_survey:
                 mActivity.startActivity(new Intent(mActivity, FeedbackActivity.class));
                 break;
             case R.id.tv_version:

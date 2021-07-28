@@ -38,6 +38,7 @@ import com.huawei.industrydemo.shopping.constants.Constants;
 import com.huawei.industrydemo.shopping.page.viewmodel.MainActivityLeftDrawerViewModel;
 import com.huawei.industrydemo.shopping.page.viewmodel.MainActivityViewModel;
 import com.huawei.industrydemo.shopping.utils.AnalyticsUtil;
+import com.huawei.industrydemo.shopping.utils.SystemUtil;
 
 import static com.huawei.industrydemo.shopping.constants.KeyConstants.CHECKED_ID;
 
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mViewModel = new MainActivityViewModel(this);
         mDrawerViewModel = new MainActivityLeftDrawerViewModel(this);
         AnalyticsUtil.getInstance(this).onEvent(getString(R.string.notice), new Bundle());
+        SystemUtil.checkForUpdatesWhenStart(this);
     }
 
     public void requestPermission(String[] permission) {

@@ -166,6 +166,30 @@ public class SystemUtil {
         }
     }
 
+    public static void checkForUpdatesWhenStart(Activity mActivity) {
+        StatusDialogUtil statusDialog = new StatusDialogUtil(mActivity);
+        statusDialog.show(mActivity.getString(R.string.version_checking));
+        AGConnectConfig config = AGConnectConfig.getInstance();
+        Map<String, Object> results = config.getMergedAll();
+        Bundle data = new Bundle();
+        if (results.containsKey(LATEST_VERSION_NUM)) {
+            statusDialog.dismiss();
+            data.putString(CONFIRM_BUTTON, mActivity.getString(R.string.confirm));
+            if (config.getValueAsLong(LATEST_VERSION_NUM) > BuildConfig.VERSION_CODE) {
+                data.putString(CONTENT, mActivity.getString(R.string.found_new_version));
+                data.putString(CANCEL_BUTTON, mActivity.getString(R.string.cancel));
+                BaseDialog dialog = new BaseDialog(mActivity, data, true);
+                dialog.setConfirmListener(v -> {
+                    Uri uri = Uri.parse(config.getValueAsString(KeyConstants.DOWNLOAD_LINK));
+                    mActivity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    dialog.dismiss();
+                });
+                dialog.setCancelListener(v -> dialog.dismiss());
+                dialog.show();
+            }
+        }
+    }
+
     /**
      * set Android Native Light StatusBar
      *

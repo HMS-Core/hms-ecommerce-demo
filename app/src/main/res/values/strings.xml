@@ -188,6 +188,8 @@
     <string name="privacy_summary1">This service requires “Location” permission to provide offline shop service, “Microphone” permission to provide voice search, “Storage and Camera” permission to provide scanning and image search functions. If you are using this app without being logged in to a HUAWEI ID, you hereby confirm that you are aged 18 years or over. By enabling the service, you grant the above permissions, acknowledge the Privacy Statement below, and accept the terms of the </string>
     <string name="privacy_title">Permissions and User Agreement</string>
     <string name="privacy_title2">Privacy</string>
+    <string name="domain_uri_prefix">https://industrydemo.dra.agconnect.link</string>
+    <string name="privacy_summary2">   </string>
 
 
     <string name="readme_title">here.</string>
@@ -334,7 +336,7 @@
     <string name="setting_title">APP SETTINGS</string>
     <string name="message_settings">Message Settings</string>
     <string name="privacy_statement">Privacy Statement</string>
-    <string name="help_and_feedback">Help and Feedback</string>
+    <string name="help_and_feedback">Survey</string>
     <string name="version_update">Version Update</string>
     <string name="set_sub">Subscription/favorites offering messages</string>
     <string name="set_order">Order status/logistics message</string>
@@ -363,6 +365,9 @@
     <string name="submit">Submit</string>
     <string name="feedback_content">Please enter your comments</string>
     <string name="confirm_feedback">Thank you for your suggestions and we will analyze them and improve them as soon as possible.</string>
+    <string name="question1">Q1.Please let us know your feedback about this Demo, whether it is helpful ?</string>
+    <string name="question2">Q2. Any suggestions are greatly appreciated.</string>
+    <string name="question3">Q3. Are you satisfied with our demo ?</string>
 
     <!-- PointsActivity -->
     <string name="member_points">Member Points</string>

@@ -184,6 +184,7 @@
     <string name="privacy_summary1">本服务将需要获取“位置权限”用于提供线下门店功能，“话筒权限”用于提供语音搜索功能，“存储和摄像头权限”用于提供扫描和图片搜索服务。如果您未使用HUAWEI ID登录，请在此确认你年满18岁或以上。在使用以上服务之前，请您授予以上权限，并且确认了解下面的隐私声明，并接受</string>
     <string name="privacy_title">权限说明及用户协议</string>
     <string name="privacy_title2">隐私说明</string>
+    <string name="privacy_summary2"> </string>
 
 
     <string name="readme_title">这里。</string>
@@ -323,7 +324,7 @@
     <string name="setting_title">设置</string>
     <string name="message_settings">消息设置</string>
     <string name="privacy_statement">隐私声明</string>
-    <string name="help_and_feedback">帮助反馈</string>
+    <string name="help_and_feedback">问卷调研</string>
     <string name="version_update">版本更新</string>
     <string name="set_sub">订购/收藏消息</string>
     <string name="set_order">订单状态/物流消息</string>
@@ -349,6 +350,9 @@
     <string name="submit">提交反馈</string>
     <string name="feedback_content">请填写您的宝贵建议</string>
     <string name="confirm_feedback">感谢您提出的建议，我们将分析并尽快改进。</string>
+    <string name="question1">Q1.请问您觉得我们的Demo存在哪些问题？</string>
+    <string name="question2">Q2.请问您有什么优化建议呢？</string>
+    <string name="question3">Q3.您对我们的Demo是否满意？</string>
 
     <!-- PointsActivity -->
     <string name="member_points">会员积分</string>
