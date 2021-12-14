@@ -174,8 +174,8 @@ HMS Core提供了电商类购物App的集成方案，以协助开发者快速获
 如果您想更多的了解HMS Core，欢迎您来到[HMSCore on Reddit](https://www.reddit.com/r/HuaweiDevelopers/) 获取最新的HMS Core的信息，并且和更多的开发者一起进行交流。
 
 如果对使用该样例项目仍然存在疑问，欢迎通过以下渠道告诉我们：
-- 建议在[Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services) 中反映开发编程中的问题。请给您的问题打上 `huawei-mobile-services`的标签。
-- 建议在[Huawei开发者论坛](https://developer.huawei.com/consumer/cn/forum/block/hms-core?ha_source=hms7) HMS Core办款中反馈其他问题，或者搜索相关建议和意见。
+- 建议在[Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services?tab=Votes) 中反映开发编程中的问题。请给您的问题打上 `huawei-mobile-services`的标签。
+- 建议在[Huawei开发者论坛](https://developer.huawei.com/consumer/cn/forum/block/hms-core?ha_source=hms1) HMS Core办款中反馈其他问题，或者搜索相关建议和意见。
 
 如果您在样例工程中发现Bug，欢迎您在 [issue](https://github.com/HMS-Core/hms-ecommerce-demo/issues) 中反馈给我们。同时欢迎您直接提交进行修改[Pull Request](https://github.com/HMS-Core/hms-ecommerce-demo/pulls) 。
 
